@@ -98,7 +98,7 @@ set page(numbering: "1")          // Haupttext
 | Lokalisierung | linguify (clean-hwr) | Hardcoded DE | **linguify** — für EN-Arbeiten nötig |
 | Glossar | glossarium (clean-hwr) | Eigene Impl. | **glossarium** — etabliertes Paket |
 | Abkürzungen | acrostiche (clean-hwr) | Eigene `abk()` (ptb) | **Eigene Impl.** — ptb-Pattern ist einfacher für User und HWR-konformer (kein Seitennachweis) |
-| Wortzählung | wordometer (clean-hwr) | — | **wordometer** — optional, nice-to-have |
+| Wortzählung | wordometer (clean-hwr) | — | **wordometer** — optional, nicht in v1.0 (Future) |
 | Bibliographie | Eigene .csl | Standard APA | **APA** als Default, konfigurierbar |
 
 ## Vollständige Deklarations-Textvorlage (Pflicht, §3.11)

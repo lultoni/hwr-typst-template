@@ -40,7 +40,18 @@
 8. Anhang (KI-Verzeichnis, Protokolle, Internetquellen)
 9. Ehrenwörtliche Erklärung
 
-## Hausarbeit (Praxistransfer IV)
+## Studienarbeit
+
+### Titelblatt-Felder
+Identisch mit Hausarbeit (DOC-PTB-01 bis DOC-PTB-12, `supervisor` + `company` Pflicht).
+Dokumenttyp-Label: "Studienarbeit".
+
+| ID | Anforderung |
+|---|---|
+| DOC-SA-01 | Gleiche Pflichtfelder wie Hausarbeit — `supervisor` und `company` sind Pflicht |
+| DOC-SA-02 | Richtlinien nennen Studienarbeit nicht separat; wird analog Hausarbeit behandelt |
+
+## Hausarbeit
 
 ### Titelblatt-Felder
 Gleich wie PTB (DOC-PTB-01 bis DOC-PTB-12).
@@ -90,7 +101,7 @@ Dokumenttyp: "Hausarbeit" (nicht "PTB").
 |---|---|---|---|---|
 | `company` (Ausbildungsbetrieb) | Pflicht | Pflicht | Pflicht | **Nein** |
 | `supervisor` (Betreuende/r Prüfer/in) | Pflicht | Pflicht | Pflicht | **Nein** |
-| `first_examiner` (Erstgutachter/in) | Nein | Nein | Nein | **Pflicht** |
-| `second_examiner` (Zweitgutachter/in) | Nein | Nein | Nein | **Pflicht** |
+| `first-examiner` (Erstgutachter/in) | Nein | Nein | Nein | **Pflicht** |
+| `second-examiner` (Zweitgutachter/in) | Nein | Nein | Nein | **Pflicht** |
 | `semester` (Studienhalbjahr-Nr.) | Pflicht | Pflicht | Pflicht | Pflicht |
 | Mindestseitenlänge Kapitel | ½ Seite | 1 Seite | 1 Seite | 1 Seite |

@@ -13,23 +13,11 @@
 
 **Vollständiger Pflichttext (wörtlich aus Richtlinien §3.11):**
 ```
-Ich erkläre ehrenwörtlich:
+    Ich erkläre ehrenwörtlich:
 
-dass ich die vorliegende Arbeit in allen Teilen selbstständig angefertigt und keine anderen
-als die in der Arbeit angegebenen Quellen und Hilfsmittel benutzt habe, und dass die Arbeit
-in gleicher oder ähnlicher Form in noch keiner anderen Prüfung vorgelegen hat. Sämtliche
-wörtlichen oder sinngemäßen Übernahmen und Zitate, sowie alle Abschnitte, die mithilfe von
-KI-basierten Tools entworfen, verfasst und/oder bearbeitet wurden, sind kenntlich gemacht
-und nachgewiesen. Im Anhang meiner Arbeit habe ich sämtliche KI-basierte Hilfsmittel
-angegeben. Diese sind mit Produktnamen und formulierten Eingaben (Prompts) in einem
-KI-Verzeichnis ausgewiesen.
+    dass ich die vorliegende Arbeit in allen Teilen selbstständig angefertigt und keine anderen als die in der Arbeit angegebenen Quellen und Hilfsmittel benutzt habe, und dass die Arbeit in gleicher oder ähnlicher Form in noch keiner anderen Prüfung vorgelegen hat. Sämtliche wörtlichen oder sinngemäßen Übernahmen und Zitate, sowie alle Abschnitte, die mithilfe von KI-basierten Tools entworfen, verfasst und/oder bearbeitet wurden, sind kenntlich gemacht und nachgewiesen. Im Anhang meiner Arbeit habe ich sämtliche KI-basierte Hilfsmittel angegeben. Diese sind mit Produktnamen und formulierten Eingaben (Prompts) in einem KI-Verzeichnis ausgewiesen.
 
-Ich bin mir bewusst, dass die Verwendung von Texten oder anderen Inhalten und Produkten,
-die durch KI-basierte Tools generiert wurden, keine Garantie für deren Qualität darstellt.
-Ich verantworte die Übernahme jeglicher von mir verwendeter maschinell generierter Passagen
-vollumfänglich selbst und trage die Verantwortung für eventuell durch die KI generierte
-fehlerhafte oder verzerrte Inhalte, fehlerhafte Referenzen, Verstöße gegen das Datenschutz-
-und Urheberrecht oder Plagiate.
+    Ich bin mir bewusst, dass die Verwendung von Texten oder anderen Inhalten und Produkten, die durch KI-basierten Tools generiert wurden, keine Garantie für deren Qualität darstellt. Ich verantworte die Übernahme jeglicher von mir verwendeter maschinell generierter Passagen vollumfänglich selbst und trage die Verantwortung für eventuell durch die KI generierte fehlerhafte oder verzerrte Inhalte, fehlerhafte Referenzen, Verstöße gegen das Datenschutz- und Urheberrecht oder Plagiate.
 ```
 
 ## KI-Verzeichnis (§3.8, NEU 2025)
@@ -39,6 +27,7 @@ und Urheberrecht oder Plagiate.
 | CNT-10 | KI-Verzeichnis wenn KI genutzt | Ja |
 | CNT-11 | Spalten: KI-Tool, Einsatzform, Betroffene Teile, Bemerkungen | Ja |
 | CNT-12 | Prompts sichern und mit Arbeit einreichen | Ja |
+| CNT-12a | Prompts-Einreichung: Flexibel — kurze Prompts in `bemerkungen`-Spalte ODER Verweis auf separaten Anhang-Eintrag ("Prompts: siehe Anhang X"). Template erzwingt kein Format. | Ja |
 | CNT-13 | KI-Nutzung nur mit Erlaubnis des Gutachtenden | Ja |
 
 **Format KI-Verzeichnis (Tabelle):**
@@ -57,7 +46,9 @@ und Urheberrecht oder Plagiate.
 | CNT-23 | Gesperrte Kapitel namentlich nennen | Ja |
 | CNT-24 | Ungesperrte Version separat als Word+PDF einreichen | Ja |
 
-**Pflichttext-Vorlage (aus Anhang Richtlinien):**
+### Für konkrete Inhalte 
+
+**Pflichttext-Vorlage (aus Anhang Richtlinien - kann auch in reference-templates/ptb-typst-template-main/formelles/sperrvermerk.typ nachgeschaut werden wie es dort umgesetzt wurde):**
 ```
 S P E R R V E R M E R K
 
@@ -71,6 +62,51 @@ Gutachter einsichtig zu machen:
 Eine Kurzfassung der Arbeit, die ausschließlich die nicht gesperrten Kapitel bzw.
 Unterkapitel enthält, wird unter der Bezeichnung [Dateiname] auf beigefügtem Datenträger
 zusätzlich zur Verfügung gestellt.
+```
+
+### Für alles (auch aus reference-templates/ptb-typst-template-main/formelles/sperrvermerk.typ)
+
+```
+// Variante 2: Die komplette Arbeit ist gesperrt
+#let sperrvermerk_alles(
+  title: "Praxistransferbericht I", 
+  author: "Vorname Name",
+  ort: "Berlin",
+  datum: datetime.today().display("[day]. [month repr:long] [year]")
+) = [
+  // Kopfzeile mit Titel und Autor (zentriert)
+  #align(center)[
+    #text(weight: "bold")[#title]
+    #v(1.5cm)
+    #text(style: "italic")[#author]
+    
+    #v(2.5cm)
+    // Die Überschrift
+    #text(weight: "bold", tracking: 3pt, size: 16pt)[S P E R R V E R M E R K]
+  ]
+  
+  #v(1.5cm)
+  
+  // Textbaustein für die komplette Arbeit
+  Alle folgenden Kapitel unterliegen aufgrund der Verwendung vertraulicher Daten einem Sperrvermerk und sind ausschließlich für die zuständige Fachleiterin oder den zuständigen Fachleiter und betreuende Prüferin/Gutachterin oder betreuenden Prüfer/Gutachter einsichtig zu machen.
+  
+  #v(3cm)
+  
+  // Unterschriftenfeld
+  #grid(
+    columns: (1fr, 1fr),
+    [
+      #ort, #datum \
+      \
+      Ort, Datum
+    ], 
+    [
+      #figure(
+        image("../bilder/signatur.png", width: 50%, height: 10%)
+      )
+    ]
+  )
+]
 ```
 
 ## Deckblatt / Titelblatt (Anhang Richtlinien)

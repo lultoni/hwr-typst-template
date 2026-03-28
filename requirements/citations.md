@@ -10,6 +10,30 @@
 | CIT-03 | Englischsprachige Arbeiten: Harvard Style (Anglia Ruskin) | Ja |
 | CIT-04 | Im-Text-Beleg: vor dem Satzzeichen | Ja |
 | CIT-05 | Kein "nach Ansicht der Verfasserin" / kein Ich-Stil | Ja |
+| CIT-05a | Abweichende Stile per Absprache mit Betreuenden möglich (z.B. APA auch für deutschsprachige Arbeit). Template erlaubt beliebige `.csl`-Datei. Im Zweifel: Betreuer fragen. | Bedingt |
+
+## Wann welchen Zitierstil verwenden?
+
+| Situation | `citation-style`-Wert |
+|---|---|
+| Deutsche Arbeit, keine besondere Vorgabe | `"apa"` (default) |
+| Englische Arbeit (HWR §6 Richtlinien) | `"harvard-anglia-ruskin-university"` |
+| Prof hat konkreten anderen Stil vorgegeben | Pfad zur `.csl`-Datei, z.B. `"./chicago.csl"` |
+| Ich bin mir nicht sicher | Betreuer fragen — dann hier eintragen |
+
+**Wichtig:** Mischung innerhalb einer Arbeit ist NICHT erlaubt (CIT-01).
+Eine eigene `.csl`-Datei kann aus dem [Zotero Style Repository](https://www.zotero.org/styles) heruntergeladen und im Projektordner abgelegt werden.
+
+Konfiguration im Code (in `main.typ`):
+```typst
+citation-style: "apa",
+// citation-style: Zitierformat.
+//   "apa"                              → APA 7th (default für Deutsch)
+//   "harvard-anglia-ruskin-university" → Harvard Anglia Ruskin (für Englisch, §6)
+//   "./mein-stil.csl"                  → Eigene CSL-Datei im Projektordner
+//   Im Zweifel: Betreuer fragen.
+//   Mischung innerhalb einer Arbeit ist NICHT erlaubt (§3.4.1).
+```
 
 ## Fußnoten-Zitierstil (§3.4.5) — Deutsch
 

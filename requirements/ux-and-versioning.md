@@ -42,3 +42,38 @@ Das Template muss so designed sein, dass Studierende sich **voll auf den Inhalt 
 | VER-08 | Release-Trigger: manuell nach Review, nicht automatisch |
 
 **Typst-spezifisch:** Typst Universe verwendet `typst.toml` `version`-Feld — das muss bei jedem Publish aktuell sein.
+
+## v1.0 Scope — Was rein, was nicht
+
+### IN v1.0 (Pflicht für Release)
+
+| Feature | Anforderungs-IDs |
+|---|---|
+| Alle doc-type-Werte: ptb-1/2/3, hausarbeit, studienarbeit, bachelorarbeit | DOC-* |
+| Strukturreihenfolge (Sperrvermerk → Deckblatt → TOC → … → Erklärung) | STR-01–12 |
+| Seitennummerierung (none → Römisch → Arabisch) | FMT-30–35 |
+| Formatierung (Times New Roman, Margins, 1.5-Spacing, Blocksatz) | FMT-01–23 |
+| Ehrenwörtliche Erklärung inkl. KI-Klausel (2025) | CNT-01–05 |
+| Sperrvermerk (drei Stufen: none / true / chapters) | CNT-20–24, STR-01 |
+| Abkürzungsverzeichnis (automatisch via `#abk()`) | STR-40–45 |
+| Abbildungs-/Tabellenverzeichnis (nur wenn ≥5) | STR-05–06 |
+| KI-Verzeichnis als Tabelle (automatisch wenn ai-tools nicht leer) | CNT-10–13, STR-12 |
+| Bibliographie (APA default, Harvard für EN, custom CSL) | CIT-01–03 |
+| Anhang (hybrid: include / image / inline, automatisches Verzeichnis) | CNT-50–54 |
+| Lokalisierung DE + EN (via linguify) | IMPL (Package-Entscheidung) |
+| Abstract (optional, eigene Seite) | API §8b |
+| Glossar (via glossarium, nur wenn befüllt) | CNT-60–62, STR-11 |
+| Heading-Tiefe konfigurierbar (1–4, default 4) | STR-21 |
+| Datum lokalisiert (auto oder manuell) | API §10 |
+| Vollständige Beispiel-main.typ mit Kommentaren | UX-09 |
+
+### OUT of v1.0 (Für spätere Versionen)
+
+| Feature | Begründung | Kandidat für |
+|---|---|---|
+| `scripts/abk-scan.py` | Optionales Komfort-Tool, Template funktioniert ohne es | v1.1 |
+| wordometer (Wortzählung) | Nice-to-have, kein HWR-Pflichtfeature | v1.1 |
+| Ungesperrte Version PDF automatisch erzeugen (CNT-24) | Aufgabe des Users, nicht des Templates | Out-of-scope |
+| Word-Export | Pandoc-basiert, Out-of-Scope laut STR | Out-of-scope |
+
+**Faustregel:** v1.0 = alles was für eine konforme HWR-Abgabe technisch nötig ist. Komfort-Tools kommen danach.

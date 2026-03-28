@@ -53,10 +53,10 @@ hwr-typst-template/
 
 ## Document Types Supported
 
-1. **PTB** (Praxistransferbericht) — dual study transfer report
-2. **Seminararbeit** — seminar paper
+1. **PTB-1/2/3** (Praxistransferbericht I/II/III) — dual study transfer report
+2. **Hausarbeit** (Praxistransfer IV) — coursework
 3. **Studienarbeit** — study paper
-4. **Bachelor-Thesis** — bachelor thesis
+4. **Bachelorarbeit** — bachelor thesis
 
 ## Agent Roles
 
@@ -103,7 +103,7 @@ code quality review, consistency checks across pages.
 
 ## Key Conventions
 
-- Template parameters use snake_case
+- Template parameters use kebab-case (e.g., `doc-type`, `field-of-study`, `first-examiner`)
 - Localization keys match between `de.ftl` and `en.ftl`
 - All user-facing strings go through l10n (no hardcoded German/English)
 - Example values in template/main.typ use clearly fake data (e.g., "Max Mustermann")

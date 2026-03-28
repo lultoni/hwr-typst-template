@@ -16,10 +16,12 @@
 | STR-09 | Anhang | Optional | — | Arabisch (fortlaufend) |
 | STR-10 | Ehrenwörtliche Erklärung | Pflicht | — | Arabisch (fortlaufend) |
 | STR-11 | Glossar | Optional | Nur wenn nötig; nach Haupttext, vor Literaturverzeichnis | Arabisch |
-| STR-12 | KI-Verzeichnis | Pflicht wenn KI genutzt | Als Teil des Anhangs | Arabisch |
+| STR-12 | KI-Verzeichnis | Pflicht wenn KI genutzt | Als letztes Item im Anhang (nach user-definierten Anhang-Teilen) | Arabisch |
 
 **Hinweis:** Sperrvermerk, Deckblatt und Inhaltsverzeichnis erscheinen NICHT im Inhaltsverzeichnis selbst.
 **Hinweis:** Verzeichnisse (TOC, Abkürzungen, etc.) und Anhang erhalten keine Gliederungsnummern.
+**Hinweis:** KI-Verzeichnis erscheint automatisch als letztes Item im Anhang (nach user-definierten `appendix`-Einträgen). Nummerierung: letzter Buchstabe der Anhang-Sequenz (z.B. Anhang C wenn A+B user-defined).
+**Hinweis:** Word-Export ist Out-of-Scope für das Template. Richtlinien §3.1 verlangen Word+PDF-Abgabe — User muss Word-Version selbst erstellen (z.B. via Pandoc oder Copy-Paste).
 
 ## Gliederungssystem (§3.3.1)
 
