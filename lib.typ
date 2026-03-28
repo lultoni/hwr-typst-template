@@ -10,19 +10,13 @@
 #import "@preview/glossarium:0.5.10": make-glossary, print-glossary, gls, glspl
 
 #import "helper/date.typ": format-date
-
-// ---------------------------------------------------------------------------
-// Internal stub page renderers — replaced in Phase 2 by real implementations
-// ---------------------------------------------------------------------------
-
-#let _stub-confidentiality(confidential, company, title, authors, date, lang) = []
-#let _stub-title-page(doc-type, title, authors, supervisor, company, first-examiner, second-examiner, field-of-study, cohort, semester, date, lang) = []
-#let _stub-abstract(abstract, lang) = []
-#let _stub-indices(abbreviations, glossary, lang) = []
-#let _stub-body-chapters(chapters) = []
-#let _stub-glossary-section(glossary, lang) = []
-#let _stub-appendix(appendix, ai-tools, lang) = []
-#let _stub-declaration(authors, declaration-lang, lang) = []
+#import "helper/abbreviations.typ": _abk-dict, setup-abbreviations, abk
+#import "pages/confidentiality.typ": render-confidentiality
+#import "pages/title_page.typ": render-title-page
+#import "pages/abstract.typ": render-abstract
+#import "pages/indices.typ": render-indices
+#import "pages/declaration.typ": render-declaration
+#import "pages/appendix.typ": render-appendix
 
 // ---------------------------------------------------------------------------
 // Validation helpers
@@ -178,19 +172,23 @@
     show: make-glossary
   }
 
+  // --- abbreviations setup ---
+  // Register central abbreviation dict so abk() can look up full forms
+  setup-abbreviations(abbreviations)
+
   // ---------------------------------------------------------------------------
   // Document structure
   // ---------------------------------------------------------------------------
 
   // 1. Sperrvermerk (vor Deckblatt, keine Seitennummer, nicht in Zählung — CNT-20, STR-01)
   if confidential != none {
-    _stub-confidentiality(confidential, company, title, authors, resolved-date, lang)
+    render-confidentiality(confidential, company, title, authors, resolved-date, lang)
   }
 
   // 2. Deckblatt: Seitenzähler startet bei I (röm.), aber Nummer nicht sichtbar (STR-02)
   counter(page).update(1)
   set page(numbering: none)
-  _stub-title-page(
+  render-title-page(
     doc-type, title, authors,
     supervisor, company, first-examiner, second-examiner,
     field-of-study, cohort, semester, resolved-date, lang,
@@ -201,38 +199,49 @@
 
   // 3a. Abstract (optional, eigene Seite, kein TOC-Eintrag — api-design §8b)
   if abstract != none {
-    _stub-abstract(abstract, lang)
+    render-abstract(abstract, lang)
   }
 
   // 3b. Verzeichnisse: TOC, Abkürzungen, Abb.-/Tab.-Verzeichnis (STR-03–STR-06)
-  _stub-indices(abbreviations, glossary, lang)
+  render-indices(abbreviations, glossary.len() > 0, lang)
 
   // 4. Haupttext: Arabische Seitennummerierung ab 1 (STR-07)
   counter(page).update(1)
   set page(numbering: "1")
-  _stub-body-chapters(chapters)
+
+  // chapters: array of included content (api-design §11)
+  // User passes: chapters: (include("kapitel/01.typ"), include("kapitel/02.typ"), ...)
+  // The include() calls are evaluated in main.typ (relative to main.typ), so paths work correctly.
+  for ch in chapters {
+    ch
+  }
+
   body
 
   // 5. Glossar (nach Haupttext, vor Literaturverzeichnis — STR-11)
   if glossary.len() > 0 {
-    _stub-glossary-section(glossary, lang)
+    heading(level: 1, numbering: none, outlined: true)[#linguify("glossary-title")]
+    print-glossary(glossary)
+    pagebreak()
   }
 
   // 6. Literaturverzeichnis (STR-08)
-  // The user passes: bibliography: bibliography("refs.bib")
-  // citation-style is applied via the style parameter — since we cannot modify the
-  // bibliography() call after the fact, we render it directly and rely on the
-  // citation-style parameter being documented for the user to set correctly.
-  // Phase 4 will revisit if a cleaner override mechanism is needed.
   if bibliography != none {
     bibliography
   }
 
   // 7. Anhang: user-Einträge + KI-Verzeichnis automatisch als letztes Item (STR-09, STR-12)
   if appendix.len() > 0 or ai-tools.len() > 0 {
-    _stub-appendix(appendix, ai-tools, lang)
+    render-appendix(appendix, ai-tools, lang)
   }
 
   // 8. Ehrenwörtliche Erklärung (immer zuletzt — STR-10)
-  _stub-declaration(authors, decl-lang, lang)
+  render-declaration(authors, decl-lang, lang)
 }
+
+// ---------------------------------------------------------------------------
+// Re-exports for use in chapter files
+// ---------------------------------------------------------------------------
+// Users import these from lib.typ in their kapitel/ files:
+//   #import "@preview/hwr-berlin:0.1.0": abk, gls, glspl
+

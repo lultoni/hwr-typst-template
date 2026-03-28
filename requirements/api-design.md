@@ -348,23 +348,28 @@ date: "15. März 2026", // manuell als String
 
 ## 11. Kapitelstruktur: Explizite Reihenfolge via `chapters`-Parameter
 
-Kapitel werden in `kapitel/` abgelegt. Die Reihenfolge wird **explizit** in `main.typ` angegeben:
+Kapitel werden in `kapitel/` abgelegt. Die Reihenfolge wird **explizit** in `main.typ` angegeben.
+`include()` wird direkt in `main.typ` aufgerufen (Pfade relativ zu `main.typ`):
 
 ```typst
 chapters: (
-  "01_einleitung.typ",
-  "02_theoretische_grundlagen.typ",
-  "03_methodik.typ",
-  "04_ergebnisse.typ",
-  "05_fazit.typ",
+  include("kapitel/01_einleitung.typ"),
+  include("kapitel/02_theoretische_grundlagen.typ"),
+  include("kapitel/03_methodik.typ"),
+  include("kapitel/04_ergebnisse.typ"),
+  include("kapitel/05_fazit.typ"),
 ),
 ```
+
+**Implementierungsnotiz:** `include()` muss in `main.typ` (nicht in `lib.typ`) aufgerufen werden,
+da Typst Pfade relativ zur aufrufenden Datei auflöst. Deshalb übergibt `chapters:` bereits
+evaluierten Typst-Content (nicht Dateinamen-Strings).
 
 - Reihenfolge im PDF = Reihenfolge in der Liste. Kein magisches Sortieren.
 - Neues Kapitel einfügen = an der gewünschten Stelle in die Liste eintragen.
 - Datei existiert aber nicht in der Liste = wird nicht gerendert (kein Fehler, kein Auto-Include).
 - Dateiname in der Liste aber Datei fehlt = Typst-Compile-Error (gewollt — verhindert stille Lücken).
-- **Nummerierung im Dateinamen ist optional** — `"einleitung.typ"` ist genauso gültig wie `"01_einleitung.typ"`. Die führenden Zahlen helfen nur beim eigenen Überblick im Dateiexplorer, haben keinerlei Auswirkung auf das Template.
+- **Nummerierung im Dateinamen ist optional** — `"einleitung.typ"` ist genauso gültig wie `"01_einleitung.typ"`. Die führenden Zahlen helfen nur beim eigenen Überblick im Dateiexplorer.
 
 ### Bibliographie-Autocomplete in VS Code:
 Die `refs.bib` wird via `bibliography()`-Parameter an `main.typ` übergeben. Typst LSP löst dann Referenzen auf. Kein roter Unterstrich wenn:
@@ -427,9 +432,9 @@ Headings tiefer als `heading-depth` werden nicht nummeriert (aber sind erlaubt a
 
   ai-tools: (),              // Array von (tool, usage, chapters, bemerkungen?)
 
-  chapters: (                // Explizite Reihenfolge — Dateien in kapitel/
-    "01_einleitung.typ",
-    "02_grundlagen.typ",
+  chapters: (                // include()-Aufrufe in main.typ (Pfade relativ zu main.typ)
+    include("kapitel/01_einleitung.typ"),
+    include("kapitel/02_grundlagen.typ"),
   ),
 
   appendix: (),              // Array von (title, content)

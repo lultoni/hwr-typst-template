@@ -1,0 +1,21 @@
+// kapitel/02_grundlagen.typ
+#import "../lib.typ": abk
+
+= Theoretische Grundlagen
+
+#lorem(120)
+
+== Digitale Transformation
+
+Die #abk("KI") spielt eine zentrale Rolle bei der Automatisierung von Geschäftsprozessen.
+#abk("ERP")-Systeme ermöglichen die Integration unternehmensweiter Prozesse @mustermann:2024.
+
+#lorem(80)
+
+=== Begriffsdefinition
+
+#lorem(60)
+
+== Enterprise Resource Planning
+
+#lorem(100)
