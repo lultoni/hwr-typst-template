@@ -107,6 +107,7 @@
 
   chapters: (),
   appendix: (),
+  show-appendix-toc: false,
 
   bibliography: none,
   citation-style: "apa",
@@ -279,7 +280,7 @@
   // 7. Anhang: user-Einträge + KI-Verzeichnis automatisch als letztes Item (STR-09, STR-12)
   if appendix.len() > 0 or ai-tools.len() > 0 {
     pagebreak(weak: true)
-    render-appendix(appendix, ai-tools, lang)
+    render-appendix(appendix, ai-tools, lang, show-toc: show-appendix-toc)
   }
 
   // 8. Ehrenwörtliche Erklärung (immer zuletzt — STR-10)

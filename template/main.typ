@@ -123,9 +123,11 @@
   // Zitierstile: "apa" (DE default) | "harvard-anglia-ruskin-university" (EN) | "pfad/zur/datei.csl"
 
   // Weitere Einstellungen:
-  heading-depth: 4,       // TOC-Tiefe: 1–4 (default: 4)
-  declaration-lang: auto, // auto = folgt lang | "de" = immer Deutsch (rechtssicher)
-  city: "Berlin",         // Ort für Unterschriftsfeld (default: "Berlin")
+  heading-depth: 4,        // TOC-Tiefe: 1–4 (default: 4)
+  declaration-lang: auto,  // auto = folgt lang | "de" = immer Deutsch (rechtssicher)
+  city: "Berlin",          // Ort für Unterschriftsfeld (default: "Berlin")
+  show-appendix-toc: false, // true = optionales Anhangsverzeichnis vor Anhang-Einträgen einfügen
+                            // (HWR §3.10: "ist es möglich" — nicht Pflicht)
 )
 
 // HINWEIS: Alles ab hier ist Haupttextinhalt.

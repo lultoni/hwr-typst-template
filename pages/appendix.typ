@@ -3,17 +3,26 @@
 // STR-09: Anhang optional, arabische Seitennummerierung (fortlaufend)
 // STR-12: KI-Verzeichnis als letztes Anhang-Item (wenn ai-tools nicht leer)
 // api-design §4: KI-Verzeichnis Tabellen-Format; §7: Anhang-Array
+//
+// TOC structure (HWR §3.10 — Anhangsverzeichnis optional):
+//   Anhang                    ← H1, no number, in TOC
+//     Anhang 1: Title         ← H2, no number, in TOC
+//     Anhang 2: Title         ← H2, no number, in TOC
+//   Ehrenwörtliche Erklärung
+//
+// Anhangsverzeichnis (optional, show-toc: true): separate page with clickable links + page numbers.
 // Numbering: 1, 2, 3... (Arabic, unlimited — letters A-Z limited to 26 entries)
 
 #import "@preview/linguify:0.5.0": linguify
 
-/// Render a single appendix entry with heading and content.
-/// num: string "1", "2", ... or the AI-tools number
+/// Render a single appendix entry as H2 under the "Anhang" H1.
+/// num: string "1", "2", ...
 #let _render-entry(num, title, content) = {
-  // metadata() is a labelable element; label it so links from the TOC work.
+  // Label for TOC links and Anhangsverzeichnis links
   [#metadata(num) #label("anhang-" + num)]
 
-  heading(level: 1, numbering: none, outlined: true)[
+  // H2: appears in TOC as sub-entry under "Anhang"
+  heading(level: 2, numbering: none, outlined: true)[
     #linguify("appendix-label") #num: #title
   ]
 
@@ -27,7 +36,7 @@
 #let _render-ai-tools(ai-tools, num) = {
   [#metadata(num) #label("anhang-" + num)]
 
-  heading(level: 1, numbering: none, outlined: true)[
+  heading(level: 2, numbering: none, outlined: true)[
     #linguify("appendix-label") #num: #linguify("ai-tools-title")
   ]
 
@@ -54,11 +63,11 @@
   pagebreak()
 }
 
-/// Render the appendix table of contents (Anhangsverzeichnis).
-/// Lists all appendix entries with clickable links and page numbers.
+/// Render the optional Anhangsverzeichnis (separate page, before entries).
 /// entries: array of (num-string, title-string)
 #let _render-appendix-toc(entries) = {
-  heading(level: 1, numbering: none, outlined: true)[#linguify("appendix-toc-title")]
+  // H2 under "Anhang" — but not in TOC (it's a helper page, not a content section)
+  heading(level: 2, numbering: none, outlined: false)[#linguify("appendix-toc-title")]
   v(1em)
 
   for entry in entries {
@@ -70,7 +79,7 @@
         columns: (auto, 1fr, auto),
         align: (left, left, right),
         column-gutter: 0.5em,
-        [Anhang #num:],
+        [#linguify("appendix-label") #num:],
         link(label("anhang-" + num))[#title #box(width: 1fr, repeat[.])],
         [#pg],
       )
@@ -86,7 +95,8 @@
 /// - appendix: array of (title, content) — user-defined entries
 /// - ai-tools: array of (tool, usage, chapters, bemerkungen?) — AI tools register
 /// - lang: "de" | "en"
-#let render-appendix(appendix, ai-tools, lang) = {
+/// - show-toc: bool — render optional Anhangsverzeichnis page (default: false)
+#let render-appendix(appendix, ai-tools, lang, show-toc: false) = {
   // Numbers as strings: "1", "2", ... — unlimited, no 26-entry cap
   let ai-num = if ai-tools.len() > 0 {
     str(appendix.len() + 1)
@@ -94,18 +104,22 @@
     none
   }
 
-  // Anhangsverzeichnis — titles collected as plain strings to avoid context issues
-  // linguify() is called later inside the actual heading renders
-  context {
-    let ai-title = if ai-num != none { linguify("ai-tools-title") } else { "" }
-    let entries = ()
-    for (i, entry) in appendix.enumerate() {
-      entries.push((str(i + 1), entry.at("title", default: "")))
+  // H1 "Anhang" container heading — appears in TOC as top-level, no number
+  heading(level: 1, numbering: none, outlined: true)[#linguify("appendix-section-title")]
+
+  // Optional Anhangsverzeichnis page (HWR §3.10: "ist es möglich")
+  if show-toc {
+    context {
+      let ai-title = if ai-num != none { linguify("ai-tools-title") } else { "" }
+      let entries = ()
+      for (i, entry) in appendix.enumerate() {
+        entries.push((str(i + 1), entry.at("title", default: "")))
+      }
+      if ai-num != none {
+        entries.push((ai-num, ai-title))
+      }
+      _render-appendix-toc(entries)
     }
-    if ai-num != none {
-      entries.push((ai-num, ai-title))
-    }
-    _render-appendix-toc(entries)
   }
 
   // User-defined appendix entries

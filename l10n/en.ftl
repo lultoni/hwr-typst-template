@@ -8,6 +8,7 @@ abbreviations-title = List of Abbreviations
 figures-title = List of Figures
 tables-title = List of Tables
 appendix-toc-title = List of Appendices
+appendix-section-title = Appendix
 glossary-title = Glossary
 bibliography-title = References
 

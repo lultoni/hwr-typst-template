@@ -8,6 +8,7 @@ abbreviations-title = Abkürzungsverzeichnis
 figures-title = Abbildungsverzeichnis
 tables-title = Tabellenverzeichnis
 appendix-toc-title = Anhangsverzeichnis
+appendix-section-title = Anhang
 glossary-title = Glossar
 bibliography-title = Literaturverzeichnis
 

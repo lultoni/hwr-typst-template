@@ -326,10 +326,12 @@ Alle Verzeichnisüberschriften, die Ehrenwörtliche Erklärung und das KI-Verzei
 | `ai-tools` | `()` | KI-Verzeichnis-Einträge |
 | `chapters` | `()` | Kapitel-Dateien via `include()` |
 | `appendix` | `()` | Anhang-Einträge: `(title: "...", content: ...)` |
-| `bibliography` | — | `bibliography("refs.bib")` |
+| `show-appendix-toc` | `false` | `true` = optionales Anhangsverzeichnis einfügen (HWR §3.10 optional) |
+| `bibliography` | — | `bibliography("refs.bib", title: "Literaturverzeichnis")` |
 | `citation-style` | `"apa"` | Zitierstil |
 | `heading-depth` | `4` | TOC-Tiefe (max. 4 laut HWR) |
 | `declaration-lang` | `auto` | Sprache der Erklärung (`"de"` empfohlen) |
+| `city` | `"Berlin"` | Ort im Unterschriftsfeld der Ehrenwörtlichen Erklärung |
 
 ---
 
