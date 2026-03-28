@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Reference templates (private, for analysis only - not part of public template)
+reference-templates/
+
+# HWR internal documents (logo usage restricted, PDF guidelines)
+hwr-richtlinien/*
+
+# Typst build artifacts
+*.pdf
+!template/example.pdf
+
+# Claude local settings (personal overrides)
+.claude/settings.local.json
