@@ -1,5 +1,6 @@
 # UX — Usability & Developer Experience Requirements
-> Quelle: Projektziele (User-defined priorities)
+
+Diese Datei dokumentiert Usability-Ziele, README-Anforderungen und Versioning-Regeln für das Template. Alle Anforderungen in dieser Datei sind Design-Entscheidungen des Projekts (`[DECIDED]`) — keine HWR-Vorgaben.
 
 ## Prio 1: Usability — Fokus aufs Schreiben
 
@@ -45,7 +46,7 @@ Das Template muss so designed sein, dass Studierende sich **voll auf den Inhalt 
 
 ## v1.0 Scope — Was rein, was nicht
 
-### IN v1.0 (Pflicht für Release)
+### IN v1.0 — Implementiert ✓
 
 | Feature | Anforderungs-IDs |
 |---|---|
@@ -60,20 +61,20 @@ Das Template muss so designed sein, dass Studierende sich **voll auf den Inhalt 
 | KI-Verzeichnis als Tabelle (automatisch wenn ai-tools nicht leer) | CNT-10–13, STR-12 |
 | Bibliographie (APA default, Harvard für EN, custom CSL) | CIT-01–03 |
 | Anhang (hybrid: include / image / inline, automatisches Verzeichnis) | CNT-50–54 |
-| Lokalisierung DE + EN (via linguify) | IMPL (Package-Entscheidung) |
+| Lokalisierung DE + EN (via linguify) | [IMPL] |
 | Abstract (optional, eigene Seite) | API §8b |
 | Glossar (via glossarium, nur wenn befüllt) | CNT-60–62, STR-11 |
 | Heading-Tiefe konfigurierbar (1–4, default 4) | STR-21 |
 | Datum lokalisiert (auto oder manuell) | API §10 |
+| Digitale Unterschrift pro Autor (optional) | API §2 |
+| Gruppen-Unterschrift konfigurierbar (`group-signature:`) | API §12 |
 | Vollständige Beispiel-main.typ mit Kommentaren | UX-09 |
 
-### OUT of v1.0 (Für spätere Versionen)
+### OUT of v1.0
 
 | Feature | Begründung | Kandidat für |
 |---|---|---|
 | `scripts/abk-scan.py` | Optionales Komfort-Tool, Template funktioniert ohne es | v1.1 |
 | wordometer (Wortzählung) | Nice-to-have, kein HWR-Pflichtfeature | v1.1 |
 | Ungesperrte Version PDF automatisch erzeugen (CNT-24) | Aufgabe des Users, nicht des Templates | Out-of-scope |
-| Word-Export | Pandoc-basiert, Out-of-Scope laut STR | Out-of-scope |
-
-**Faustregel:** v1.0 = alles was für eine konforme HWR-Abgabe technisch nötig ist. Komfort-Tools kommen danach.
+| Word-Export | Pandoc-basiert, Out-of-Scope | Out-of-scope |

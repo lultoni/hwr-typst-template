@@ -1,5 +1,6 @@
 # API Design Decisions — Finalized
-> Design-Freeze vor Implementierung. Keine Änderungen ohne explizite Entscheidung.
+
+Diese Datei ist die Single Source of Truth für alle Parameter des `hwr()`-Templates. Änderungen an der öffentlichen API werden hier dokumentiert und müssen mit `lib.typ` übereinstimmen.
 
 ## 1. Parameter-Stil: Nested
 
@@ -65,60 +66,15 @@ Nicht verwendete Abkürzungen tauchen im Verzeichnis NICHT auf.
 #abk("API")  // → "API"
 ```
 
-**Weg 3 — Script `scripts/abk-scan.py` (v1.0, optional):**
+**Weg 3 — Script `scripts/abk-scan.py` (v1.1-Kandidat, optional):**
 
-Das Script ist ein Komfort-Tool — das Template funktioniert vollständig ohne es.
+Das Script ist ein Komfort-Tool für spätere Version — das Template funktioniert vollständig ohne es.
 Wer Abkürzungen manuell mit `#abk()` einpflegt (Weg 2), braucht das Script nicht.
-
-#### Voraussetzung: Python 3
-
-Python 3 ist auf den meisten Systemen bereits vorinstalliert:
-- **macOS**: Vorinstalliert ab macOS 12. Prüfen: `python3 --version`
-- **Linux**: In aller Regel vorinstalliert. Prüfen: `python3 --version`
-- **Windows**: Häufig nicht vorinstalliert. Installation via:
-  - Microsoft Store: "Python 3" suchen → 1-Klick-Installation
-  - Oder: `winget install Python.Python.3` im Terminal
-  - Prüfen danach: `python --version`
-
-Kein weiteres Paket nötig — nur Python 3 Standard-Library.
-
-#### Ausführen:
-
-```bash
-# Prüfen ob Python da ist:
-python3 --version        # macOS/Linux
-python --version         # Windows
-
-# Nur anzeigen was ersetzt würde (kein Schreibzugriff):
-python3 scripts/abk-scan.py --dry-run      # macOS/Linux
-python  scripts/abk-scan.py --dry-run      # Windows
-
-# Tatsächlich ersetzen:
-python3 scripts/abk-scan.py               # macOS/Linux
-python  scripts/abk-scan.py               # Windows
-
-# Nur bestimmte Abkürzungen:
-python3 scripts/abk-scan.py --only KI,API
-```
-
-#### Was das Script macht:
-
-Workflow: User schreibt einfach "KI" im Text ohne nachzudenken. Vor Abgabe einmal das Script laufen lassen.
-
-1. Liest `chapters`-Reihenfolge aus `main.typ` (Single Source of Truth für Datei-Reihenfolge)
-2. Scannt `kapitel/` + Anhang-Dateien in dieser Reihenfolge
-3. Findet alle definierten Abkürzungen via multi-layer Regex:
-   - **Layer 1 — Ausschließen:** `#raw(...)`, `#raw[...]`, Code-Blöcke, Kommentare (`//`, `/* */`), bereits vorhandene `#abk(...)` Calls
-   - **Layer 2 — Word-Boundary-Match:** Abkürzung als eigenständiges Token (nicht Teilstring von "Qualität" bei "IT")
-   - **Layer 3 — Idempotenz:** Stellen die bereits `#abk()` haben werden übersprungen
-4. Ersetzt:
-   - Ersten Treffer (dateiübergreifend nach `chapters`-Reihenfolge) → `#abk("KI", "Künstliche Intelligenz")`
-   - Alle weiteren Treffer → `#abk("KI")`
-5. `--dry-run`-Flag: Nur Report, keine Änderungen — zeigt wo was ersetzt werden würde
+Details → `requirements/backlog.md`.
 
 ### Abkürzungsverzeichnis:
 - Alphabetisch sortiert
-- Nur verwendete Einträge (aus Weg 1 + 2, Script-Output führt zu Weg 2)
+- Nur verwendete Einträge (aus Weg 1 + 2)
 - Keine Seitenangaben (laut Richtlinien STR-41)
 - Kein Eintrag für Duden-Abkürzungen (z.B., u.a. usw.) — STR-43
 
@@ -139,8 +95,8 @@ ai-tools: (
 ## Anhang-Reihenfolge (Gesamtstruktur)
 
 ```
-Anhang A: [erster user-appendix Eintrag]
-Anhang B: [zweiter user-appendix Eintrag]
+Anhang 1: [erster user-appendix Eintrag]
+Anhang 2: [zweiter user-appendix Eintrag]
 ...
 Anhang X: KI-Verzeichnis  ← automatisch als letztes Item (nur wenn ai-tools nicht leer)
 ```
@@ -260,13 +216,13 @@ content: [
 ### Automatisches Verhalten:
 - Kein Typ-System — `content` ist beliebiger Typst-Content
 - Anhangsverzeichnis generiert sich automatisch aus den `title`-Feldern
-- Jeder Eintrag bekommt automatisch einen Anker: `<anhang-A>`, `<anhang-B>`, ...
-- Nummerierung: A, B, C… (Überschriften: "Anhang A: Interviewtranskript I1")
+- Jeder Eintrag bekommt automatisch einen Anker: `<anhang-1>`, `<anhang-2>`, ...
+- Nummerierung: 1, 2, 3… (Überschriften: "Anhang 1: Interviewtranskript I1") `[DECIDED]`
 - Alle Einträge im Anhangsverzeichnis sind klickbar (Hyperlinks zu den Ankern)
 - Default: `appendix: ()` → kein user-definierter Anhang
 - KI-Verzeichnis (`ai-tools`) erscheint automatisch **nach** allen user-definierten `appendix`-Einträgen
 
-## 8. Glossar: Wird gebaut (in v1.0)
+## 8. Glossar
 
 Via `@preview/glossarium` Package. Konfiguration:
 ```typst
@@ -341,22 +297,7 @@ date: auto,           // default: datetime.today(), lokalisiert
 date: "15. März 2026", // manuell als String
 ```
 
-### Datum-Lokalisierung:
-`datetime.today()` gibt Monate auf Englisch aus. Wrapper-Funktion übersetzt:
-- Bei `lang: "de"`: Monatsnamen auf Deutsch ("März", "Oktober"…)
-- Bei `lang: "en"`: Englische Monatsnamen bleiben
-
-```typst
-// Interne Hilfsfunktion (helper/date.typ):
-#let format-date(date, lang) = {
-  let months-de = ("Januar","Februar","März","April","Mai","Juni",
-                   "Juli","August","September","Oktober","November","Dezember")
-  let months-en = ("January","February","March","April","May","June",
-                   "July","August","September","October","November","December")
-  let months = if lang == "de" { months-de } else { months-en }
-  str(date.day()) + ". " + months.at(date.month() - 1) + " " + str(date.year())
-}
-```
+Datum-Lokalisierung: Bei `lang: "de"` erscheinen Monatsnamen auf Deutsch; bei `lang: "en"` auf Englisch. Implementierung → `helper/date.typ`.
 
 ## 11. Kapitelstruktur: Explizite Reihenfolge via `chapters`-Parameter
 
@@ -402,6 +343,36 @@ heading-depth: 4,  // default
 
 TOC-Tiefe folgt automatisch `heading-depth`.
 Headings tiefer als `heading-depth` werden nicht nummeriert (aber sind erlaubt als unnummerierte Abschnitte).
+
+## 13. Gruppen-Unterschrift: `group-signature`
+
+```typst
+group-signature: auto,  // default (= true)
+// oder:
+group-signature: false, // nur erster Autor unterschreibt
+```
+
+- `auto` / `true`: Alle Autoren unterschreiben (Standard)
+- `false`: Nur erster Autor unterschreibt (repräsentative Unterschrift bei Gruppenarbeit)
+- Bei `false` und mehr als einem Autor: gelber Warnhinweis im kompilierten PDF — User soll mit dem Prüfer abklären ob eine stellvertretende Unterschrift akzeptiert wird. `[DECIDED]`
+
+## 14. Anhangsverzeichnis: `show-appendix-toc`
+
+```typst
+show-appendix-toc: false,  // default
+// oder:
+show-appendix-toc: true,   // optionales Verzeichnis vor den Anhang-Einträgen
+```
+
+HWR §3.10 schreibt: "ist es möglich, dem Anhang ein eigenes Verzeichnis voranzustellen." Das ist optional — Default ist `false`. `[HWR §3.10]`
+
+## 15. Unterschriftsort: `city`
+
+```typst
+city: "Berlin",  // default — erscheint im Unterschriftsfeld der Ehrenwörtlichen Erklärung
+```
+
+Freitext. Standard ist "Berlin" (HWR-Standort), kann überschrieben werden. `[DECIDED]`
 
 ---
 
@@ -457,6 +428,11 @@ Headings tiefer als `heading-depth` werden nicht nummeriert (aber sind erlaubt a
   heading-depth: 4,          // 1–4, default 4
 
   declaration-lang: auto,    // auto | "de" | "en"
+
+  city: "Berlin",            // Ort im Unterschriftsfeld (default: "Berlin")
+
+  show-appendix-toc: false,  // true = optionales Anhangsverzeichnis vor Anhang-Einträgen
+                             // (HWR §3.10: "ist es möglich" — nicht Pflicht, default false)
 
   group-signature: auto,     // auto/true = all authors sign (default)
                              // false = only first author signs (group work)

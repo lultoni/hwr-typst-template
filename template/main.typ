@@ -96,7 +96,7 @@
       tool:       "ChatGPT 4o",
       usage:      "Textvorschläge für Einleitung, im Text gekennzeichnet",
       chapters:   "Kapitel 1, S. 3",
-      bemerkungen: "Prompts: siehe Anhang A",
+      bemerkungen: "Prompts: siehe Anhang 1",
     ),
     (
       tool:     "DeepL Translator",

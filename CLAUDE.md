@@ -6,112 +6,90 @@ Complies with the HWR guidelines effective January 2025 (all cohorts).
 ## Project Goal
 
 Create a clean, reusable template that any HWR student can use without formatting overhead.
-Based on analysis of existing student templates and the official 2025 HWR guidelines.
+Prio 1: `main.typ` is the only file the user touches — all formatting, numbering, indices,
+and the AI tools register are fully automatic.
 
 ## Repository Structure
 
 ```
 hwr-typst-template/
-├── lib.typ                  # Main template entry point
-├── typst.toml               # Package metadata
+├── lib.typ                  # Main template entry point; public API: hwr(), abk(), gls(), glspl()
+├── typst.toml               # Package metadata (version is source of truth)
 ├── template/                # Example/starter files for users
-│   ├── main.typ             # Example document using the template
-│   └── refs.bib             # Example bibliography
+│   ├── main.typ             # Complete usage example with all parameters commented
+│   ├── refs.bib             # Example bibliography
+│   ├── kapitel/             # Example chapter files (01–05)
+│   ├── anhang/              # Example appendix files (a, b, c)
+│   └── images/              # Placeholder + signature_example.svg
 ├── pages/                   # Modular page components
 │   ├── title_page.typ
 │   ├── declaration.typ
 │   ├── abstract.typ
 │   ├── confidentiality.typ
-│   └── indices.typ
+│   ├── indices.typ
+│   └── appendix.typ
 ├── helper/                  # Utility functions
-│   └── abbreviations.typ    # Smart abbreviation handling (first-use expansion)
+│   ├── abbreviations.typ    # abk() — first-use expansion via state+query
+│   └── date.typ             # format-date() — localized date formatting
 ├── l10n/                    # Localization (de/en)
 │   ├── de.ftl
 │   └── en.ftl
+├── requirements/            # Structured requirements (FMT/STR/CNT/CIT/DOC/API/UX/IMPL)
 ├── hwr-richtlinien/         # HWR official guidelines (PDF, not committed)
-│   └── notice.md
-├── .claude/                 # Claude Code configuration
-│   └── settings.json
-└── CLAUDE.md                # This file
+└── .claude/                 # Claude Code configuration
 ```
 
-## HWR Formatting Requirements (2025)
+## HWR Formatting Summary (2025)
 
-- **Font:** Times New Roman, 12pt (body text)
-- **Footnotes/Captions:** 10pt
-- **Spacing:** 1.5-line spacing
-- **Justification:** Block (Blocksatz), with hyphenation
-- **Margins:** 30mm top, 35mm right, 20mm bottom, 21mm left
-- **Page numbering:**
-  - Cover page: none
-  - Front matter (TOC, abbreviations, indices): Roman (I, II, III…)
-  - Main content: Arabic (1, 2, 3…)
-- **Headings:** Numbered format 1 / 1.1 / 1.1.1 (max 4 levels in TOC)
-- **Indices:** Figure/table indices only generated if ≥ 5 entries
-- **Citation:** Harvard (Anglia Ruskin) for English; APA-style for German
-- **Declaration:** Must include AI tool usage clause (2025 requirement)
+Full details in `requirements/formatting.md`. Key values:
+- Times New Roman 12pt, 1.5-line spacing, block justification, hyphenation
+- Margins: 30mm top / 35mm right / 20mm bottom / 21mm left
+- Page numbers: none (cover) → Roman I, II… (front matter) → Arabic 1, 2… (body + appendix + declaration)
+- Indices only if ≥ 5 entries; declaration must include 2025 AI clause
 
-## Document Types Supported
+## Document Types
 
-1. **PTB-1/2/3** (Praxistransferbericht I/II/III) — dual study transfer report
-2. **Hausarbeit** (Praxistransfer IV) — coursework
-3. **Studienarbeit** — study paper
-4. **Bachelorarbeit** — bachelor thesis
+`"ptb-1"` / `"ptb-2"` / `"ptb-3"` / `"hausarbeit"` / `"studienarbeit"` / `"bachelorarbeit"`
+
+Details and conditional fields → `requirements/document-types.md`
 
 ## Agent Roles
 
-Each agent specializes in a domain. When processing a user prompt, determine which agent role applies:
-
-### `analyze` — Deep Research & Analysis
-Use for: questions about the codebase, HWR guidelines interpretation, design decisions,
-comparing approaches, reading reference templates, understanding existing code.
-- Always reads relevant files before answering
-- Provides structured analysis with pros/cons
-- Does NOT write code speculatively
+### `analyze` — Research & Understanding
+Questions about code, HWR guidelines, design decisions, comparing approaches.
+- Read relevant files first; provide structured analysis; do NOT write code speculatively.
 
 ### `implement` — Feature Development
-Use for: writing new Typst template code, adding document type support, implementing
-formatting rules, creating new page components.
-- Follows existing code conventions (check lib.typ and pages/ before writing)
-- Checks HWR guidelines compliance before finalizing
-- Writes modular, reusable components
-- Avoids personal data in any form
+Writing Typst code, new page components, formatting rules, bug fixes.
+- Check lib.typ + relevant pages/ before writing; verify HWR compliance; no personal data.
 
-### `document` — Documentation Updates
-Use for: updating README, adding usage examples, keeping CLAUDE.md current,
-writing inline comments for complex Typst logic.
-- Runs after significant implementation changes
-- Ensures template/main.typ reflects all features
-- Keeps l10n files in sync
+### `document` — Documentation
+Updating README, CLAUDE.md, requirements/, inline comments, l10n sync.
+- Run after implementation changes; ensure template/main.typ reflects all features.
 
 ### `review` — Quality & Compliance
-Use for: verifying HWR guideline compliance, checking for personal data leakage,
-code quality review, consistency checks across pages.
-- Checks all page components against 2025 guidelines
-- Verifies no personal data in committed files
-- Ensures bilingual (de/en) support is maintained
+HWR guideline compliance, no-personal-data check, consistency across files.
+- Check all components against 2025 guidelines; verify both de/en l10n keys exist.
 
 ## Workflow
 
-1. **Before answering/implementing:** identify which agent role applies
-2. **For implementation:** read relevant existing files first, then implement
-3. **After significant changes:** run document agent pass, then commit
-4. **Commit trigger:** ≥ 3 files changed OR any new feature complete
-5. **Keep this file current:** When new agents, hooks, conventions, or patterns are established, update CLAUDE.md immediately. This file is the source of truth for working in this repo — stale instructions cause drift.
-6. **Keep requirements/ current:** When new requirements emerge from user input, HWR guideline clarifications, or implementation discoveries, append them to the appropriate requirements/*.md file with a new ID. Never leave implied requirements undocumented.
-7. **Keep .claude/settings.json current:** When workflow improvements are identified (new hook patterns, better routing rules, permission adjustments), update settings.json. Hooks should reflect the actual current workflow, not a snapshot of setup day.
+1. Identify which agent role applies before acting.
+2. Read relevant existing files before implementing.
+3. After significant changes: update docs, then commit with `/commit`.
+4. Keep `requirements/` current: new constraints or decisions get a new ID in the right file.
+5. Keep this file current: stale CLAUDE.md causes drift.
 
 ## Key Conventions
 
-- Template parameters use kebab-case (e.g., `doc-type`, `field-of-study`, `first-examiner`)
-- Localization keys match between `de.ftl` and `en.ftl`
-- All user-facing strings go through l10n (no hardcoded German/English)
-- Example values in template/main.typ use clearly fake data (e.g., "Max Mustermann")
+- Template parameters: kebab-case (`doc-type`, `field-of-study`, `first-examiner`)
+- All user-facing strings: through l10n — never hardcoded DE/EN
+- Example values: clearly fake data only (`"Max Mustermann"`, `"12345678"`, `"Muster GmbH"`)
 - No real names, Matrikelnummern, or company names anywhere in the repo
-- Abbreviation function auto-expands on first use, abbreviates thereafter
+- Appendix numbering: Arabic digits 1, 2, 3… (not A, B, C)
+- `chapters:` takes `include()` content arrays in `main.typ` — paths resolve relative to `main.typ`
 
 ## Reference Materials (local, not committed)
 
 - `reference-templates/clean-hwr-main/` — published HWR template (v0.2.0, MIT)
-- `reference-templates/ptb-typst-template-main/` — student PTB template (contains real data, reference only)
+- `reference-templates/ptb-typst-template-main/` — student PTB example (reference only)
 - `hwr-richtlinien/Richtlinien...2025.pdf` — official HWR guidelines PDF

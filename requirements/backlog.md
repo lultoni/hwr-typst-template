@@ -1,12 +1,12 @@
 # BACKLOG — Zukünftige Features & Verbesserungen
-> Strukturierter Backlog für Versionsplanung nach v1.0.
-> Alles hier ist NICHT in v1.0 — bewusste Entscheidung, nicht vergessen.
+
+Strukturierter Backlog für Versionsplanung nach v1.0. Alles hier ist bewusst NICHT in v1.0.
 
 ## v1.1 Candidates (rückwärtskompatible Ergänzungen)
 
 | Feature | Beschreibung | Aufwand |
 |---|---|---|
-| `scripts/abk-scan.py` | Automatisches Finden und Ersetzen von Abkürzungen im Text via Python-Script. Template funktioniert vollständig ohne das Script — rein optionales Komfort-Tool. | Mittel |
+| `scripts/abk-scan.py` | Automatisches Finden und Ersetzen von Abkürzungen im Text via Python-Script. Template funktioniert vollständig ohne das Script. Details zum geplanten Funktionsumfang → `requirements/api-design.md` §3 (Weg 3). | Mittel |
 | wordometer Integration | Wortzählung im kompilierten Dokument via `@preview/wordometer`. Nützlich um den vorgeschriebenen Umfang (STR-50–52) zu prüfen. | Klein |
 | Abk.-Verzeichnis Autogenerierung | Abkürzungen aus `abbreviations:`-Dict und `#abk()`-Aufrufen automatisch zusammenführen ohne dass der User beides pflegt. | Mittel |
 
@@ -17,7 +17,11 @@
 | Neue Dokumenttypen | Falls HWR neue Typen einführt (z.B. Masterarbeit). API-Breaking wenn `doc-type`-Werte ergänzt werden. | Mittel |
 | Pandoc-Workflow-Hints | README-Sektion die erklärt wie man via Pandoc ein Word-Dokument aus dem Typst-Output erstellt (CNT-24 unterstützen ohne es ins Template zu bauen). | Klein |
 | CI/CD-Integration | GitHub Actions Workflow für automatische PDF-Generierung und Release-Tagging. | Mittel |
-| ~~Unterschriften-Feld auf Ehrenwörtlicher Erklärung~~ | ✅ **IMPLEMENTED**: `group-signature` parameter (auto/true = all authors, false = only first author) with bilingual warning block for group work. Renders signature fields with improved layout (line first, label below). | — |
+
+## Implemented in v0.1
+
+- **Unterschriften-Feld auf Ehrenwörtlicher Erklärung**: `group-signature` parameter (`auto`/`true` = alle Autoren, `false` = nur erster Autor) mit bilingualem Warnblock für Gruppenarbeiten.
+- **Unterschriften-Bild**: Optionales `signature:`-Feld pro Autoren-Eintrag. Wenn angegeben, wird das Bild im Unterschriftsfeld gerendert. Beispiel-SVG: `template/images/signature_example.svg`.
 
 ## Offen / Diskutierbar
 
@@ -34,4 +38,3 @@
 |---|---|
 | Word-Export | Out-of-scope. User-Aufgabe. Richtlinien §3.1 verlangen Word+PDF — Typst erzeugt kein Word. |
 | Ungesperrte Version PDF automatisch | Out-of-scope. Template kann keine Seiten selektiv rausschneiden. |
-| ~~Unterschriften-Bild automatisch einbinden~~ | ✅ **IMPLEMENTED**: Optional `signature:` field per author entry. If provided, the image is rendered above the signature line instead of blank space. Example SVG at `template/images/signature_example.svg`. | — |

@@ -1,54 +1,42 @@
 # CNT — Inhaltliche Pflichtanforderungen
-> Quelle: HWR Richtlinien §3.11, §3.8, §2.5.7, §3.10, Anhang (ab Januar 2025)
+
+Diese Datei dokumentiert die inhaltlichen Pflichtbestandteile akademischer Arbeiten an der HWR Berlin (Januar 2025): was enthalten sein muss, in welcher Form, und mit welcher Rechtsgrundlage.
 
 ## Ehrenwörtliche Erklärung (§3.11)
 
-| ID | Anforderung | Pflicht? |
-|---|---|---|
-| CNT-01 | Erklärung selbstständiger Anfertigung | Ja |
-| CNT-02 | KI-Klausel: Alle KI-genutzten Abschnitte kenntlich gemacht | Ja (NEU 2025) |
-| CNT-03 | KI-Klausel: Verantwortungsübernahme für KI-Inhalte | Ja (NEU 2025) |
-| CNT-04 | Originale Unterschrift | Ja |
-| CNT-05 | Im Inhaltsverzeichnis mit Seitenangabe gelistet | Ja |
+| ID | Anforderung | Pflicht? | Quelle |
+|---|---|---|---|
+| CNT-01 | Erklärung selbstständiger Anfertigung | Ja | [HWR §3.11] |
+| CNT-02 | KI-Klausel: Alle KI-genutzten Abschnitte kenntlich gemacht | Ja (NEU 2025) | [HWR §3.11] |
+| CNT-03 | KI-Klausel: Verantwortungsübernahme für KI-Inhalte | Ja (NEU 2025) | [HWR §3.11] |
+| CNT-04 | Originale Unterschrift | Ja | [HWR §3.11] |
+| CNT-05 | Im Inhaltsverzeichnis mit Seitenangabe gelistet | Ja | [HWR §3.11] |
 
-**Vollständiger Pflichttext (wörtlich aus Richtlinien §3.11):**
-```
-    Ich erkläre ehrenwörtlich:
-
-    dass ich die vorliegende Arbeit in allen Teilen selbstständig angefertigt und keine anderen als die in der Arbeit angegebenen Quellen und Hilfsmittel benutzt habe, und dass die Arbeit in gleicher oder ähnlicher Form in noch keiner anderen Prüfung vorgelegen hat. Sämtliche wörtlichen oder sinngemäßen Übernahmen und Zitate, sowie alle Abschnitte, die mithilfe von KI-basierten Tools entworfen, verfasst und/oder bearbeitet wurden, sind kenntlich gemacht und nachgewiesen. Im Anhang meiner Arbeit habe ich sämtliche KI-basierte Hilfsmittel angegeben. Diese sind mit Produktnamen und formulierten Eingaben (Prompts) in einem KI-Verzeichnis ausgewiesen.
-
-    Ich bin mir bewusst, dass die Verwendung von Texten oder anderen Inhalten und Produkten, die durch KI-basierten Tools generiert wurden, keine Garantie für deren Qualität darstellt. Ich verantworte die Übernahme jeglicher von mir verwendeter maschinell generierter Passagen vollumfänglich selbst und trage die Verantwortung für eventuell durch die KI generierte fehlerhafte oder verzerrte Inhalte, fehlerhafte Referenzen, Verstöße gegen das Datenschutz- und Urheberrecht oder Plagiate.
-```
+**Vollständiger Pflichttext:** Gespeichert in `l10n/de.ftl` (DE) und `l10n/en.ftl` (EN), §3.11-konform inkl. KI-Klausel. Singular/Plural-Varianten für Einzel- und Gruppenarbeit via linguify.
 
 ## KI-Verzeichnis (§3.8, NEU 2025)
 
-| ID | Anforderung | Pflicht? |
-|---|---|---|
-| CNT-10 | KI-Verzeichnis wenn KI genutzt | Ja |
-| CNT-11 | Spalten: KI-Tool, Einsatzform, Betroffene Teile, Bemerkungen | Ja |
-| CNT-12 | Prompts sichern und mit Arbeit einreichen | Ja |
-| CNT-12a | Prompts-Einreichung: Flexibel — kurze Prompts in `bemerkungen`-Spalte ODER Verweis auf separaten Anhang-Eintrag ("Prompts: siehe Anhang X"). Template erzwingt kein Format. | Ja |
-| CNT-13 | KI-Nutzung nur mit Erlaubnis des Gutachtenden | Ja |
-
-**Format KI-Verzeichnis (Tabelle):**
-| KI-basiertes Hilfsmittel | Einsatzform | Betroffene Teile der Arbeit | Bemerkungen |
+| ID | Anforderung | Pflicht? | Quelle |
 |---|---|---|---|
-| DeepL Translator | Übersetzung | Ganze Arbeit | — |
-| ChatGPT | Textvorschläge (im Text gekennzeichnet) | Kapitel 1, S. 3 | — |
+| CNT-10 | KI-Verzeichnis wenn KI genutzt | Ja | [HWR §3.8] |
+| CNT-11 | Spalten: KI-Tool, Einsatzform, Betroffene Teile, Bemerkungen | Ja | [HWR §3.8] |
+| CNT-12 | Prompts sichern und mit Arbeit einreichen | Ja | [HWR §3.8] |
+| CNT-12a | Prompts-Einreichung: Kurze Prompts in `bemerkungen`-Spalte ODER Verweis auf separaten Anhang-Eintrag ("Prompts: siehe Anhang X"). Template erzwingt kein Format. | Ja | [DECIDED] |
+| CNT-13 | KI-Nutzung nur mit Erlaubnis des Gutachtenden | Ja | [HWR §3.8] |
+
+Das Template rendert das KI-Verzeichnis automatisch als Tabelle, wenn `ai-tools:` nicht leer ist. API → `requirements/api-design.md` §4.
 
 ## Sperrvermerk (§3.2.1, FAQ)
 
-| ID | Anforderung | Pflicht? |
-|---|---|---|
-| CNT-20 | Dem Deckblatt vorgeschaltet | Ja (wenn vorhanden) |
-| CNT-21 | Nicht in Seitennummerierung einbezogen | Ja |
-| CNT-22 | Nur Kapitel sperrbar (keine einzelnen Absätze/Seiten) | Ja |
-| CNT-23 | Gesperrte Kapitel namentlich nennen | Ja |
-| CNT-24 | Ungesperrte Version separat als Word+PDF einreichen | Ja |
+| ID | Anforderung | Pflicht? | Quelle |
+|---|---|---|---|
+| CNT-20 | Dem Deckblatt vorgeschaltet | Ja (wenn vorhanden) | [HWR §3.2.1] |
+| CNT-21 | Nicht in Seitennummerierung einbezogen | Ja | [HWR §3.2.1] |
+| CNT-22 | Nur Kapitel sperrbar (keine einzelnen Absätze/Seiten) | Ja | [HWR Anhang] |
+| CNT-23 | Gesperrte Kapitel namentlich nennen | Ja | [HWR §3.2.1] |
+| CNT-24 | Ungesperrte Version separat als Word+PDF einreichen | Ja | [HWR FAQ] |
 
-### Für konkrete Inhalte 
-
-**Pflichttext-Vorlage (aus Anhang Richtlinien - kann auch in reference-templates/ptb-typst-template-main/formelles/sperrvermerk.typ nachgeschaut werden wie es dort umgesetzt wurde):**
+**Pflichttext-Vorlage** (aus Anhang Richtlinien):
 ```
 S P E R R V E R M E R K
 
@@ -64,84 +52,45 @@ Unterkapitel enthält, wird unter der Bezeichnung [Dateiname] auf beigefügtem D
 zusätzlich zur Verfügung gestellt.
 ```
 
-### Für alles (auch aus reference-templates/ptb-typst-template-main/formelles/sperrvermerk.typ)
-
-```
-// Variante 2: Die komplette Arbeit ist gesperrt
-#let sperrvermerk_alles(
-  title: "Praxistransferbericht I", 
-  author: "Vorname Name",
-  ort: "Berlin",
-  datum: datetime.today().display("[day]. [month repr:long] [year]")
-) = [
-  // Kopfzeile mit Titel und Autor (zentriert)
-  #align(center)[
-    #text(weight: "bold")[#title]
-    #v(1.5cm)
-    #text(style: "italic")[#author]
-    
-    #v(2.5cm)
-    // Die Überschrift
-    #text(weight: "bold", tracking: 3pt, size: 16pt)[S P E R R V E R M E R K]
-  ]
-  
-  #v(1.5cm)
-  
-  // Textbaustein für die komplette Arbeit
-  Alle folgenden Kapitel unterliegen aufgrund der Verwendung vertraulicher Daten einem Sperrvermerk und sind ausschließlich für die zuständige Fachleiterin oder den zuständigen Fachleiter und betreuende Prüferin/Gutachterin oder betreuenden Prüfer/Gutachter einsichtig zu machen.
-  
-  #v(3cm)
-  
-  // Unterschriftenfeld
-  #grid(
-    columns: (1fr, 1fr),
-    [
-      #ort, #datum \
-      \
-      Ort, Datum
-    ], 
-    [
-      #figure(
-        image("../bilder/signatur.png", width: 50%, height: 10%)
-      )
-    ]
-  )
-]
-```
+Das Template rendert diesen Text automatisch. API (drei Stufen: `none` / `true` / `chapters: (...)`) → `requirements/api-design.md` §5.
 
 ## Deckblatt / Titelblatt (Anhang Richtlinien)
 
-| ID | Feld | Pflicht für | Hinweis |
+| ID | Feld | Pflicht für | Quelle |
 |---|---|---|---|
-| CNT-30 | Thema / Titel | Alle | — |
-| CNT-31 | Dokumenttyp | Alle | "PTB I/II/III" / "Hausarbeit" / "Bachelorarbeit" |
-| CNT-32 | Abgabedatum | Alle | "vorgelegt am…" |
-| CNT-33 | Institution | Alle | "Hochschule für Wirtschaft und Recht Berlin, Fachbereich Duales Studium" |
-| CNT-34 | Vorname + Name | Alle | — |
-| CNT-35 | Bereich | Alle | z.B. "Wirtschaft" |
-| CNT-36 | Fachrichtung | Alle | z.B. "Wirtschaftsinformatik" |
-| CNT-37 | Studienjahrgang | Alle | — |
-| CNT-38 | Studienhalbjahr | Alle | — |
-| CNT-39 | Ausbildungsbetrieb | PTB, Hausarbeit | Nicht bei Bachelorarbeit |
-| CNT-40 | Betreuende/r Prüfer/in | PTB, Hausarbeit | — |
-| CNT-41 | Erstgutachter/in | Bachelorarbeit | — |
-| CNT-42 | Zweitgutachter/in | Bachelorarbeit | — |
-| CNT-43 | Matrikelnummer | (üblich, nicht explizit in Muster) | Aus PTB-Template bekannt |
+| CNT-30 | Thema / Titel | Alle | [HWR Anhang] |
+| CNT-31 | Dokumenttyp | Alle | [HWR Anhang] |
+| CNT-32 | Abgabedatum | Alle | [HWR Anhang] |
+| CNT-33 | Institution | Alle | [HWR Anhang] |
+| CNT-34 | Vorname + Name | Alle | [HWR Anhang] |
+| CNT-35 | Bereich | Alle | [HWR Anhang] |
+| CNT-36 | Fachrichtung | Alle | [HWR Anhang] |
+| CNT-37 | Studienjahrgang | Alle | [HWR Anhang] |
+| CNT-38 | Studienhalbjahr | Alle | [HWR Anhang] |
+| CNT-39 | Ausbildungsbetrieb | PTB, Hausarbeit, Studienarbeit | [HWR Anhang] |
+| CNT-40 | Betreuende/r Prüfer/in | PTB, Hausarbeit, Studienarbeit | [HWR Anhang] |
+| CNT-41 | Erstgutachter/in | Bachelorarbeit | [HWR Anhang] |
+| CNT-42 | Zweitgutachter/in | Bachelorarbeit | [HWR Anhang] |
+| CNT-43 | Matrikelnummer | Alle | [DECIDED] |
+
+**Hinweis CNT-43:** Matrikelnummer erscheint nicht explizit im HWR-Mustermuster, ist aber an der HWR übliche Praxis. Das Template inkludiert sie als Pflichtfeld.
+
+Detaillierte Pflichtfelder je Dokumenttyp → `requirements/document-types.md`.
 
 ## Anhang (§3.10)
 
-| ID | Anforderung | Pflicht? |
-|---|---|---|
-| CNT-50 | Inhaltsangabe mit Seitenzahlen möglich | Optional |
-| CNT-51 | Formale Anforderungen gelten auch für Anhang | Ja |
-| CNT-52 | KI-Prompts hier einreichen | Ja (wenn KI genutzt) |
-| CNT-53 | Internet-Quellen im Volltext beifügen | Ja |
-| CNT-54 | Protokolle mündlicher Quellen | Ja (wenn mündlich zitiert) |
+| ID | Anforderung | Pflicht? | Quelle |
+|---|---|---|---|
+| CNT-50 | Inhaltsangabe mit Seitenzahlen möglich | Optional | [HWR §3.10] |
+| CNT-51 | Formale Anforderungen gelten auch für Anhang | Ja | [HWR §3.10] |
+| CNT-52 | KI-Prompts hier einreichen | Ja (wenn KI genutzt) | [HWR §3.8] |
+| CNT-53 | Internet-Quellen im Volltext beifügen | Ja | [HWR §3.7] |
+| CNT-54 | Protokolle mündlicher Quellen | Ja (wenn mündlich zitiert) | [HWR §3.10] |
 
 ## Glossar (FAQ)
 
-| ID | Anforderung | Pflicht? |
-|---|---|---|
-| CNT-60 | Position: nach Haupttext, vor Literaturverzeichnis | Optional |
-| CNT-61 | Im TOC mit Seitenzahl, aber keine Gliederungsnummer | Ja (wenn vorhanden) |
-| CNT-62 | Quellen in Fußnoten und Literaturverzeichnis | Ja |
+| ID | Anforderung | Pflicht? | Quelle |
+|---|---|---|---|
+| CNT-60 | Position: nach Haupttext, vor Literaturverzeichnis | Optional | [DECIDED — aus HWR FAQ] |
+| CNT-61 | Im TOC mit Seitenzahl, aber keine Gliederungsnummer | Ja (wenn vorhanden) | [DECIDED — aus HWR FAQ] |
+| CNT-62 | Quellen in Fußnoten und Literaturverzeichnis | Ja | [HWR §3.5] |
