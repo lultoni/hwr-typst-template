@@ -209,12 +209,12 @@ create_files() {
 % refs.bib — Literaturverzeichnis
 %
 % Trage hier deine Quellen ein.
-% Im Text zitierst du mit @schlüssel, z.B.: Laut @mustermann:2024 gilt...
+% Im Text zitierst du mit @Schlüssel, z.B.: Laut @mustermann2024 gilt...
 %
 % Tipp: Citavi, Zotero und Google Scholar können .bib-Dateien exportieren.
 %       Das spart viel manuelle Arbeit.
 
-@book{mustermann:2024,
+@book{mustermann2024,
   author    = {Mustermann, Max},
   title     = {Titel des Buches},
   year      = {2024},
@@ -222,7 +222,7 @@ create_files() {
   address   = {Stadt},
 }
 
-@article{mueller:2023,
+@article{mueller2023,
   author  = {Müller, Lisa},
   title   = {Titel des Aufsatzes},
   journal = {Name der Zeitschrift},
@@ -232,7 +232,7 @@ create_files() {
   pages   = {1--10},
 }
 
-@online{quelle:2024,
+@online{quelle2024,
   author  = {Autor, Vorname},
   title   = {Titel der Webseite},
   year    = {2024},
@@ -248,8 +248,9 @@ BIBTEX
     "Theoretische Grundlagen"
     "Methodik"
     "Ergebnisse"
+    "Diskussion"
     "Fazit und Ausblick"
-    "Kapitel 6" "Kapitel 7" "Kapitel 8" "Kapitel 9" "Kapitel 10"
+    "Kapitel 7" "Kapitel 8" "Kapitel 9" "Kapitel 10"
     "Kapitel 11" "Kapitel 12" "Kapitel 13" "Kapitel 14" "Kapitel 15"
     "Kapitel 16" "Kapitel 17" "Kapitel 18" "Kapitel 19" "Kapitel 20"
   )
@@ -276,7 +277,7 @@ BIBTEX
 //   Fettschrift:   *Wort*
 //   Kursiv:        _Wort_
 //   Fußnote:       Text#footnote[Hier steht die Fußnote.]
-//   Zitat im Text: Laut @schlüssel gilt...  oder  @schlüssel[S. 42]
+//   Zitat im Text: Laut @mustermann2024 gilt...  oder  @mustermann2024[S. 42]
 //   Abkürzung:     #abk("KI")  → beim 1. Mal "Künstliche Intelligenz (KI)"
 
 = $name
@@ -468,31 +469,37 @@ MAINTYP
 print_done() {
   echo -e "${GREEN}${BOLD}  Fertig! Dein Projekt ist bereit.${RESET}"
   echo ""
-  echo -e "${BOLD}  Dein Projektordner:${RESET} ${CYAN}${TARGET_DIR}${RESET}"
+  echo -e "${BOLD}  Dein Projektordner:${RESET} ${CYAN}./${PROJECT_NAME}/${RESET}"
   echo ""
   echo -e "${BOLD}  ─── So geht es weiter ───────────────────────────────${RESET}"
   echo ""
-  echo -e "  ${BOLD}Schritt 1:${RESET} Öffne ${CYAN}${PROJECT_NAME}/main.typ${RESET}"
-  echo "    → Deine Daten sind schon eingetragen"
-  echo "    → Abkürzungen ergänzen im abbreviations:-Block"
-  echo "    → KI-Tools eintragen wenn du welche verwendest"
+  echo -e "  ${BOLD}Schritt 1:${RESET} Öffne deinen Projektordner in VS Code"
+  echo -e "    → VS Code (kostenlos): ${CYAN}https://code.visualstudio.com${RESET}"
+  echo "    → Tinymist-Extension installieren (Syntax-Highlighting für .typ-Dateien)"
+  echo -e "    → Dann ${CYAN}${PROJECT_NAME}/main.typ${RESET} öffnen"
+  echo "      → Deine Daten sind schon eingetragen — nur durchscrollen und prüfen"
+  echo "      → Abkürzungen ergänzen im abbreviations:-Block"
+  echo "      → KI-Tools eintragen wenn du welche verwendest"
   echo ""
   echo -e "  ${BOLD}Schritt 2:${RESET} Schreibe deine Kapitel"
-  echo -e "    → Öffne z.B. ${CYAN}${PROJECT_NAME}/kapitel/01_einleitung.typ${RESET}"
-  echo "    → Einfach drauflosschreiben — Formatierung ist automatisch"
-  echo "    → Abkürzungen mit: #abk(\"KI\")"
-  echo "    → Zitieren mit: @schlüssel  (Quellen in refs.bib eintragen)"
+  echo -e "    → z.B. ${CYAN}${PROJECT_NAME}/kapitel/01_einleitung.typ${RESET} öffnen"
+  echo "    → Formatierung ist automatisch — einfach drauflosschreiben"
+  echo "    → Abkürzungen: #abk(\"KI\")"
+  echo "    → Zitieren: @mustermann2024  (Quellen in refs.bib eintragen)"
   echo ""
-  echo -e "  ${BOLD}Schritt 3:${RESET} PDF erstellen"
-  echo -e "    → ${BOLD}VS Code (empfohlen):${RESET} Tinymist-Extension installieren"
-  echo "      → speichern → PDF erscheint automatisch"
-  echo -e "    → ${BOLD}Terminal${RESET} (aus dem hwr-typst-template Ordner):"
+  echo -e "  ${BOLD}Schritt 3:${RESET} PDF erstellen ${BOLD}(Terminal, aus diesem Ordner):${RESET}"
+  echo ""
+  echo "    Einmalig:"
   echo -e "      ${CYAN}typst compile ${PROJECT_NAME}/main.typ${RESET}"
+  echo ""
+  echo "    Mit Live-Vorschau (aktualisiert bei jedem Speichern):"
+  echo -e "      ${CYAN}typst watch ${PROJECT_NAME}/main.typ${RESET}"
+  echo "    → Beenden: Ctrl+C"
   echo ""
   echo -e "  ${BOLD}Schritt 4:${RESET} Quellen in ${CYAN}${PROJECT_NAME}/refs.bib${RESET} eintragen"
   echo "    → Tipp: Zotero oder Citavi können .bib-Dateien exportieren"
   echo ""
-  echo -e "  ${BOLD}Mehr Hilfe:${RESET} ${CYAN}${TEMPLATE_ROOT}/README.md${RESET}"
+  echo -e "  ${BOLD}Alle Optionen und Einstellungen:${RESET} ${CYAN}README.md${RESET}"
   echo ""
   echo -e "${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${RESET}"
   echo ""

@@ -12,5 +12,9 @@ hwr-richtlinien/*
 *.pdf
 !template/example.pdf
 
-# Claude local settings (personal overrides)
-.claude/settings.local.json
+# Claude Code configuration (local tooling, not part of the template)
+.claude/
+
+# User-created project folders (init.sh output — should not end up in the repo)
+# Add your project name here to prevent accidentally committing it:
+# my-project-name/

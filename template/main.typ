@@ -98,8 +98,11 @@
 
   // Anhang (optional — auskommentieren wenn nicht benötigt):
   appendix: (
-    (title: "Interviewleitfaden",    content: include("anhang/interviewleitfaden.typ")),
-    // (title: "Screenshot Dashboard", content: image("anhang/screenshot.png")),
+    (title: "Interviewleitfaden",  content: include("anhang/a_interviewleitfaden.typ")),
+    (title: "Rohdaten Umfrage",    content: include("anhang/b_rohdaten.typ")),
+    (title: "Screenshot Dashboard", content: include("anhang/c_abbildung.typ")),
+    // Bild direkt einbinden:
+    // (title: "Diagramm", content: image("anhang/diagramm.png")),
   ),
 
   // Bibliographie:

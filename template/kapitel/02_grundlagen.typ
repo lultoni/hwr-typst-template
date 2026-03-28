@@ -8,7 +8,7 @@
 == Digitale Transformation
 
 Die #abk("KI") spielt eine zentrale Rolle bei der Automatisierung von Geschäftsprozessen.
-#abk("ERP")-Systeme ermöglichen die Integration unternehmensweiter Prozesse @mustermann:2024.
+#abk("ERP")-Systeme ermöglichen die Integration unternehmensweiter Prozesse @mustermann2024.
 
 #lorem(80)
 

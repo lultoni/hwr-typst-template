@@ -82,6 +82,16 @@ Das Template verwendet **Times New Roman** (HWR-Vorschrift).
 Auf der GitHub-Seite oben rechts auf **Code → Download ZIP** klicken.
 ZIP entpacken — du erhältst einen Ordner `hwr-typst-template-main/` (oder ähnlich).
 
+**Alternativ direkt im Terminal** (macOS/Linux — kein ZIP nötig):
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/lultoni/hwr-typst-template/main/scripts/init.sh)
+```
+
+Dieser Befehl lädt das Setup-Script herunter und führt es sofort aus — du wirst nach deinen Daten gefragt und bekommst einen fertigen Projektordner, ohne erst das komplette Repository herunterladen zu müssen.
+
+> Sicherheitshinweis: Bevor du ein Script aus dem Internet direkt ausführst, kannst du es dir unter dem obigen Link ansehen.
+
 ---
 
 ## Schritt 4: Projekt einrichten — ein einziger Befehl
@@ -138,7 +148,7 @@ Hier beginnt der Text des ersten Kapitels.
 
 Fußnote#footnote[Hier steht der Fußnotentext.] direkt im Text.
 
-Zitat aus einer Quelle: Laut @mustermann:2024 gilt...
+Zitat aus einer Quelle: Laut @mustermann2024 gilt...
 
 Abkürzung beim ersten Vorkommen: #abk("KI")
 ```
@@ -161,20 +171,24 @@ abbreviations: (
 
 ## Schritt 6: PDF erstellen
 
-### Mit VS Code + Tinymist (empfohlen)
-
-1. Tinymist-Erweiterung installieren (in VS Code: Erweiterungen → „Tinymist" suchen → Installieren)
-2. `main.typ` öffnen → PDF-Vorschau erscheint automatisch rechts
-3. Beim Speichern (Strg+S / Cmd+S) wird die PDF sofort aktualisiert
-
-### Im Terminal
+### Im Terminal (empfohlen)
 
 ```bash
 # Aus dem Ordner hwr-typst-template-main heraus:
+
+# Einmalig erstellen:
 typst compile DEIN-PROJEKTNAME/main.typ
+
+# Mit Live-Vorschau (aktualisiert bei jedem Speichern):
+typst watch DEIN-PROJEKTNAME/main.typ
+# Beenden: Ctrl+C (macOS/Linux) oder Strg+C (Windows)
 ```
 
-Die fertige PDF liegt dann direkt neben `main.typ`.
+Die fertige PDF liegt direkt neben `main.typ`.
+
+### VS Code + Tinymist
+
+Tinymist liefert Syntax-Highlighting und Autocomplete für `.typ`-Dateien — praktisch beim Schreiben. Für die PDF-Erstellung ist das Terminal der direktere Weg.
 
 ---
 
@@ -183,14 +197,14 @@ Die fertige PDF liegt dann direkt neben `main.typ`.
 Quellen gehören in die Datei `refs.bib`. Format-Beispiele (Citavi, Zotero oder Google Scholar können diese Dateien automatisch exportieren):
 
 ```bibtex
-@book{mustermann:2024,
+@book{mustermann2024,
   author    = {Mustermann, Max},
   title     = {Titel des Buches},
   year      = {2024},
   publisher = {Verlag},
 }
 
-@online{quelle:2024,
+@online{quelle2024,
   author  = {Autor, Vorname},
   title   = {Titel der Webseite},
   year    = {2024},
@@ -199,7 +213,7 @@ Quellen gehören in die Datei `refs.bib`. Format-Beispiele (Citavi, Zotero oder 
 }
 ```
 
-Im Text zitierst du mit `@schlüssel`, also z.B. `@mustermann:2024`.
+Im Text zitierst du mit `@schlüssel`, also z.B. `@mustermann2024`.
 
 ---
 

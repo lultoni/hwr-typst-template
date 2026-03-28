@@ -22,7 +22,7 @@ table-prefix = Tab.
 
 ## Abstract
 
-abstract-title = Zusammenfassung
+abstract-title = Abstract
 
 ## KI-Verzeichnis
 
