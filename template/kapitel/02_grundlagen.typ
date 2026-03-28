@@ -1,5 +1,5 @@
 // kapitel/02_grundlagen.typ
-#import "../lib.typ": abk
+#import "../../lib.typ": abk
 
 = Theoretische Grundlagen
 

@@ -128,9 +128,9 @@
   let decl-lang = if declaration-lang == auto { lang } else { declaration-lang }
 
   // --- linguify: configure l10n database ---
-  // load-ftl-data reads l10n/de.ftl and l10n/en.ftl and registers both languages.
-  // linguify() then picks the correct language based on the active text lang.
-  show: set-database.with(eval(load-ftl-data("./l10n", ("de", "en"))))
+  // load-ftl-data returns a Typst script string; eval() executes it to produce the dict.
+  // set-database() registers the dict as a global state update (not a show rule).
+  set-database(eval(load-ftl-data("./l10n", ("de", "en"))))
 
   // --- Global page setup ---
   // FMT-20–23: Margins.

@@ -11,14 +11,12 @@
 
 /// Render a single appendix entry with heading and content.
 #let _render-entry(letter, title, content) = {
-  let label-str = "anhang-" + lower(letter)
+  // metadata() is a labelable element; label it so links from the TOC work.
+  [#metadata(letter) #label("anhang-" + lower(letter))]
 
-  heading(
-    level: 1,
-    numbering: none,
-    outlined: true,
-    [#linguify("appendix-label") #letter: #title #label(label-str)]
-  )
+  heading(level: 1, numbering: none, outlined: true)[
+    #linguify("appendix-label") #letter: #title
+  ]
 
   content
   pagebreak()
@@ -28,12 +26,11 @@
 /// CNT-10–13: mandatory when AI tools were used
 /// Columns: KI-Tool | Einsatzform | Betroffene Teile | Bemerkungen
 #let _render-ai-tools(ai-tools, letter) = {
-  heading(
-    level: 1,
-    numbering: none,
-    outlined: true,
-    [#linguify("appendix-label") #letter: #linguify("ai-tools-title")],
-  )
+  [#metadata(letter) #label("anhang-" + lower(letter))]
+
+  heading(level: 1, numbering: none, outlined: true)[
+    #linguify("appendix-label") #letter: #linguify("ai-tools-title")
+  ]
 
   v(0.5em)
 
@@ -41,18 +38,16 @@
     columns: (auto, 1fr, auto, auto),
     align: left,
     stroke: 0.5pt,
-    // Header
     table.header(
       strong(linguify("ai-col-tool")),
       strong(linguify("ai-col-usage")),
       strong(linguify("ai-col-chapters")),
       strong(linguify("ai-col-remarks")),
     ),
-    // Rows
     ..ai-tools.map(entry => (
-      entry.at("tool", default: ""),
-      entry.at("usage", default: ""),
-      entry.at("chapters", default: ""),
+      entry.at("tool",        default: ""),
+      entry.at("usage",       default: ""),
+      entry.at("chapters",    default: ""),
       entry.at("bemerkungen", default: "—"),
     )).flatten()
   )
@@ -62,16 +57,18 @@
 
 /// Render the appendix table of contents (Anhangsverzeichnis).
 /// Lists all appendix entries with clickable links.
+/// entries: array of (letter, title-string)
 #let _render-appendix-toc(entries) = {
   heading(level: 1, numbering: none, outlined: false)[#linguify("appendix-toc-title")]
   v(1em)
 
-  for (letter, title) in entries {
-    let label-str = "anhang-" + lower(letter)
+  for entry in entries {
+    let letter = entry.at(0)
+    let title  = entry.at(1)
     grid(
-      columns: (30pt, 1fr),
+      columns: (40pt, 1fr),
       [#linguify("appendix-label") #letter:],
-      link(label(label-str))[#title],
+      link(label("anhang-" + lower(letter)))[#title],
     )
     v(0.3em)
   }
@@ -85,31 +82,37 @@
 /// - ai-tools: array of (tool, usage, chapters, bemerkungen?) — AI tools register
 /// - lang: "de" | "en"
 #let render-appendix(appendix, ai-tools, lang) = {
-  // Build full entry list (user entries + optional AI tools as last)
-  let all-entries = ()
-  for (i, entry) in appendix.enumerate() {
-    all-entries.push((_appendix-letters.at(i), entry.at("title", default: "")))
-  }
   let ai-letter = if ai-tools.len() > 0 {
     _appendix-letters.at(appendix.len())
   } else {
     none
   }
-  if ai-letter != none {
-    all-entries.push((ai-letter, linguify("ai-tools-title")))
-  }
 
-  // Anhangsverzeichnis (TOC for appendix)
-  _render-appendix-toc(all-entries)
+  // Anhangsverzeichnis — titles collected as plain strings to avoid context issues
+  // linguify() is called later inside the actual heading renders
+  context {
+    let ai-title = if ai-letter != none { linguify("ai-tools-title") } else { "" }
+    let entries = ()
+    for (i, entry) in appendix.enumerate() {
+      entries.push((_appendix-letters.at(i), entry.at("title", default: "")))
+    }
+    if ai-letter != none {
+      entries.push((ai-letter, ai-title))
+    }
+    _render-appendix-toc(entries)
+  }
 
   // User-defined appendix entries
   for (i, entry) in appendix.enumerate() {
-    let letter = _appendix-letters.at(i)
-    _render-entry(letter, entry.at("title", default: ""), entry.at("content", default: []))
+    _render-entry(
+      _appendix-letters.at(i),
+      entry.at("title",   default: ""),
+      entry.at("content", default: []),
+    )
   }
 
   // KI-Verzeichnis as last item
-  if ai-tools.len() > 0 {
+  if ai-letter != none {
     _render-ai-tools(ai-tools, ai-letter)
   }
 }
