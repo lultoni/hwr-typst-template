@@ -1,0 +1,59 @@
+# HWR Berlin — Deutsche Lokalisierung
+# Alle Keys müssen identisch in en.ftl vorhanden sein.
+
+## Verzeichnis-Überschriften
+toc-title = Inhaltsverzeichnis
+abbreviations-title = Abkürzungsverzeichnis
+figures-title = Abbildungsverzeichnis
+tables-title = Tabellenverzeichnis
+appendix-toc-title = Anhangsverzeichnis
+glossary-title = Glossar
+bibliography-title = Literaturverzeichnis
+
+## Abschnitt-Label im Anhang
+appendix-label = Anhang
+
+## Präfixe für Abbildungs-/Tabellenverzeichnis
+figure-prefix = Abb.
+table-prefix = Tab.
+
+## Abstract
+abstract-title = Zusammenfassung
+
+## KI-Verzeichnis
+ai-tools-title = KI-Verzeichnis
+ai-col-tool = KI-basiertes Hilfsmittel
+ai-col-usage = Einsatzform
+ai-col-chapters = Betroffene Teile der Arbeit
+ai-col-remarks = Bemerkungen
+
+## Sperrvermerk
+confidential-title = S P E R R V E R M E R K
+
+# Platzhalter: {$chapters} = Auflistung der gesperrten Kapitel, {$filename} = Dateiname
+confidential-intro-chapters = Folgende/s Kapitel/Passagen unterliegt/unterliegen aufgrund der Verwendung vertraulicher Daten einem Sperrvermerk und sind/ist ausschließlich für die zuständige Fachleiterin oder den zuständigen Fachleiter und betreuende Prüferin/Gutachterin oder betreuenden Prüfer/Gutachter einsichtig zu machen:
+
+# Platzhalter: {$filename} = Dateiname der ungesperrten Version (optional)
+confidential-short-version = Eine Kurzfassung der Arbeit, die ausschließlich die nicht gesperrten Kapitel bzw. Unterkapitel enthält, wird unter der Bezeichnung { $filename } auf beigefügtem Datenträger zusätzlich zur Verfügung gestellt.
+
+confidential-text-all = Alle folgenden Kapitel unterliegen aufgrund der Verwendung vertraulicher Daten einem Sperrvermerk und sind ausschließlich für die zuständige Fachleiterin oder den zuständigen Fachleiter und betreuende Prüferin/Gutachterin oder betreuenden Prüfer/Gutachter einsichtig zu machen.
+
+## Ehrenwörtliche Erklärung
+declaration-title = Ehrenwörtliche Erklärung
+declaration-place-date = Ort, Datum
+declaration-signature = Unterschrift
+
+# Pflichttext §3.11 — wörtlich aus den HWR-Richtlinien (Stand Januar 2025)
+# Pluralisierung: [one] = Einzelperson, *[other] = Gruppe
+declaration-text = { $author-count ->
+    [one] Ich erkläre ehrenwörtlich:
+
+dass ich die vorliegende Arbeit in allen Teilen selbstständig angefertigt und keine anderen als die in der Arbeit angegebenen Quellen und Hilfsmittel benutzt habe, und dass die Arbeit in gleicher oder ähnlicher Form in noch keiner anderen Prüfung vorgelegen hat. Sämtliche wörtlichen oder sinngemäßen Übernahmen und Zitate, sowie alle Abschnitte, die mithilfe von KI-basierten Tools entworfen, verfasst und/oder bearbeitet wurden, sind kenntlich gemacht und nachgewiesen. Im Anhang meiner Arbeit habe ich sämtliche KI-basierte Hilfsmittel angegeben. Diese sind mit Produktnamen und formulierten Eingaben (Prompts) in einem KI-Verzeichnis ausgewiesen.
+
+Ich bin mir bewusst, dass die Verwendung von Texten oder anderen Inhalten und Produkten, die durch KI-basierten Tools generiert wurden, keine Garantie für deren Qualität darstellt. Ich verantworte die Übernahme jeglicher von mir verwendeter maschinell generierter Passagen vollumfänglich selbst und trage die Verantwortung für eventuell durch die KI generierte fehlerhafte oder verzerrte Inhalte, fehlerhafte Referenzen, Verstöße gegen das Datenschutz- und Urheberrecht oder Plagiate.
+   *[other] Wir erklären ehrenwörtlich:
+
+dass wir die vorliegende Arbeit in allen Teilen selbstständig angefertigt und keine anderen als die in der Arbeit angegebenen Quellen und Hilfsmittel benutzt haben, und dass die Arbeit in gleicher oder ähnlicher Form in noch keiner anderen Prüfung vorgelegen hat. Sämtliche wörtlichen oder sinngemäßen Übernahmen und Zitate, sowie alle Abschnitte, die mithilfe von KI-basierten Tools entworfen, verfasst und/oder bearbeitet wurden, sind kenntlich gemacht und nachgewiesen. Im Anhang unserer Arbeit haben wir sämtliche KI-basierte Hilfsmittel angegeben. Diese sind mit Produktnamen und formulierten Eingaben (Prompts) in einem KI-Verzeichnis ausgewiesen.
+
+Wir sind uns bewusst, dass die Verwendung von Texten oder anderen Inhalten und Produkten, die durch KI-basierten Tools generiert wurden, keine Garantie für deren Qualität darstellt. Wir verantworten die Übernahme jeglicher von uns verwendeter maschinell generierter Passagen vollumfänglich selbst und tragen die Verantwortung für eventuell durch die KI generierte fehlerhafte oder verzerrte Inhalte, fehlerhafte Referenzen, Verstöße gegen das Datenschutz- und Urheberrecht oder Plagiate.
+}
