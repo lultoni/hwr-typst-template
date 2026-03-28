@@ -4,10 +4,16 @@
 # =============================================================================
 # Dieses Skript erstellt alle Dateien und Ordner für deine Arbeit.
 #
-# Aufruf (einmalig beim Start eines neuen Projekts):
+# Aufruf — drei Wege:
 #
-#   cd /pfad/zum/hwr-typst-template
-#   bash scripts/init.sh
+#   1. Aus dem heruntergeladenen Template-Ordner:
+#        bash scripts/init.sh
+#
+#   2. Von irgendwo (fragt nach Zielordner):
+#        bash scripts/init.sh
+#
+#   3. Direkt aus dem Web (macOS/Linux):
+#        bash <(curl -fsSL https://raw.githubusercontent.com/lultoni/hwr-typst-template/main/scripts/init.sh)
 #
 # Das Skript fragt dich nach deinen Daten und erstellt dann
 # einen neuen Projektordner mit allen nötigen Dateien.
@@ -23,30 +29,16 @@ YELLOW="\033[1;33m"
 RED="\033[1;31m"
 RESET="\033[0m"
 
-# --- Pfad zum Template-Verzeichnis ------------------------------------------
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-TEMPLATE_ROOT="$(dirname "$SCRIPT_DIR")"
+# --- Erkennen ob Script als Datei oder via Pipe (curl) läuft ----------------
+# Bei bash <(curl ...) ist BASH_SOURCE[0] kein echter Dateipfad (/dev/fd/...).
+# In diesem Fall fragen wir den User wo das Projekt erstellt werden soll.
+SCRIPT_IS_FILE=false
+if [[ -f "${BASH_SOURCE[0]:-}" ]]; then
+  SCRIPT_IS_FILE=true
+fi
 
-# =============================================================================
-# Sicherheitscheck: muss aus dem Template-Ordner gestartet werden
-# =============================================================================
-check_cwd() {
-  if [ "$(pwd)" != "$TEMPLATE_ROOT" ]; then
-    echo ""
-    echo -e "${YELLOW}Hinweis:${RESET} Das Skript muss aus dem Template-Ordner gestartet werden."
-    echo ""
-    echo -e "  Richtig:"
-    echo -e "    ${CYAN}cd ${TEMPLATE_ROOT}${RESET}"
-    echo -e "    ${CYAN}bash scripts/init.sh${RESET}"
-    echo ""
-    echo -e "  Du bist gerade in: $(pwd)"
-    echo ""
-    # Automatisch wechseln
-    cd "$TEMPLATE_ROOT"
-    echo -e "  ${GREEN}→ Automatisch gewechselt zu: $TEMPLATE_ROOT${RESET}"
-    echo ""
-  fi
-}
+# Zielverzeichnis (wo der neue Projektordner erstellt wird) — wird in collect_input gesetzt
+TARGET_ROOT=""
 
 # =============================================================================
 # Hilfsfunktionen
@@ -115,24 +107,52 @@ collect_input() {
   echo "  alle Dateien für dich. Du kannst alles später in main.typ ändern."
   echo ""
 
-  # Projektordner-Name
+  # --- Zielordner bestimmen --------------------------------------------------
+  local default_root
+  default_root="$(pwd)"
+
+  echo -e "  ${BOLD}Wo soll der Projektordner erstellt werden?${RESET}"
+  echo -e "  Aktuelles Verzeichnis: ${CYAN}${default_root}${RESET}"
+  echo ""
+  local target_input
+  read -rp "$(echo -e "${CYAN}?${RESET} Pfad eingeben oder Enter für aktuelles Verzeichnis: ")" target_input </dev/tty
+  if [ -z "$target_input" ]; then
+    TARGET_ROOT="$default_root"
+  else
+    # ~ expandieren
+    target_input="${target_input/#\~/$HOME}"
+    TARGET_ROOT="$target_input"
+  fi
+
+  # Prüfen ob Zielordner existiert
+  if [ ! -d "$TARGET_ROOT" ]; then
+    echo ""
+    echo -e "  ${RED}Fehler:${RESET} Der Ordner '${TARGET_ROOT}' existiert nicht."
+    echo "  Bitte zuerst diesen Ordner erstellen, dann das Script nochmal starten."
+    exit 1
+  fi
+
+  TARGET_ROOT="$(cd "$TARGET_ROOT" && pwd)"
+  echo ""
+
+  # --- Projektordner-Name ----------------------------------------------------
   PROJECT_NAME=$(ask "Name des Projektordners (nur Buchstaben, Zahlen, Bindestriche)" "meine-arbeit")
   # Leerzeichen durch Bindestriche ersetzen, Sonderzeichen entfernen
   PROJECT_NAME=$(echo "$PROJECT_NAME" | tr ' ' '-' | tr -cd 'a-zA-Z0-9_-')
   [ -z "$PROJECT_NAME" ] && PROJECT_NAME="meine-arbeit"
 
   # Prüfen ob Ordner schon existiert
-  if [ -d "$TEMPLATE_ROOT/$PROJECT_NAME" ]; then
+  if [ -d "$TARGET_ROOT/$PROJECT_NAME" ]; then
     echo ""
-    echo -e "  ${RED}Fehler:${RESET} Der Ordner '$PROJECT_NAME' existiert bereits."
+    echo -e "  ${RED}Fehler:${RESET} Der Ordner '$PROJECT_NAME' existiert bereits in '${TARGET_ROOT}'."
     echo "  Wähle einen anderen Namen oder lösche den bestehenden Ordner."
     exit 1
   fi
 
-  TARGET_DIR="$TEMPLATE_ROOT/$PROJECT_NAME"
+  TARGET_DIR="$TARGET_ROOT/$PROJECT_NAME"
   echo ""
 
-  # Art der Arbeit
+  # --- Art der Arbeit --------------------------------------------------------
   ask_choice \
     "Was schreibst du?" "1" \
     "Praxistransferbericht I  (ptb-1)" \
@@ -144,24 +164,24 @@ collect_input() {
   DOC_TYPE_LABEL="$CHOICE_RESULT"
 
   case "$DOC_TYPE_LABEL" in
-    *"ptb-1"*)        DOC_TYPE="ptb-1" ;;
-    *"ptb-2"*)        DOC_TYPE="ptb-2" ;;
-    *"ptb-3"*)        DOC_TYPE="ptb-3" ;;
-    *"Hausarbeit"*)   DOC_TYPE="hausarbeit" ;;
-    *"Studienarbeit"*)DOC_TYPE="studienarbeit" ;;
+    *"ptb-1"*)         DOC_TYPE="ptb-1" ;;
+    *"ptb-2"*)         DOC_TYPE="ptb-2" ;;
+    *"ptb-3"*)         DOC_TYPE="ptb-3" ;;
+    *"Hausarbeit"*)    DOC_TYPE="hausarbeit" ;;
+    *"Studienarbeit"*) DOC_TYPE="studienarbeit" ;;
     *"Bachelorarbeit"*)DOC_TYPE="bachelorarbeit" ;;
-    *)                DOC_TYPE="ptb-1" ;;
+    *)                 DOC_TYPE="ptb-1" ;;
   esac
 
   echo ""
 
-  # Persönliche Daten
+  # --- Persönliche Daten -----------------------------------------------------
   AUTHOR_NAME=$(ask "Dein vollständiger Name" "Max Mustermann")
   MATRIKEL=$(ask "Deine Matrikelnummer" "12345678")
   TITLE=$(ask "Arbeitstitel (kann später geändert werden)" "Titel meiner Arbeit")
   echo ""
 
-  # Bedingt: Betreuer oder Gutachter
+  # --- Bedingt: Betreuer oder Gutachter --------------------------------------
   if [ "$DOC_TYPE" = "bachelorarbeit" ]; then
     FIRST_EXAMINER=$(ask "Erstgutachter/in (mit Titel, z.B. Prof. Dr. ...)" "Prof. Dr. Vorname Name")
     SECOND_EXAMINER=$(ask "Zweitgutachter/in (mit Titel)" "Prof. Dr. Vorname Name")
@@ -176,13 +196,13 @@ collect_input() {
 
   echo ""
 
-  # Optionale Felder
+  # --- Optionale Felder ------------------------------------------------------
   FIELD=$(ask "Fachrichtung" "Wirtschaftsinformatik")
   COHORT=$(ask "Studienjahrgang (z.B. 2024, Enter zum Überspringen)" "")
   SEMESTER=$(ask "Studienhalbjahr (z.B. 3, Enter zum Überspringen)" "")
   echo ""
 
-  # Anzahl Kapitel
+  # --- Anzahl Kapitel --------------------------------------------------------
   NUM_CHAPTERS=$(ask "Wie viele Kapitel soll die Vorlage erstellen?" "5")
   if ! [[ "$NUM_CHAPTERS" =~ ^[0-9]+$ ]] || [ "$NUM_CHAPTERS" -lt 1 ] || [ "$NUM_CHAPTERS" -gt 20 ]; then
     NUM_CHAPTERS=5
@@ -305,16 +325,15 @@ KAPITEL
 // Schreibe hier den Inhalt dieses Anhang-Eintrags.
 // Du kannst diese Datei umbenennen und weitere anlegen
 // (z.B. anhang/interviewleitfaden.typ, anhang/rohdaten.typ).
+//
+// Mögliche Inhalte:
+//   Text und Listen:   einfach schreiben wie in den Kapiteln
+//   Tabelle:           #figure(table(...), caption: [...])
+//   Bild:              #figure(image("anhang/datei.png"), caption: [...])
 
-*Beispiel-Anhang*
+*Anhang-Inhalt*
 
-Hier steht der Inhalt. Das kann Text, Tabellen, oder Bilder sein.
-
-Zum Beispiel:
-- Interviewleitfaden
-- Screenshots
-- Rohdaten
-- Code-Listings
+Hier steht der Inhalt. Das kann Text, Tabellen oder Bilder sein.
 ANHANG
   ok "anhang/beispiel.typ  (Inhalt nach Bedarf anpassen)"
 
@@ -350,14 +369,13 @@ _generate_main_typ() {
 //  Das ist die einzige Datei die du anfassen musst.
 //  Deine Kapitel schreibst du in den Dateien unter kapitel/
 //
-//  PDF erstellen:
-//    → In VS Code mit Tinymist-Extension: automatisch beim Speichern
-//    → Im Terminal (aus dem hwr-typst-template Ordner):
-//         typst compile ${PROJECT_NAME}/main.typ
+//  PDF erstellen (Terminal, in diesem Ordner):
+//    Einmalig:        typst compile main.typ
+//    Live-Vorschau:   typst watch main.typ   (Beenden: Ctrl+C)
 //
 // ============================================================
 
-#import "/lib.typ": hwr, abk
+#import "@preview/wi-hwr-berlin:0.1.0": hwr, abk
 
 #show: hwr.with(
 
@@ -411,17 +429,12 @@ ${cohort_line}${semester_line}
     //   usage:    "Textvorschläge, im Text gekennzeichnet",
     //   chapters: "Kapitel 1, S. 3",
     // ),
-    // (
-    //   tool:     "DeepL Translator",
-    //   usage:    "Übersetzung von Quelltexten",
-    //   chapters: "Gesamte Arbeit",
-    // ),
   ),
 
-  // ── Zusammenfassung (optional) ─────────────────────────
-  // Entferne die // am Anfang um eine Zusammenfassung einzufügen.
+  // ── Abstract (optional) ────────────────────────────────
+  // Entferne die // am Anfang um einen Abstract einzufügen.
   // abstract: [
-  //   Schreibe hier deine Zusammenfassung (ca. eine halbe Seite).
+  //   Schreibe hier deinen Abstract (ca. eine halbe Seite).
   // ],
 
   // ── Sperrvermerk (optional) ────────────────────────────
@@ -436,15 +449,11 @@ ${cohort_line}${semester_line}
 
   // ── Deine Kapitel ──────────────────────────────────────
   // Reihenfolge hier = Reihenfolge im PDF.
-  // Neues Kapitel anlegen:
-  //   1. Datei in kapitel/ erstellen
-  //   2. Hier eintragen: include("kapitel/dateiname.typ"),
   chapters: (
 ${CHAPTER_INCLUDES}  ),
 
   // ── Anhang (optional) ──────────────────────────────────
   // Entferne die // um den Anhang zu aktivieren.
-  // Mehrere Anhänge: einfach weitere Zeilen eintragen.
   // appendix: (
   //   (title: "Interviewleitfaden", content: include("anhang/beispiel.typ")),
   //   (title: "Screenshot",         content: image("anhang/screenshot.png")),
@@ -469,37 +478,37 @@ MAINTYP
 print_done() {
   echo -e "${GREEN}${BOLD}  Fertig! Dein Projekt ist bereit.${RESET}"
   echo ""
-  echo -e "${BOLD}  Dein Projektordner:${RESET} ${CYAN}./${PROJECT_NAME}/${RESET}"
+  echo -e "${BOLD}  Dein Projektordner:${RESET} ${CYAN}${TARGET_DIR}/${RESET}"
   echo ""
   echo -e "${BOLD}  ─── So geht es weiter ───────────────────────────────${RESET}"
   echo ""
   echo -e "  ${BOLD}Schritt 1:${RESET} Öffne deinen Projektordner in VS Code"
   echo -e "    → VS Code (kostenlos): ${CYAN}https://code.visualstudio.com${RESET}"
   echo "    → Tinymist-Extension installieren (Syntax-Highlighting für .typ-Dateien)"
-  echo -e "    → Dann ${CYAN}${PROJECT_NAME}/main.typ${RESET} öffnen"
+  echo -e "    → Dann ${CYAN}${TARGET_DIR}/main.typ${RESET} öffnen"
   echo "      → Deine Daten sind schon eingetragen — nur durchscrollen und prüfen"
   echo "      → Abkürzungen ergänzen im abbreviations:-Block"
   echo "      → KI-Tools eintragen wenn du welche verwendest"
   echo ""
   echo -e "  ${BOLD}Schritt 2:${RESET} Schreibe deine Kapitel"
-  echo -e "    → z.B. ${CYAN}${PROJECT_NAME}/kapitel/01_einleitung.typ${RESET} öffnen"
+  echo -e "    → z.B. ${CYAN}${TARGET_DIR}/kapitel/01_einleitung.typ${RESET} öffnen"
   echo "    → Formatierung ist automatisch — einfach drauflosschreiben"
   echo "    → Abkürzungen: #abk(\"KI\")"
   echo "    → Zitieren: @mustermann2024  (Quellen in refs.bib eintragen)"
   echo ""
-  echo -e "  ${BOLD}Schritt 3:${RESET} PDF erstellen ${BOLD}(Terminal, aus diesem Ordner):${RESET}"
+  echo -e "  ${BOLD}Schritt 3:${RESET} PDF erstellen ${BOLD}(Terminal, im Projektordner):${RESET}"
   echo ""
   echo "    Einmalig:"
-  echo -e "      ${CYAN}typst compile ${PROJECT_NAME}/main.typ${RESET}"
+  echo -e "      ${CYAN}cd \"${TARGET_DIR}\" && typst compile main.typ${RESET}"
   echo ""
   echo "    Mit Live-Vorschau (aktualisiert bei jedem Speichern):"
-  echo -e "      ${CYAN}typst watch ${PROJECT_NAME}/main.typ${RESET}"
+  echo -e "      ${CYAN}cd \"${TARGET_DIR}\" && typst watch main.typ${RESET}"
   echo "    → Beenden: Ctrl+C"
   echo ""
-  echo -e "  ${BOLD}Schritt 4:${RESET} Quellen in ${CYAN}${PROJECT_NAME}/refs.bib${RESET} eintragen"
+  echo -e "  ${BOLD}Schritt 4:${RESET} Quellen in ${CYAN}${TARGET_DIR}/refs.bib${RESET} eintragen"
   echo "    → Tipp: Zotero oder Citavi können .bib-Dateien exportieren"
   echo ""
-  echo -e "  ${BOLD}Alle Optionen und Einstellungen:${RESET} ${CYAN}README.md${RESET}"
+  echo -e "  ${BOLD}Alle Optionen und Einstellungen:${RESET} ${CYAN}https://github.com/lultoni/hwr-typst-template${RESET}"
   echo ""
   echo -e "${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${RESET}"
   echo ""
@@ -508,7 +517,6 @@ print_done() {
 # =============================================================================
 # Hauptprogramm
 # =============================================================================
-check_cwd
 collect_input
 create_files
 print_done

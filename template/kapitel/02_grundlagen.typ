@@ -1,5 +1,5 @@
 // kapitel/02_grundlagen.typ
-#import "../../lib.typ": abk
+#import "@preview/wi-hwr-berlin:0.1.0": abk
 
 = Theoretische Grundlagen
 

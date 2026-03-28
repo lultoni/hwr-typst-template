@@ -77,52 +77,56 @@ Das Template verwendet **Times New Roman** (HWR-Vorschrift).
 
 ---
 
-## Schritt 3: Template herunterladen
+## Schritt 3: Projekt einrichten — zwei Wege
 
-Auf der GitHub-Seite oben rechts auf **Code → Download ZIP** klicken.
-ZIP entpacken — du erhältst einen Ordner `hwr-typst-template-main/` (oder ähnlich).
+### Weg A — Typst Universe (ein Befehl, für alle die Typst schon kennen)
 
-**Alternativ direkt im Terminal** (macOS/Linux — kein ZIP nötig):
+```bash
+typst init @preview/wi-hwr-berlin:0.1.0
+```
+
+Das erstellt sofort einen fertigen Projektordner. Danach:
+
+```bash
+cd wi-hwr-berlin
+typst watch main.typ   # Live-Vorschau, Beenden: Ctrl+C
+```
+
+### Weg B — interaktives Setup-Script (empfohlen für Einsteiger)
+
+Das Script stellt dir alle Fragen und erstellt eine vollständig ausgefüllte `main.typ` mit deinen Daten.
+
+**Methode 1 — direkt aus dem Web (macOS/Linux, kein Download nötig):**
 
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/lultoni/hwr-typst-template/main/scripts/init.sh)
 ```
 
-Dieser Befehl lädt das Setup-Script herunter und führt es sofort aus — du wirst nach deinen Daten gefragt und bekommst einen fertigen Projektordner, ohne erst das komplette Repository herunterladen zu müssen.
+**Methode 2 — nach ZIP-Download:**
 
-> Sicherheitshinweis: Bevor du ein Script aus dem Internet direkt ausführst, kannst du es dir unter dem obigen Link ansehen.
-
----
-
-## Schritt 4: Projekt einrichten — ein einziger Befehl
-
-Öffne ein Terminal im Ordner `hwr-typst-template-main/`:
-- **macOS/Linux:** Terminal öffnen, dann `cd /pfad/zum/ordner/hwr-typst-template-main` eingeben.
-  Tipp: Den Ordner aus dem Finder ins Terminal-Fenster ziehen — der Pfad wird automatisch eingetragen.
-- **Windows:** Im Explorer in den Ordner wechseln, dann Rechtsklick → „Im Terminal öffnen".
-
-Dann:
+Auf der GitHub-Seite: **Code → Download ZIP** → entpacken, dann:
 ```bash
+# Terminal in den entpackten Ordner öffnen, dann:
 bash scripts/init.sh
 ```
 
-Das Skript fragt dich der Reihe nach nach deinen Daten:
+Das Script fragt dich der Reihe nach:
+- Wo soll das Projekt erstellt werden?
 - Name des Projektordners
 - Art der Arbeit (PTB, Hausarbeit, Bachelorarbeit, …)
 - Dein Name und Matrikelnummer
-- Titel der Arbeit
-- Betreuende/r Prüfer/in (oder Gutachter für Bachelorarbeit)
-- Ausbildungsbetrieb
-- Fachrichtung, Jahrgang, Semester
+- Titel, Prüfer/in, Betrieb, Fachrichtung, Jahrgang
 - Gewünschte Anzahl Kapitel
 
-Am Ende hast du einen fertigen Projektordner mit allen Dateien — inklusive vorausgefüllter `main.typ`.
+Am Ende hast du einen fertigen Projektordner mit vorausgefüllter `main.typ`.
+
+> **Sicherheitshinweis (Methode 1):** Bevor du ein Script aus dem Internet ausführst, kannst du es dir vorher ansehen: [scripts/init.sh](https://github.com/lultoni/hwr-typst-template/blob/main/scripts/init.sh)
 
 ---
 
-## Schritt 5: Schreiben
+## Schritt 4: Schreiben
 
-Öffne den neu erstellten Projektordner in einem Texteditor. Empfohlen: **VS Code** (kostenlos, [code.visualstudio.com](https://code.visualstudio.com)) mit der **Tinymist**-Erweiterung — dann wird die PDF-Vorschau automatisch beim Speichern aktualisiert.
+Öffne den Projektordner in einem Texteditor. Empfohlen: **VS Code** (kostenlos, [code.visualstudio.com](https://code.visualstudio.com)) mit der **Tinymist**-Erweiterung für Syntax-Highlighting.
 
 ```
 DEIN-PROJEKT/
@@ -169,19 +173,17 @@ abbreviations: (
 
 ---
 
-## Schritt 6: PDF erstellen
-
-### Im Terminal (empfohlen)
+## Schritt 5: PDF erstellen
 
 ```bash
-# Aus dem Ordner hwr-typst-template-main heraus:
+# Im Projektordner (z.B. cd meine-arbeit):
 
 # Einmalig erstellen:
-typst compile DEIN-PROJEKTNAME/main.typ
+typst compile main.typ
 
 # Mit Live-Vorschau (aktualisiert bei jedem Speichern):
-typst watch DEIN-PROJEKTNAME/main.typ
-# Beenden: Ctrl+C (macOS/Linux) oder Strg+C (Windows)
+typst watch main.typ
+# Beenden: Ctrl+C
 ```
 
 Die fertige PDF liegt direkt neben `main.typ`.

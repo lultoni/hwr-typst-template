@@ -1,16 +1,16 @@
 [package]
-name = "hwr-berlin"
+name = "wi-hwr-berlin"
 version = "0.1.0"
 compiler = "0.13.1"
 entrypoint = "lib.typ"
 repository = "https://github.com/lultoni/hwr-typst-template"
-authors = ["lultoni"]
+authors = ["lultoni <https://github.com/lultoni>"]
 license = "MIT"
-description = "Typst template for academic papers at HWR Berlin (Wirtschaftsinformatik), compliant with the January 2025 HWR guidelines."
+description = "Academic paper template for HWR Berlin (Wirtschaftsinformatik)."
 categories = ["thesis"]
 keywords = ["thesis", "university", "hwr", "berlin", "wirtschaftsinformatik"]
 disciplines = ["computer-science"]
-exclude = [".github", "reference-templates", "hwr-richtlinien", ".claude", "requirements"]
+exclude = ["reference-templates", "hwr-richtlinien", ".claude", "requirements", "scripts", ".github", "test-*"]
 
 [dependencies]
 "@preview/linguify:0.5.0" = {}
@@ -19,3 +19,4 @@ exclude = [".github", "reference-templates", "hwr-richtlinien", ".claude", "requ
 [template]
 path = "template"
 entrypoint = "main.typ"
+thumbnail = "thumbnail.png"

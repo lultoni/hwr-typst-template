@@ -1,6 +1,6 @@
 // kapitel/01_einleitung.typ
 // Ersetze diesen Inhalt durch deine eigene Einleitung.
-#import "../../lib.typ": abk
+#import "@preview/wi-hwr-berlin:0.1.0": abk
 
 = Einleitung
 
