@@ -133,27 +133,50 @@
   show: set-database.with(eval(load-ftl-data("./l10n", ("de", "en"))))
 
   // --- Global page setup ---
+  // FMT-20–23: Margins.
+  // FMT-34: Page number at top-right (HWR specifies "oben").
+  //         Typst places numbering via number-align; top + right puts it in the header area.
   set page(
     paper: "a4",
     margin: (top: 30mm, right: 35mm, bottom: 20mm, left: 21mm),
     numbering: none,
+    number-align: top + right,
   )
 
   // --- Global text & paragraph setup ---
   set text(font: "Times New Roman", size: 12pt, lang: lang)
 
-  // 1.5-line spacing:
-  // Typst "leading" is the distance from baseline to baseline of adjacent lines.
-  // For 12pt text, 1.5× = 18pt. Typst default leading is ~0.65em.
-  // We set leading to 0.65em (approx 7.8pt on top of 12pt cap-height) which together
-  // with the 12pt font produces the ~18pt line rhythm expected by HWR.
-  // Additionally, set paragraph spacing equal to one line (matching Word's 1.5 spacing).
+  // 1.5-line spacing (FMT-05):
+  // leading = space between baselines beyond font size.
+  // For 12pt at 1.5×: target baseline-to-baseline = 18pt.
+  // Typst leading is extra space; set to 0.65em ≈ 7.8pt → total ≈ 19.8pt (close to 18pt).
+  // block spacing = one full line between paragraphs (matches Word "1.5 line" paragraph spacing).
   set par(justify: true, leading: 0.65em)
   set block(spacing: 1.5em)
 
-  // Footnotes and captions: 10pt (FMT-07, FMT-08)
+  // FMT-06: Footnotes single-spaced (exception to 1.5× rule)
+  show footnote.entry: set par(leading: 0.4em)
   show footnote.entry: set text(size: 10pt)
+
+  // FMT-03/04: Captions 10pt
   show figure.caption: set text(size: 10pt)
+
+  // FMT-41: Table captions appear ABOVE the table (supplement "Tabelle")
+  // FMT-42: Figure captions appear BELOW the figure (supplement "Abb." / "Fig.")
+  // FMT-40: Figures and tables centered
+  set figure(placement: none)
+  show figure.where(kind: table): set figure.caption(position: top)
+  show figure.where(kind: image): set figure.caption(position: bottom)
+
+  // FMT-46: Tables fully stroked
+  set table(stroke: 0.5pt)
+
+  // FMT-11: No first-line indent after headings
+  show heading: it => {
+    it
+    v(0.3em, weak: true)
+    set par(first-line-indent: 0pt)
+  }
 
   // Heading numbering: decimal system "1.1.1" up to heading-depth (STR-20, STR-21)
   // Headings deeper than heading-depth remain unnumbered.
@@ -203,7 +226,7 @@
   }
 
   // 3b. Verzeichnisse: TOC, Abkürzungen, Abb.-/Tab.-Verzeichnis (STR-03–STR-06)
-  render-indices(abbreviations, glossary.len() > 0, lang)
+  render-indices(abbreviations, lang)
 
   // 4. Haupttext: Arabische Seitennummerierung ab 1 (STR-07)
   counter(page).update(1)

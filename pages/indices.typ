@@ -13,9 +13,8 @@
 /// Render all front-matter indices.
 ///
 /// - abbreviations: dict ("KI": "Künstliche Intelligenz", ...) from hwr() param
-/// - has-glossary: bool — whether glossary entries were provided (affects heading list)
 /// - lang: "de" | "en"
-#let render-indices(abbreviations, has-glossary, lang) = {
+#let render-indices(abbreviations, lang) = {
 
   // ── 1. Inhaltsverzeichnis ────────────────────────────────────────────────
   // set outline() depth and indent already configured globally in lib.typ
