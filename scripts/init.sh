@@ -21,6 +21,22 @@
 
 set -e
 
+# --- Typst-Installation prüfen -----------------------------------------------
+if ! command -v typst &>/dev/null; then
+  echo ""
+  echo -e "\033[1;31m  Fehler:\033[0m typst ist nicht installiert."
+  echo ""
+  echo "  Bitte zuerst Typst installieren, dann dieses Script nochmal starten."
+  echo ""
+  echo "  macOS:   brew install typst"
+  echo "  Windows: winget install --id Typst.Typst"
+  echo "  Linux:   sudo snap install typst   (oder: cargo install typst-cli)"
+  echo ""
+  echo "  Mehr Details: https://github.com/lultoni/hwr-typst-template#schritt-1-typst-installieren"
+  echo ""
+  exit 1
+fi
+
 # --- Farben für lesbarere Ausgabe -------------------------------------------
 BOLD="\033[1m"
 GREEN="\033[1;32m"
@@ -127,9 +143,17 @@ collect_input() {
   # Prüfen ob Zielordner existiert
   if [ ! -d "$TARGET_ROOT" ]; then
     echo ""
-    echo -e "  ${RED}Fehler:${RESET} Der Ordner '${TARGET_ROOT}' existiert nicht."
-    echo "  Bitte zuerst diesen Ordner erstellen, dann das Script nochmal starten."
-    exit 1
+    echo -e "  ${YELLOW}!${RESET} Der Ordner '${TARGET_ROOT}' existiert nicht."
+    local create_answer
+    read -rp "$(echo -e "${CYAN}?${RESET} Soll ich ihn erstellen? [Ja]: ")" create_answer </dev/tty
+    create_answer="${create_answer:-Ja}"
+    if [[ "$create_answer" =~ ^([Jj]|[Jj][Aa]|[Yy]|[Yy][Ee][Ss])$ ]]; then
+      mkdir -p "$TARGET_ROOT" || { echo -e "  ${RED}Fehler:${RESET} Ordner konnte nicht erstellt werden."; exit 1; }
+      ok "Ordner erstellt: ${TARGET_ROOT}"
+    else
+      echo "  Abgebrochen."
+      exit 1
+    fi
   fi
 
   TARGET_ROOT="$(cd "$TARGET_ROOT" && pwd)"
@@ -205,6 +229,7 @@ collect_input() {
   # --- Anzahl Kapitel --------------------------------------------------------
   NUM_CHAPTERS=$(ask "Wie viele Kapitel soll die Vorlage erstellen?" "5")
   if ! [[ "$NUM_CHAPTERS" =~ ^[0-9]+$ ]] || [ "$NUM_CHAPTERS" -lt 1 ] || [ "$NUM_CHAPTERS" -gt 20 ]; then
+    warn "Ungültige Eingabe — verwende 5 Kapitel."
     NUM_CHAPTERS=5
   fi
 

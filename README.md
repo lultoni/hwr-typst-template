@@ -16,11 +16,15 @@ Du konzentrierst dich auf den Inhalt. Das Template erledigt den Rest:
 
 Typst ist ein Schreibwerkzeug — ähnlich wie Word, aber du schreibst in reinen Textdateien (`.typ`) statt in einem grafischen Editor. Das Template übernimmt dann automatisch alle Formatierungen. Die fertigen Dateien kompilierst du per Klick oder Befehl zu einer PDF-Datei.
 
-**Vorteil:** Keine manuelle Formatierungsarbeit, kein Verschieben von Seitenumbrüchen, keine Style-Kämpfe.
+**Vorteil:** Keine manuelle Formatierungsarbeit, kein Verschieben von Seitenumbrüchen, keine Style-Kämpfe — und das PDF ist in Millisekunden gerendert.
+
+**Typst-Referenz und Dokumentation** → [typst.app/docs](https://typst.app/docs)
 
 ---
 
 ## Schritt 1: Typst installieren
+
+Das Template benötigt **Typst 0.13.1 oder neuer**.
 
 ### macOS
 
@@ -89,6 +93,8 @@ typst watch main.typ   # Live-Vorschau, Beenden: Ctrl+C
 
 Das erstellt sofort einen fertigen Projektordner mit einer vorausgefüllten `main.typ`.
 
+> Funktioniert nicht? Fehlermeldung `package not found`? → Das Paket wartet noch auf Freigabe im Typst Universe. Nutze in der Zwischenzeit **Weg B**.
+
 ### Weg B — interaktives Setup-Script (empfohlen für Einsteiger)
 
 Das Script stellt dir alle Fragen und erstellt eine vollständig ausgefüllte `main.typ` mit deinen Daten.
@@ -98,6 +104,8 @@ Das Script stellt dir alle Fragen und erstellt eine vollständig ausgefüllte `m
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/lultoni/hwr-typst-template/main/scripts/init.sh)
 ```
+
+> **Windows:** Das Script benötigt eine Bash-Umgebung. Optionen: [Git Bash](https://gitforwindows.org) (empfohlen, kommt mit Git for Windows) oder WSL. Alternativ ZIP-Download → Methode 2.
 
 **Methode 2 — nach ZIP-Download:**
 
