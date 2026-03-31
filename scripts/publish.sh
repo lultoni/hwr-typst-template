@@ -14,13 +14,13 @@
 #   1. Liest die Version aus typst.toml
 #   2. Prüft, dass der Versionsordner noch nicht existiert
 #   3. Synchronisiert den Fork: git pull upstream main
-#   4. Erstellt packages/preview/wi-hwr-berlin/{version}/
+#   4. Erstellt packages/preview/easy-wi-hwr/{version}/
 #   5. Kopiert lib.typ, typst.toml, README.md, LICENSE, thumbnail.png,
 #      pages/, helper/, l10n/, template/
 #   6. Räumt Duplikate/Artefakte auf (template/main.pdf, template/thumbnail.png,
 #      alle .DS_Store-Dateien)
-#   7. Erstellt einen neuen Branch wi-hwr-berlin-{version}
-#   8. Staged & committed mit "wi-hwr-berlin:{version}"
+#   7. Erstellt einen neuen Branch easy-wi-hwr-{version}
+#   8. Staged & committed mit "easy-wi-hwr:{version}"
 #   9. Pusht den Branch zu origin (lultoni/packages)
 #  10. Öffnet einen PR gegen typst/packages
 # =============================================================================
@@ -88,7 +88,7 @@ step_read_version() {
 # =============================================================================
 
 step_check_no_overwrite() {
-  DEST_DIR="${PACKAGES_DIR}/packages/preview/wi-hwr-berlin/${VERSION}"
+  DEST_DIR="${PACKAGES_DIR}/packages/preview/easy-wi-hwr/${VERSION}"
 
   if [ -d "$DEST_DIR" ]; then
     die "Versionsordner existiert bereits: ${DEST_DIR}
@@ -118,7 +118,7 @@ step_sync_fork() {
 
 step_copy_files() {
   mkdir -p "$DEST_DIR"
-  ok "Versionsordner erstellt: packages/preview/wi-hwr-berlin/${VERSION}/"
+  ok "Versionsordner erstellt: packages/preview/easy-wi-hwr/${VERSION}/"
 
   local files=(
     lib.typ
@@ -198,7 +198,7 @@ step_cleanup() {
 # =============================================================================
 
 step_create_branch() {
-  BRANCH="wi-hwr-berlin-${VERSION}"
+  BRANCH="easy-wi-hwr-${VERSION}"
 
   # Sicherstellen, dass wir auf main sind und kein gleicher Branch existiert
   git -C "$PACKAGES_DIR" checkout main
@@ -217,7 +217,7 @@ step_create_branch() {
 # =============================================================================
 
 step_commit() {
-  local commit_msg="wi-hwr-berlin:${VERSION}"
+  local commit_msg="easy-wi-hwr:${VERSION}"
 
   git -C "$PACKAGES_DIR" add "${DEST_DIR}"
   git -C "$PACKAGES_DIR" commit -m "$commit_msg"
@@ -239,7 +239,7 @@ step_push() {
 # =============================================================================
 
 step_create_pr() {
-  local title="wi-hwr-berlin:${VERSION}"
+  local title="easy-wi-hwr:${VERSION}"
   local pr_body
   pr_body="$(cat <<EOF
 This is a submission for a new package version.

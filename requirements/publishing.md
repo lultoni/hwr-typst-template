@@ -11,7 +11,7 @@ Diese Datei dokumentiert den Veröffentlichungsprozess für das Template auf Typ
 
 - Entwicklung läuft ausschließlich in `hwr-typst-template/`.
 - Der Fork `lultoni/packages` ist ein reines Publish-Vehikel — keine Entwicklung dort.
-- Jedes neue Release = neuer Ordner `packages/preview/wi-hwr-berlin/{version}/` im Fork + neuer PR.
+- Jedes neue Release = neuer Ordner `packages/preview/easy-wi-hwr/{version}/` im Fork + neuer PR.
 - `scripts/publish.sh` automatisiert das Kopieren und Vorbereiten des Release-Ordners.
 
 ## Release-Prozess (Schritt für Schritt)
@@ -20,9 +20,9 @@ Diese Datei dokumentiert den Veröffentlichungsprozess für das Template auf Typ
 |---|---|
 | 1 | Entwicklung abschließen und Template lokal testen (`typst compile --root . template/main.typ`) |
 | 2 | `version` in `typst.toml` bumpen (SemVer — Regeln: VER-01–07 in `ux-and-versioning.md`) |
-| 3 | README aktualisieren — insbesondere `typst init @preview/wi-hwr-berlin:X.Y.Z`-Beispiele |
+| 3 | README aktualisieren — insbesondere `typst init @preview/easy-wi-hwr:X.Y.Z`-Beispiele |
 | 4 | `bash scripts/publish.sh` aus dem Template-Root ausführen |
-| 5 | PR im Fork öffnen (Titel: `wi-hwr-berlin:X.Y.Z`) |
+| 5 | PR im Fork öffnen (Titel: `easy-wi-hwr:X.Y.Z`) |
 | 6 | Warten bis CI grün ist, dann auf Maintainer-Review warten |
 
 ## Typst Universe Submission Rules
@@ -31,7 +31,7 @@ Diese Datei dokumentiert den Veröffentlichungsprozess für das Template auf Typ
 
 | ID | Regel | Wert / Beispiel | Quelle |
 |---|---|---|---|
-| PUB-01 | Package-Name: `{unique-part}-{descriptive-part}` | `wi-hwr-berlin` ✓ | CONTRIBUTING |
+| PUB-01 | Package-Name: `{unique-part}-{descriptive-part}` | `easy-wi-hwr` ✓ | CONTRIBUTING |
 | PUB-02 | Description: 40–60 Zeichen, endet mit Punkt, kein "A/An" am Anfang, kein "typst" | `"Paper template for HWR Berlin (Wirtschaftsinformatik)."` (54 Zeichen) ✓ | CONTRIBUTING |
 | PUB-03 | `categories`: nur Werte aus der erlaubten Liste | `["thesis"]` ✓ | CONTRIBUTING |
 | PUB-04 | `thumbnail` darf NICHT in `exclude` stehen — wird automatisch ausgeschlossen | Nicht in `exclude` eintragen | CONTRIBUTING |
@@ -46,13 +46,13 @@ Diese Datei dokumentiert den Veröffentlichungsprozess für das Template auf Typ
 | ID | Regel | Quelle |
 |---|---|---|
 | PUB-10 | Das Template muss ohne User-Änderungen out-of-the-box kompilieren | CONTRIBUTING |
-| PUB-11 | Alle Imports in Template-Dateien müssen `@preview/wi-hwr-berlin:x.y.z`-Style verwenden — niemals relative Pfade wie `../../lib.typ` | CONTRIBUTING |
+| PUB-11 | Alle Imports in Template-Dateien müssen `@preview/easy-wi-hwr:x.y.z`-Style verwenden — niemals relative Pfade wie `../../lib.typ` | CONTRIBUTING |
 
 ### PR-Format
 
 | ID | Regel | Beispiel |
 |---|---|---|
-| PUB-20 | PR-Titel: exakt `{package-name}:{version}` | `wi-hwr-berlin:0.1.0` |
+| PUB-20 | PR-Titel: exakt `{package-name}:{version}` | `easy-wi-hwr:0.1.0` |
 | PUB-21 | Einmal veröffentlichte Version-Ordner sind immutable — niemals nachträglich editieren | — |
 
 ## Dateien im Published Bundle
@@ -86,6 +86,6 @@ Diese Datei dokumentiert den Veröffentlichungsprozess für das Template auf Typ
 | Problem | Ursache | Fix |
 |---|---|---|
 | Description zu lang (63 Zeichen) | Initiale Beschreibung überschritt 60-Zeichen-Limit | Auf 54 Zeichen gekürzt: `"Paper template for HWR Berlin (Wirtschaftsinformatik)."` |
-| Falscher Package-Name in Kommentar (`@preview/hwr-berlin:0.1.0`) | Copy-Paste-Fehler in `lib.typ` | Auf `@preview/wi-hwr-berlin:0.1.0` korrigiert |
+| Falscher Package-Name in Kommentar (`@preview/hwr-berlin:0.1.0`) | Copy-Paste-Fehler in `lib.typ` | Auf `@preview/easy-wi-hwr:0.1.0` korrigiert |
 | CI-Fehler: `unknown fields: ["dependencies"]` | `[dependencies]`-Sektion in `typst.toml` ist kein gültiges Universe-Manifest-Feld | Sektion entfernt — Typst löst `@preview/`-Imports zur Compile-Zeit automatisch auf |
 | README-Warnung: Link auf `main`-Branch | `typst-package-check` warnt vor Links auf Default-Branch, die driften können | Permalink auf konkreten Commit-SHA ersetzt |

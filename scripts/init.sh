@@ -400,7 +400,7 @@ _generate_main_typ() {
 //
 // ============================================================
 
-#import "@preview/wi-hwr-berlin:0.1.0": hwr, abk
+#import "@preview/easy-wi-hwr:0.1.0": hwr, abk
 
 #show: hwr.with(
 
