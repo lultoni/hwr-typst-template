@@ -91,8 +91,6 @@ Das Template verwendet **Times New Roman** (HWR-Vorschrift).
 
 ```bash
 typst init @preview/easy-wi-hwr:0.1.0 meine-arbeit
-cd meine-arbeit
-typst watch main.typ   # Live-Vorschau, Beenden: Ctrl+C
 ```
 
 Das erstellt sofort einen fertigen Projektordner mit einer vorausgefüllten `main.typ`.
@@ -179,7 +177,7 @@ abbreviations: (
 # Einmalig erstellen:
 typst compile main.typ
 
-# Mit Live-Vorschau (aktualisiert bei jedem Speichern):
+# Mit Live-Kompilierung (aktualisiert bei jedem Speichern):
 typst watch main.typ
 # Beenden: Ctrl+C
 ```
