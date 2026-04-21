@@ -312,6 +312,7 @@ BIBTEX
 
     cat > "$TARGET_DIR/kapitel/$filename" << KAPITEL
 // kapitel/$filename — $name
+#import "@preview/easy-wi-hwr:0.1.2": abk
 //
 // Schreibe hier deinen Text. Ein paar Tipps:
 //
@@ -400,7 +401,7 @@ _generate_main_typ() {
 //
 // ============================================================
 
-#import "@preview/easy-wi-hwr:0.1.2": hwr, abk
+#import "@preview/easy-wi-hwr:0.1.2": hwr, abk, gls, glspl
 
 #show: hwr.with(
 
@@ -485,7 +486,7 @@ ${CHAPTER_INCLUDES}  ),
   // ),
 
   // ── Literaturverzeichnis ───────────────────────────────
-  bibliography: bibliography("refs.bib", title: "Literaturverzeichnis"),
+  bibliography: bibliography("refs.bib"),
   citation-style: "apa",
   // Englische Arbeit? Dann: citation-style: "harvard-anglia-ruskin-university"
   // Eigene CSL-Datei?  Dann: citation-style: read("mein-stil.csl")

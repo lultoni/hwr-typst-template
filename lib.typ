@@ -309,6 +309,11 @@
 
   // 1. Sperrvermerk (vor Deckblatt, keine Seitennummer, nicht in Zählung — CNT-20, STR-01)
   if confidential != none {
+    // Validate: Sperrvermerk requires company name for the confidentiality text
+    assert(company != none,
+      message: "confidential requires company: — the Sperrvermerk text references the company name. " +
+               "Set company: \"Firma GmbH\" or remove confidential:.")
+
     // Empty chapters list → treat as full confidentiality (Bug 12)
     let resolved-conf = if type(confidential) == dictionary {
       let chs = confidential.at("chapters", default: ())
@@ -330,6 +335,20 @@
     company-logo: resolved-company-logo,
     pretty-title: resolved-pretty-title,
   )
+
+  // Pretty-mode warning: show visual notice when non-compliant styling is active
+  if is-pretty or resolved-school-logo != none or resolved-company-logo != none or (pretty-title != none and pretty-title == true) {
+    block(
+      fill: rgb("#fff3cd"),
+      stroke: 0.5pt + rgb("#856404"),
+      radius: 3pt,
+      inset: 8pt,
+      width: 100%,
+    )[
+      #set text(size: 10pt)
+      #linguify("pretty-warning")
+    ]
+  }
 
   // 3. Vorspann: Römische Seitennummerierung sichtbar (STR-03 ff.)
   set page(numbering: "I")
