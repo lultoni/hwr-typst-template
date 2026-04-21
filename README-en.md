@@ -11,24 +11,42 @@ You focus on the content. The template handles the rest:
 - Statutory declaration with 2025 AI clause
 - AI tools register (when AI tools were used)
 
+> **Quickstart:** `brew install typst && typst init @preview/easy-wi-hwr:0.1.2 my-paper && cd my-paper && typst watch main.typ`
+
+> **While writing:** [Helper Functions](#helper-functions-usable-in-text)
+
 > **Something not working?** → [Common Issues](#common-issues)
+
+*I generally recommend reading the [Reference](#reference) section.*
 
 ### Contents
 
+**Getting Started**
 - [What is Typst?](#what-is-typst)
 - [Step 1: Install Typst](#step-1-install-typst)
 - [Step 2: Install the font](#step-2-install-the-font)
 - [Step 3: Set up a project](#step-3-set-up-a-project--two-options)
 - [Step 4: Writing](#step-4-writing)
 - [Step 5: Create the PDF](#step-5-create-the-pdf)
+
+**Content & Required Fields**
 - [References](#references)
-- [AI Tools](#ai-tools-required-if-ai-was-used)
-- [Group Work](#group-work)
-- [Digital Signature](#digital-signature-optional)
-- [Confidentiality Notice](#confidentiality-notice)
+- [AI Tools (required if AI was used)](#ai-tools-required-if-ai-was-used)
+- [Abbreviations & Glossary](#abbreviations--glossary)
+- [Source Attribution for Figures](#source-attribution-for-figures)
+- [Extended Direct Quotes](#extended-direct-quotes)
+
+**Optional Features**
 - [English Papers](#english-papers)
-- [Mermaid Diagrams](#mermaid-diagrams-optional)
-- [Pretty Mode](#pretty-mode-optional)
+- [Group Work](#group-work)
+- [Confidentiality Notice](#confidentiality-notice)
+- [Draft Mode](#draft-mode)
+- [Digital Signature](#digital-signature)
+- [Mermaid Diagrams](#mermaid-diagrams)
+- [Pretty Mode](#pretty-mode)
+
+**Reference**
+- [Helper Functions](#helper-functions-usable-in-text)
 - [Good to Know](#good-to-know)
 - [All Parameters](#all-parameters-at-a-glance)
 - [Common Issues](#common-issues)
@@ -36,9 +54,11 @@ You focus on the content. The template handles the rest:
 
 ---
 
+# Getting Started
+
 ## What is Typst?
 
-Typst is a writing tool — similar to Word, but you write in plain text files (`.typ`) instead of a graphical editor. The template then automatically handles all formatting. You compile the finished files to PDF with a single click or command.
+Typst is a writing tool — similar to Word, but you write in plain text files (`.typ`) instead of a graphical editor. You type e.g. `= Introduction` and it automatically becomes a formatted heading. The template then handles all formatting automatically. You compile the finished files to PDF with a single click or command.
 
 **Advantage:** No manual formatting work, no fighting with page breaks, no style conflicts — and the PDF renders in milliseconds.
 
@@ -120,12 +140,16 @@ This instantly creates a ready-to-use project folder with a pre-filled `main.typ
 ### Option B — Interactive setup script (optional, for beginners)
 
 The script asks you all the questions and creates a fully pre-filled `main.typ` with your data.
-You can run it locally after downloading the ZIP:
 
-On the GitHub page: **Code → Download ZIP** → unzip, then:
+**Run directly (macOS/Linux):**
 ```bash
-# Open a terminal in the unzipped folder, then:
-bash scripts/init.sh
+bash <(curl -fsSL https://raw.githubusercontent.com/lultoni/easy-wi-hwr/main/scripts/init.sh)
+```
+
+**Or locally after download:**
+```bash
+git clone https://github.com/lultoni/easy-wi-hwr.git
+bash easy-wi-hwr/scripts/init.sh
 ```
 
 The script asks you step by step:
@@ -175,21 +199,7 @@ Citation: According to @mustermann2024...
 Abbreviation on first use: #abk("AI")
 ```
 
-**Abbreviations** work fully automatically:
-- First use: `#abk("AI")` → outputs "Artificial Intelligence (AI)"
-- All subsequent uses: `#abk("AI")` → outputs "AI"
-- The list of abbreviations is created automatically
-
-You define abbreviations once in `main.typ`:
-```typst
-abbreviations: (
-  "AI":  "Artificial Intelligence",
-  "HWR": "Berlin School of Economics and Law",
-  "ERP": "Enterprise Resource Planning",
-),
-```
-
-**Alternative: Everything in one file** — you can also work without separate chapter files. Leave `chapters:` empty and write all your text directly in `main.typ` after the settings block. Insert `#pagebreak()` between chapters so each starts on a new page (with `chapters:` this happens automatically):
+**Alternative: Everything in one file** — You can also work without separate chapter files. Leave `chapters:` empty and write all your text directly in `main.typ` after the settings block. Insert `#pagebreak()` between chapters so each starts on a new page (with `chapters:` this happens automatically):
 
 ```typst
 #show: hwr.with(
@@ -232,6 +242,8 @@ The finished PDF is placed right next to `main.typ`.
 Tinymist provides syntax highlighting and autocomplete for `.typ` files. You can also compile directly from VS Code — Tinymist shows a live preview in the editor window.
 
 ---
+
+# Content & Required Fields
 
 ## References
 
@@ -283,6 +295,99 @@ The AI tools register is automatically inserted as the last appendix item. With 
 
 ---
 
+## Abbreviations & Glossary
+
+**Abbreviations** work fully automatically:
+- First use: `#abk("AI")` → outputs "Artificial Intelligence (AI)"
+- All subsequent uses: `#abk("AI")` → outputs "AI"
+- The list of abbreviations is created automatically
+
+You define abbreviations once in `main.typ`:
+```typst
+abbreviations: (
+  "AI":  "Artificial Intelligence",
+  "HWR": "Berlin School of Economics and Law",
+  "ERP": "Enterprise Resource Planning",
+),
+```
+
+**Glossary** — for technical terms *without* their own abbreviation (e.g. "Stakeholder", "Scrum"):
+```typst
+glossary: (
+  (key: "stakeholder", short: "Stakeholder", long: "Stakeholder",
+   description: "Interest groups that are directly or indirectly affected by a project."),
+),
+```
+
+In the text: `#gls("stakeholder")` → outputs "Stakeholder" and links to the glossary. Plural form: `#glspl("stakeholder")`.
+
+> **Note:** `#gls()` expands on first use to "long (short)". For terms where `short` and `long` are identical (like "Stakeholder"), the glossary entry mainly serves as a reference index — the expansion is redundant. The abbreviation function `#abk()` is better suited for terms with an actual short/long form difference (e.g. "AI" / "Artificial Intelligence").
+
+**Rule:** Never put the same term in both lists — abbreviations go in the abbreviation list, technical terms without abbreviation go in the glossary.
+
+---
+
+## Source Attribution for Figures
+
+HWR requires a source attribution beneath every figure and table. The template provides the `#quelle()` function for this:
+
+```typst
+// Own illustration (default):
+#figure(
+  image("images/diagram.png"),
+  caption: [Process overview. #quelle()],
+)
+// → "Source: Own illustration"
+
+// External source:
+#figure(
+  image("images/chart.png"),
+  caption: [Market shares 2024. #quelle(author: "Mustermann", year: 2024)],
+)
+// → "Source: Mustermann (2024)"
+
+// With page reference:
+#figure(
+  table(...),
+  caption: [Comparison. #quelle(author: "Müller", year: 2023, s: "p. 42")],
+)
+// → "Source: Müller (2023), p. 42"
+```
+
+---
+
+## Extended Direct Quotes
+
+Longer quotes (approx. 40+ words) must be indented and single-spaced per HWR §3.4.2. Use `#blockquote[]` for this:
+
+```typst
+#blockquote[
+  "Digital transformation changes not only business processes but also
+  corporate culture fundamentally. Companies that do not actively shape this
+  change risk their long-term competitiveness." @mustermann2024[p. 42]
+]
+```
+
+The text is automatically left-indented and single-spaced — no manual formatting needed.
+
+> **Note:** The `[p. 42]` syntax after `@key` passes the page locator to the citation engine. The exact rendering (e.g. "p." vs. "S.") depends on the chosen CSL style.
+
+---
+
+# Optional Features
+
+## English Papers
+
+```typst
+lang: "en",
+```
+
+All index headings, the statutory declaration, and the AI tools register switch to English automatically. The citation style automatically switches to Harvard (Anglia Ruskin University) — the CSL file is included in the template (HWR §6).
+
+> **Tip:** Set `declaration-lang: "de"` to keep the statutory declaration in German — this is the legally safe choice. Whether an English declaration is accepted has not been definitively established.
+
+---
+
 ## Group Work
 
 Simply add more authors:
@@ -302,25 +407,7 @@ The statutory declaration automatically switches to "We declare…" and both aut
 group-signature: false,  // only the first author signs
 ```
 
-The template then shows a yellow notice in the PDF reminding you to clarify this with your examiner.
-
----
-
-## Digital Signature (optional)
-
-Instead of an empty line for a handwritten signature, you can embed an image of your signature:
-
-1. Sign on white paper, scan or photograph it
-2. Save as PNG or SVG under `images/` in your project folder
-3. Add to the author entry in `main.typ`:
-
-```typst
-authors: (
-  (name: "Max Mustermann", matrikel: "12345678", signature: image("images/signature_max.png")),
-),
-```
-
-The image then appears automatically in the signature field of the statutory declaration.
+The template then shows a yellow notice in the PDF reminding you to clarify this with your examiner. Suppress it with `warnings: false` after confirmation.
 
 ---
 
@@ -346,20 +433,37 @@ The required text is inserted automatically and appears before the cover page.
 
 ---
 
-## English Papers
+## Draft Mode
+
+While working, you can enable a watermark so drafts are not accidentally submitted as the final version:
 
 ```typst
-lang: "en",
-citation-style: "harvard-anglia-ruskin-university",
+draft: true,
 ```
 
-All index headings, the statutory declaration, and the AI tools register switch to English automatically. The Harvard CSL file (Anglia Ruskin University) is included in the template and loaded automatically — no manual download needed (HWR §6).
-
-> **Tip:** Set `declaration-lang: "de"` to keep the statutory declaration in German — this is the legally safe choice. Whether an English declaration is accepted has not been definitively established.
+Every page shows a grey "DRAFT" watermark (with `lang: "de"` → "ENTWURF"). Before submission, simply set `draft: false` or remove the line.
 
 ---
 
-## Mermaid Diagrams (optional)
+## Digital Signature
+
+Instead of an empty line for a handwritten signature, you can embed an image of your signature:
+
+1. Sign on white paper, scan or photograph it
+2. Save as PNG or SVG under `images/` in your project folder
+3. Add to the author entry in `main.typ`:
+
+```typst
+authors: (
+  (name: "Max Mustermann", matrikel: "12345678", signature: image("images/signature_max.png")),
+),
+```
+
+The image then appears automatically in the signature field of the statutory declaration.
+
+---
+
+## Mermaid Diagrams
 
 You can embed Mermaid diagrams directly in Typst — no external tools needed. The `mmdr` package renders Mermaid syntax natively in your document:
 
@@ -385,7 +489,7 @@ Details: [typst.app/universe/package/mmdr](https://typst.app/universe/package/mm
 
 ---
 
-## Pretty Mode (optional)
+## Pretty Mode
 
 You can activate a decorative cover page and logo header:
 
@@ -395,7 +499,7 @@ school-logo: image("images/school-logo.svg", height: 1.2cm),
 company-logo: image("images/company-logo.svg", height: 1.2cm),
 ```
 
-**Important:** Pretty Mode is **not specified in the HWR guidelines**. Please confirm with your supervisor before using it.
+**Important:** Pretty Mode is **not specified in the HWR guidelines**. Please confirm with your supervisor before using it. The template shows a yellow notice in the PDF — suppress it with `warnings: false` after confirmation.
 
 You can also activate individual features independently:
 - `pretty-title: true` — decorative cover page only (ornamental lines, larger title)
@@ -405,9 +509,31 @@ Default is `style: "compliant"` (guideline-conformant).
 
 ---
 
+# Reference
+
+## Helper Functions (usable in text)
+
+These functions can be used in your chapter files:
+
+| Function | Description |
+|---|---|
+| `#abk("AI")` | Abbreviation — expanded on first use, short form afterwards |
+| `#gls("key")` | Glossary entry — expanded on first use, short form afterwards |
+| `#glspl("key")` | Glossary entry in plural form |
+| `#quelle()` | Source attribution "Own illustration" for figures/tables |
+| `#quelle(author: "Name", year: 2024)` | Source attribution with author and year |
+| `#blockquote[...]` | Indented, single-spaced block quote (HWR §3.4.2) |
+
+All functions are automatically available after the import in `main.typ`. In chapter files, you need to import the functions you use:
+```typst
+#import "@preview/easy-wi-hwr:0.1.2": abk, gls, glspl, quelle, blockquote
+```
+
+---
+
 ## Good to Know
 
-**Citation style:** Default is APA (for German-language papers). For English papers: `citation-style: "harvard-anglia-ruskin-university"` — the CSL file is included. If your supervisor requires a different style, you can download a `.csl` file from the [Zotero Style Repository](https://www.zotero.org/styles) and include it via `read()`:
+**Citation style:** Default is `"auto"` — the template automatically selects APA for German-language papers and Harvard (Anglia Ruskin University) for English papers. The Harvard CSL file is included. If your supervisor requires a different style, you can download a `.csl` file from the [Zotero Style Repository](https://www.zotero.org/styles) and include it via `read()`:
 ```typst
 citation-style: read("my-style.csl"),
 ```
@@ -426,7 +552,7 @@ Unused abbreviations do not appear in the list.
 - **Pandoc:** `pandoc main.typ -o paper.docx` — experimental, may lose some formatting
 - **Copy-paste:** Open the PDF in Word (Word can import PDFs) — often the most pragmatic solution for simple documents
 
-The Word version typically serves archival purposes only — perfect formatting is not required.
+The Word version typically serves archival purposes only — in practice, perfect formatting is not required.
 
 ---
 
@@ -438,9 +564,13 @@ The Word version typically serves archival purposes only — perfect formatting 
 |---|---|
 | `doc-type` | Type of paper: `"ptb-1"`, `"ptb-2"`, `"ptb-3"`, `"hausarbeit"`, `"studienarbeit"`, `"bachelorarbeit"` |
 | `title` | Paper title |
-| `name` | Your name (shorthand for single author — equivalent to `authors: (name: "...", matrikel: "...")`) |
-| `matrikel` | Your student ID number (use together with `name:`) |
-| `authors` | Alternative: array of authors: `((name: "...", matrikel: "..."),)` — for group work or when `name:`/`matrikel:` not used |
+
+**Authors** — use *one* of the two variants:
+
+| Variant | Parameter | Description |
+|---|---|---|
+| **Single author** | `name` + `matrikel` | Shorthand: `name: "Max Mustermann"`, `matrikel: "12345678"` |
+| **Group work** | `authors` | Array: `authors: ((name: "...", matrikel: "..."), (name: "...", matrikel: "..."))` |
 
 ### Required Depending on Document Type
 
@@ -469,11 +599,13 @@ The Word version typically serves archival purposes only — perfect formatting 
 | `appendix` | `()` | Appendix entries: `(title: "...", content: include(...))` |
 | `show-appendix-toc` | `false` | `true` = optional appendix table of contents before the appendix entries (HWR §3.10) |
 | `bibliography` | — | `bibliography("refs.bib")` — title is set automatically |
-| `citation-style` | `"apa"` | Citation style: `"apa"` (DE), `"harvard-anglia-ruskin-university"` (EN, included), or `read("file.csl")` |
+| `citation-style` | `"auto"` | Citation style: `"auto"` (DE → APA, EN → Harvard), `"apa"`, `"harvard-anglia-ruskin-university"`, or `read("file.csl")` |
 | `heading-depth` | `4` | TOC depth 1–4 (max. 4 per HWR) |
 | `declaration-lang` | `auto` | Language of the statutory declaration — `auto` follows `lang`, `"de"` always German (recommended — legally safe) |
 | `city` | `"Berlin"` | City in the signature field of the statutory declaration |
 | `group-signature` | `auto` | `auto`/`true` = all authors sign; `false` = only first author |
+| `draft` | `false` | `true` = watermark "ENTWURF"/"DRAFT" on every page |
+| `warnings` | `true` | `false` = suppress yellow warning boxes in PDF (e.g. pretty-mode notice, after confirming with examiner) |
 | `style` | `"compliant"` | `"compliant"` (guideline-conformant) or `"pretty"` (decorative, confirm with supervisor) |
 | `school-logo` | `none` | Logo on the left of the page header, e.g. `image("images/logo.png", height: 1.2cm)` |
 | `company-logo` | `none` | Logo on the right of the page header |
@@ -495,6 +627,7 @@ The Word version typically serves archival purposes only — perfect formatting 
 |---|---|
 | `doc-type "..." is invalid` | Value must be exactly `"ptb-1"`, `"ptb-2"`, `"ptb-3"`, `"hausarbeit"`, `"studienarbeit"`, or `"bachelorarbeit"` |
 | `supervisor is required for...` | For all types except `"bachelorarbeit"`, `supervisor:` and `company:` must be set |
+| `confidential requires company:` | Confidentiality notice needs the company name — set `company:` or remove `confidential:` |
 | `authors must be an array of dicts` | `authors:` must be an array: `authors: ((name: "...", matrikel: "..."),)` — don't forget the comma after the closing parenthesis for a single author! |
 | `chapters entries must use include()` | Do not use string paths. Correct: `chapters: (include("kapitel/01.typ"),)` instead of `chapters: ("kapitel/01.typ",)` |
 | Times New Roman missing (Linux) | `sudo apt install ttf-mscorefonts-installer` |
@@ -505,6 +638,10 @@ The Word version typically serves archival purposes only — perfect formatting 
 | Import error with `include()` | Paths in `chapters:` are relative to `main.typ` — `include("kapitel/01_einleitung.typ")` |
 | `signature muss image-Content sein` | Use `signature: image("images/sig.png")` instead of `signature: "images/sig.png"` |
 | All pages doubled / strange formatting | Only one `#show: hwr.with(...)` block per file — no second `#show:` and no text before it |
+| `#abk()` / `#gls()` not working in chapter file | Each chapter file needs `#import "@preview/easy-wi-hwr:0.1.2": abk` (or whichever functions you use) |
+| Citation style file not found | `citation-style: read("my-style.csl")` — path is relative to `main.typ`. File must be in the same folder |
+| Appendix numbering shows A, B, C instead of 1, 2, 3 | Use the built-in appendix function via the `appendix:` parameter — do not number manually |
+| PDF shows no page numbers | Check that there is only one `#show: hwr.with(...)` and no `set page(numbering: none)` in your text |
 
 ---
 
@@ -517,9 +654,9 @@ If you're working on the template itself (not as a user), you need to switch the
 In `template/main.typ`:
 ```typst
 // Comment out this line:
-// #import "@preview/easy-wi-hwr:0.1.2": hwr, abk, gls, glspl
+// #import "@preview/easy-wi-hwr:0.1.2": hwr, abk, gls, glspl, quelle, blockquote
 // Activate this line:
-#import "../lib.typ": hwr, abk, gls, glspl
+#import "../lib.typ": hwr, abk, gls, glspl, quelle, blockquote
 ```
 
 In `template/kapitel/01_einleitung.typ` (and all other chapter files that use `abk`):

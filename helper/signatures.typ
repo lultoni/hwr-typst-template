@@ -4,8 +4,8 @@
 #import "@preview/linguify:0.5.0": linguify
 
 /// Render a yellow warning block when group-signature is false with multiple authors.
-#let render-group-signature-warning(group-signature, authors) = {
-  if not group-signature and authors.len() > 1 {
+#let render-group-signature-warning(group-signature, authors, warnings: true) = {
+  if warnings and not group-signature and authors.len() > 1 {
     block(
       fill: rgb("#fff3cd"),
       stroke: 0.5pt + rgb("#856404"),

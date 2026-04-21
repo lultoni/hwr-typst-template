@@ -149,8 +149,9 @@
   // Bibliographie:
   // Der Titel wird automatisch gesetzt (DE: "Literaturverzeichnis", EN: "References").
   bibliography: bibliography("refs.bib"),
-  citation-style: "apa",
-  // Zitierstile: "apa" (DE default) | "harvard-anglia-ruskin-university" (EN, §6)
+  citation-style: "auto",
+  // Zitierstile: "auto" (default, folgt der Sprache: DE → APA, EN → Harvard)
+  //             | "apa" | "harvard-anglia-ruskin-university" (EN, §6)
   // Eigene CSL-Datei: citation-style: read("mein-stil.csl")
   //   → read() wird hier in main.typ aufgelöst, daher Pfad relativ zu main.typ
 
@@ -160,6 +161,8 @@
   city: "Berlin",           // Ort für Unterschriftsfeld (default: "Berlin")
   show-appendix-toc: false, // true = optionales Anhangsverzeichnis vor Anhang-Einträgen einfügen
                             // (HWR §3.10: "ist es möglich" — nicht Pflicht)
+  // warnings: true,        // false = gelbe Hinweisboxen im PDF unterdrücken
+                            // (z.B. Pretty-Mode-Hinweis, nach Absprache mit Prüfer)
   // group-signature: auto, // auto/true = alle Autoren unterschreiben (default)
                             // false = nur erster Autor unterschreibt (bei Gruppenarbeit)
                             // HINWEIS bei false: Bitte mit dem Prüfer abklären, ob eine

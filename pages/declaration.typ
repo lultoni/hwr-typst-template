@@ -14,7 +14,7 @@
 /// - lang: "de" | "en" — document language (for labels if different)
 /// - city: str — city for the place/date field (default "Berlin")
 /// - group-signature: bool — true = all authors sign (default), false = only first author signs
-#let render-declaration(authors, decl-lang, lang, city: "Berlin", group-signature: true) = {
+#let render-declaration(authors, decl-lang, lang, city: "Berlin", group-signature: true, warnings: true) = {
   // Force declaration language for this page only
   set text(lang: decl-lang)
 
@@ -32,6 +32,6 @@
 
   v(3cm)
 
-  render-group-signature-warning(group-signature, authors)
+  render-group-signature-warning(group-signature, authors, warnings: warnings)
   render-signature-fields(authors, city, group-signature)
 }

@@ -18,7 +18,7 @@
 /// - lang: "de" | "en"
 /// - city: str — city for signature field (default "Berlin")
 /// - group-signature: bool — true = all authors sign (default), false = only first author signs
-#let render-confidentiality(confidential, company, title, authors, date, lang, city: "Berlin", group-signature: true) = {
+#let render-confidentiality(confidential, company, title, authors, date, lang, city: "Berlin", group-signature: true, warnings: true) = {
   // Keine Seitennummer, nicht in Zählung (CNT-21, STR-01, FMT-35)
   set page(numbering: none, footer: none, header: none)
 
@@ -66,7 +66,7 @@
 
   v(3cm)
 
-  render-group-signature-warning(group-signature, authors)
+  render-group-signature-warning(group-signature, authors, warnings: warnings)
   render-signature-fields(authors, city, group-signature)
 
   pagebreak()

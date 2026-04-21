@@ -11,24 +11,42 @@ Du konzentrierst dich auf den Inhalt. Das Template erledigt den Rest:
 - Ehrenwörtliche Erklärung mit 2025 KI-Klausel
 - KI-Verzeichnis (wenn KI-Tools genutzt wurden)
 
+> **Schnellstart:** `brew install typst && typst init @preview/easy-wi-hwr:0.1.2 meine-arbeit && cd meine-arbeit && typst watch main.typ`
+
+> **Während des Schreibens:** [Hilfsfunktionen](#hilfsfunktionen-im-text-verwendbar)
+
 > **Etwas funktioniert nicht?** → [Häufige Probleme](#häufige-probleme)
+
+*Generell kann ich [Referenzen](#referenz) empfehlen sich durchzulesen.*
 
 ### Inhalt
 
+**Erste Schritte**
 - [Was ist Typst?](#was-ist-typst)
 - [Schritt 1: Typst installieren](#schritt-1-typst-installieren)
 - [Schritt 2: Schriftart installieren](#schritt-2-schriftart-installieren)
 - [Schritt 3: Projekt einrichten](#schritt-3-projekt-einrichten--zwei-wege)
 - [Schritt 4: Schreiben](#schritt-4-schreiben)
 - [Schritt 5: PDF erstellen](#schritt-5-pdf-erstellen)
+
+**Inhalte & Pflichtangaben**
 - [Quellen eintragen](#quellen-eintragen)
 - [KI-Tools eintragen](#ki-tools-eintragen-pflicht-bei-ki-nutzung)
-- [Gruppenarbeit](#gruppenarbeit)
-- [Digitale Unterschrift](#digitale-unterschrift-einbinden-optional)
-- [Sperrvermerk](#sperrvermerk)
+- [Abkürzungen & Glossar](#abkürzungen--glossar)
+- [Quellenangaben unter Abbildungen](#quellenangaben-unter-abbildungen)
+- [Längere wörtliche Zitate](#längere-wörtliche-zitate)
+
+**Optionale Features**
 - [Englische Arbeiten](#englische-arbeiten)
-- [Mermaid-Diagramme](#mermaid-diagramme-optional)
-- [Pretty Mode](#pretty-mode-optional)
+- [Gruppenarbeit](#gruppenarbeit)
+- [Sperrvermerk](#sperrvermerk)
+- [Entwurfsmodus](#entwurfsmodus)
+- [Digitale Unterschrift](#digitale-unterschrift-einbinden)
+- [Mermaid-Diagramme](#mermaid-diagramme)
+- [Pretty Mode](#pretty-mode)
+
+**Referenz**
+- [Hilfsfunktionen](#hilfsfunktionen-im-text-verwendbar)
 - [Gut zu wissen](#gut-zu-wissen)
 - [Alle Parameter](#alle-parameter-im-überblick)
 - [Häufige Probleme](#häufige-probleme)
@@ -36,9 +54,11 @@ Du konzentrierst dich auf den Inhalt. Das Template erledigt den Rest:
 
 ---
 
+# Erste Schritte
+
 ## Was ist Typst?
 
-Typst ist ein Schreibwerkzeug — ähnlich wie Word, aber du schreibst in reinen Textdateien (`.typ`) statt in einem grafischen Editor. Das Template übernimmt dann automatisch alle Formatierungen. Die fertigen Dateien kompilierst du per Klick oder Befehl zu einer PDF-Datei.
+Typst ist ein Schreibwerkzeug — ähnlich wie Word, aber du schreibst in reinen Textdateien (`.typ`) statt in einem grafischen Editor. Du tippst z.B. `= Einleitung` und es wird automatisch eine formatierte Überschrift daraus. Das Template übernimmt dann automatisch alle Formatierungen. Die fertigen Dateien kompilierst du per Klick oder Befehl zu einer PDF-Datei.
 
 **Vorteil:** Keine manuelle Formatierungsarbeit, kein Verschieben von Seitenumbrüchen, keine Style-Kämpfe — und das PDF ist in Millisekunden gerendert.
 
@@ -109,7 +129,7 @@ Das Template verwendet **Times New Roman** (HWR-Vorschrift).
 
 ### Weg A — Typst Universe (ein Befehl)
 
-Führe folgenden Befehl im Terminal aus (in dem Verzeichniss, wo du deinen Projektordner willst):
+Führe folgenden Befehl im Terminal aus (in dem Verzeichnis, wo du deinen Projektordner willst):
 ```bash
 typst init @preview/easy-wi-hwr:0.1.2 meine-arbeit
 ```
@@ -120,12 +140,18 @@ Das erstellt sofort einen fertigen Projektordner mit einer vorausgefüllten `mai
 ### Weg B — interaktives Setup-Script (optional, für Einsteiger)
 
 Das Script stellt dir alle Fragen und erstellt eine vollständig ausgefüllte `main.typ` mit deinen Daten.
-Du kannst es nach dem ZIP-Download lokal ausführen:
 
-Auf der GitHub-Seite: **Code → Download ZIP** → entpacken, dann:
+> **Hinweis:** Lies das Script kurz durch, bevor du es ausführst: [scripts/init.sh](https://github.com/lultoni/easy-wi-hwr/blob/main/scripts/init.sh)
+
+**Direkt ausführen (macOS/Linux):**
 ```bash
-# Terminal in den entpackten Ordner öffnen, dann:
-bash scripts/init.sh
+bash <(curl -fsSL https://raw.githubusercontent.com/lultoni/easy-wi-hwr/main/scripts/init.sh)
+```
+
+**Oder lokal nach Download:**
+```bash
+git clone https://github.com/lultoni/easy-wi-hwr.git
+bash easy-wi-hwr/scripts/init.sh
 ```
 
 Das Script fragt dich der Reihe nach:
@@ -137,8 +163,6 @@ Das Script fragt dich der Reihe nach:
 - Gewünschte Anzahl Kapitel
 
 Am Ende hast du einen fertigen Projektordner mit vorausgefüllter `main.typ`.
-
-> **Hinweis:** Lies das Script kurz durch, bevor du es ausführst: [scripts/init.sh](https://github.com/lultoni/easy-wi-hwr/blob/main/scripts/init.sh)
 
 ---
 
@@ -173,20 +197,6 @@ Fußnote#footnote[Hier steht der Fußnotentext.] direkt im Text.
 Zitat aus einer Quelle: Laut @mustermann2024 gilt...
 
 Abkürzung beim ersten Vorkommen: #abk("KI")
-```
-
-**Abkürzungen** funktionieren vollautomatisch:
-- Erste Verwendung: `#abk("KI")` → gibt aus „Künstliche Intelligenz (KI)"
-- Alle weiteren: `#abk("KI")` → gibt aus „KI"
-- Das Abkürzungsverzeichnis wird automatisch erstellt
-
-Die Abkürzungen trägst du einmalig in `main.typ` ein:
-```typst
-abbreviations: (
-  "KI":  "Künstliche Intelligenz",
-  "HWR": "Hochschule für Wirtschaft und Recht Berlin",
-  "ERP": "Enterprise Resource Planning",
-),
 ```
 
 **Alternative: Alles in einer Datei** — Du kannst auch ohne separate Kapitel-Dateien arbeiten. Lass `chapters:` leer und schreibe deinen gesamten Text direkt in `main.typ` nach dem Einstellungsblock. Zwischen Kapiteln `#pagebreak()` einfügen, damit jedes auf einer neuen Seite beginnt (bei `chapters:` passiert das automatisch):
@@ -232,6 +242,8 @@ Die fertige PDF liegt direkt neben `main.typ`.
 Tinymist liefert Syntax-Highlighting und Autocomplete für `.typ`-Dateien. Du kannst auch direkt aus VS Code heraus kompilieren — Tinymist zeigt eine Live-Vorschau im Editor-Fenster.
 
 ---
+
+# Inhalte & Pflichtangaben
 
 ## Quellen eintragen
 
@@ -283,6 +295,100 @@ Das KI-Verzeichnis wird automatisch als letztes Anhang-Item eingefügt. Bei `ai-
 
 ---
 
+## Abkürzungen & Glossar
+
+**Abkürzungen** funktionieren vollautomatisch:
+- Erste Verwendung: `#abk("KI")` → gibt aus „Künstliche Intelligenz (KI)"
+- Alle weiteren: `#abk("KI")` → gibt aus „KI"
+- Das Abkürzungsverzeichnis wird automatisch erstellt
+
+Die Abkürzungen trägst du einmalig in `main.typ` ein:
+```typst
+abbreviations: (
+  "KI":  "Künstliche Intelligenz",
+  "HWR": "Hochschule für Wirtschaft und Recht Berlin",
+  "ERP": "Enterprise Resource Planning",
+),
+```
+
+**Glossar** — für Fachbegriffe *ohne* eigene Abkürzung (z.B. „Stakeholder", „Scrum"):
+```typst
+glossary: (
+  (key: "stakeholder", short: "Stakeholder", long: "Stakeholder",
+   description: "Interessengruppen, die direkt oder indirekt von einem Projekt betroffen sind."),
+),
+```
+
+Im Text: `#gls("stakeholder")` → gibt „Stakeholder" aus und verlinkt zum Glossar. Pluralform: `#glspl("stakeholder")`.
+
+> **Hinweis:** `#gls()` expandiert beim ersten Vorkommen zu „long (short)". Bei Begriffen, wo `short` und `long` identisch sind (wie „Stakeholder"), dient der Glossar-Eintrag vor allem als Referenz-Index — die Expansion ist dann redundant. Die Abkürzungsfunktion `#abk()` ist besser geeignet für Begriffe mit echtem Kurz-/Langform-Unterschied (z.B. „KI" / „Künstliche Intelligenz").
+
+**Regel:** Nie denselben Begriff in beide Listen — Abkürzungen ins Abkürzungsverzeichnis, Fachbegriffe ohne Abkürzung ins Glossar.
+
+---
+
+## Quellenangaben unter Abbildungen
+
+Die HWR verlangt unter jeder Abbildung und Tabelle eine Quellenangabe. Das Template bietet dafür die `#quelle()`-Funktion:
+
+```typst
+// Eigene Darstellung (Standard):
+#figure(
+  image("images/diagramm.png"),
+  caption: [Übersicht der Prozesse. #quelle()],
+)
+// → "Quelle: Eigene Darstellung"
+
+// Fremde Quelle:
+#figure(
+  image("images/chart.png"),
+  caption: [Marktanteile 2024. #quelle(author: "Mustermann", year: 2024)],
+)
+// → "Quelle: Mustermann (2024)"
+
+// Mit Seitenangabe:
+#figure(
+  table(...),
+  caption: [Vergleich. #quelle(author: "Müller", year: 2023, s: "S. 42")],
+)
+// → "Quelle: Müller (2023), S. 42"
+```
+
+---
+
+## Längere wörtliche Zitate
+
+Längere Zitate (ab ca. 40 Wörtern) müssen laut HWR eingerückt und einzeilig formatiert werden (§3.4.2). Verwende dafür `#blockquote[]`:
+
+```typst
+#blockquote[
+  „Die digitale Transformation verändert nicht nur die Geschäftsprozesse,
+  sondern auch die Unternehmenskultur grundlegend. Unternehmen, die diesen
+  Wandel nicht aktiv gestalten, riskieren langfristig ihre
+  Wettbewerbsfähigkeit." @mustermann2024[S. 42]
+]
+```
+
+Der Text wird automatisch links eingerückt und einzeilig formatiert — du musst dich um nichts kümmern.
+
+> **Hinweis:** Die `[S. 42]`-Syntax nach `@key` übergibt die Seitenangabe an den Zitierstil. Die genaue Darstellung (z.B. „S." vs. „p.") hängt vom gewählten CSL-Stil ab.
+
+---
+
+# Optionale Features
+
+## Englische Arbeiten
+
+```typst
+lang: "en",
+```
+
+Alle Verzeichnisüberschriften, die Ehrenwörtliche Erklärung und das KI-Verzeichnis wechseln automatisch auf Englisch. Der Zitierstil wechselt automatisch auf Harvard (Anglia Ruskin University) — die CSL-Datei ist im Template enthalten (HWR §6).
+
+> **Tipp:** Setze `declaration-lang: "de"` damit die Ehrenwörtliche Erklärung auf Deutsch bleibt — das ist rechtlich die sichere Variante. Ob eine englische Erklärung akzeptiert wird, ist nicht verbindlich geklärt.
+
+---
+
 ## Gruppenarbeit
 
 Einfach weitere Autoren eintragen:
@@ -302,25 +408,7 @@ Die Ehrenwörtliche Erklärung wechselt automatisch auf „Wir erklären…" und
 group-signature: false,  // nur erster Autor unterschreibt
 ```
 
-Das Template zeigt dann einen gelben Hinweis im PDF, der daran erinnert, dies mit dem Prüfer abzusprechen.
-
----
-
-## Digitale Unterschrift einbinden (optional)
-
-Statt einer leeren Linie zum handschriftlichen Unterschreiben kannst du ein Bild deiner Unterschrift einbinden:
-
-1. Unterschrift auf weißem Papier, einscannen oder abfotografieren
-2. Als PNG oder SVG unter `images/` im Projektordner speichern
-3. In `main.typ` beim Autoren-Eintrag ergänzen:
-
-```typst
-authors: (
-  (name: "Max Mustermann", matrikel: "12345678", signature: image("images/signatur_max.png")),
-),
-```
-
-Das Bild erscheint dann automatisch im Unterschriftsfeld der Ehrenwörtlichen Erklärung.
+Das Template zeigt dann einen gelben Hinweis im PDF, der daran erinnert, dies mit dem Prüfer abzusprechen. Nach Absprache mit `warnings: false` unterdrückbar.
 
 ---
 
@@ -346,20 +434,37 @@ Der Pflichttext wird automatisch eingefügt und erscheint vor dem Deckblatt.
 
 ---
 
-## Englische Arbeiten
+## Entwurfsmodus
+
+Während der Arbeit kannst du ein Wasserzeichen einblenden, damit Entwürfe nicht versehentlich als finale Version eingereicht werden:
 
 ```typst
-lang: "en",
-citation-style: "harvard-anglia-ruskin-university",
+draft: true,
 ```
 
-Alle Verzeichnisüberschriften, die Ehrenwörtliche Erklärung und das KI-Verzeichnis wechseln automatisch auf Englisch. Die Harvard-CSL-Datei (Anglia Ruskin University) ist im Template enthalten und wird automatisch geladen — kein manueller Download nötig (HWR §6).
-
-> **Tipp:** Setze `declaration-lang: "de"` damit die Ehrenwörtliche Erklärung auf Deutsch bleibt — das ist rechtlich die sichere Variante. Ob eine englische Erklärung akzeptiert wird, ist nicht verbindlich geklärt.
+Auf jeder Seite erscheint ein grauer „ENTWURF"-Schriftzug (bei `lang: "en"` → „DRAFT"). Vor der Abgabe einfach auf `draft: false` setzen oder die Zeile entfernen.
 
 ---
 
-## Mermaid-Diagramme (optional)
+## Digitale Unterschrift einbinden
+
+Statt einer leeren Linie zum handschriftlichen Unterschreiben kannst du ein Bild deiner Unterschrift einbinden:
+
+1. Unterschrift auf weißem Papier, einscannen oder abfotografieren
+2. Als PNG oder SVG unter `images/` im Projektordner speichern
+3. In `main.typ` beim Autoren-Eintrag ergänzen:
+
+```typst
+authors: (
+  (name: "Max Mustermann", matrikel: "12345678", signature: image("images/signatur_max.png")),
+),
+```
+
+Das Bild erscheint dann automatisch im Unterschriftsfeld der Ehrenwörtlichen Erklärung.
+
+---
+
+## Mermaid-Diagramme
 
 Du kannst Mermaid-Diagramme direkt in Typst einbetten — ohne externe Tools. Das Package `mmdr` rendert Mermaid-Syntax nativ im Dokument:
 
@@ -385,7 +490,7 @@ Details: [typst.app/universe/package/mmdr](https://typst.app/universe/package/mm
 
 ---
 
-## Pretty Mode (optional)
+## Pretty Mode
 
 Du kannst ein dekoratives Deckblatt und einen Logo-Header aktivieren:
 
@@ -395,7 +500,7 @@ school-logo: image("images/school-logo.svg", height: 1.2cm),
 company-logo: image("images/company-logo.svg", height: 1.2cm),
 ```
 
-**Wichtig:** Der Pretty Mode ist **nicht in den HWR-Richtlinien vorgesehen**. Bitte vor Verwendung mit dem/der Betreuer/in absprechen.
+**Wichtig:** Der Pretty Mode ist **nicht in den HWR-Richtlinien vorgesehen**. Bitte vor Verwendung mit dem/der Betreuer/in absprechen. Das Template zeigt einen gelben Hinweis im PDF — nach Absprache mit `warnings: false` unterdrückbar.
 
 Du kannst auch einzelne Features unabhängig aktivieren:
 - `pretty-title: true` — nur dekoratives Deckblatt (Zierlinien, größerer Titel)
@@ -405,9 +510,31 @@ Standard ist `style: "compliant"` (richtlinienkonform).
 
 ---
 
+# Referenz
+
+## Hilfsfunktionen (im Text verwendbar)
+
+Diese Funktionen kannst du in deinen Kapitel-Dateien verwenden:
+
+| Funktion | Beschreibung |
+|---|---|
+| `#abk("KI")` | Abkürzung — beim ersten Mal expandiert, danach nur kurz |
+| `#gls("key")` | Glossareintrag — beim ersten Mal expandiert, danach nur kurz |
+| `#glspl("key")` | Glossareintrag in Pluralform |
+| `#quelle()` | Quellenangabe „Eigene Darstellung" für Abbildungen/Tabellen |
+| `#quelle(author: "Name", year: 2024)` | Quellenangabe mit Autor und Jahr |
+| `#blockquote[...]` | Eingerücktes, einzeiliges Blockzitat (HWR §3.4.2) |
+
+Alle Funktionen sind nach dem Import in `main.typ` automatisch verfügbar. In Kapitel-Dateien müssen die benötigten Funktionen importiert werden:
+```typst
+#import "@preview/easy-wi-hwr:0.1.2": abk, gls, glspl, quelle, blockquote
+```
+
+---
+
 ## Gut zu wissen
 
-**Zitierstil-Wahl:** Standard ist APA (für deutschsprachige Arbeiten). Für englischsprachige Arbeiten: `citation-style: "harvard-anglia-ruskin-university"` — die CSL-Datei ist im Template enthalten. Wenn dein Betreuer einen anderen Stil vorgibt, kannst du eine eigene `.csl`-Datei aus dem [Zotero Style Repository](https://www.zotero.org/styles) herunterladen und per `read()` einbinden:
+**Zitierstil-Wahl:** Standard ist `"auto"` — das Template wählt automatisch APA für deutschsprachige und Harvard (Anglia Ruskin University) für englischsprachige Arbeiten. Die Harvard-CSL-Datei ist im Template enthalten. Wenn dein Betreuer einen anderen Stil vorgibt, kannst du eine eigene `.csl`-Datei aus dem [Zotero Style Repository](https://www.zotero.org/styles) herunterladen und per `read()` einbinden:
 ```typst
 citation-style: read("mein-stil.csl"),
 ```
@@ -426,7 +553,7 @@ Nicht verwendete Abkürzungen tauchen im Verzeichnis nicht auf.
 - **Pandoc:** `pandoc main.typ -o arbeit.docx` — experimentell, verliert teils Formatierung
 - **Copy-Paste:** PDF in Word öffnen (Word kann PDFs importieren) — oft die pragmatischste Lösung für einfache Dokumente
 
-Die Word-Version dient meist nur der Archivierung — die Formatierung muss nicht perfekt sein.
+Die Word-Version dient erfahrungsgemäß vor allem der Archivierung — die Formatierung muss dabei in der Praxis nicht perfekt sein.
 
 ---
 
@@ -438,9 +565,13 @@ Die Word-Version dient meist nur der Archivierung — die Formatierung muss nich
 |---|---|
 | `doc-type` | Art der Arbeit: `"ptb-1"`, `"ptb-2"`, `"ptb-3"`, `"hausarbeit"`, `"studienarbeit"`, `"bachelorarbeit"` |
 | `title` | Titel der Arbeit |
-| `name` | Dein Name (Kurzform für Einzelperson — äquivalent zu `authors: (name: "...", matrikel: "...")`) |
-| `matrikel` | Deine Matrikelnummer (zusammen mit `name:` verwenden) |
-| `authors` | Alternativ: Array von Autoren: `((name: "...", matrikel: "..."),)` — für Gruppenarbeit oder wenn `name:`/`matrikel:` nicht verwendet |
+
+**Autoren** — verwende *eine* der beiden Varianten:
+
+| Variante | Parameter | Beschreibung |
+|---|---|---|
+| **Einzelperson** | `name` + `matrikel` | Kurzform: `name: "Max Mustermann"`, `matrikel: "12345678"` |
+| **Gruppenarbeit** | `authors` | Array: `authors: ((name: "...", matrikel: "..."), (name: "...", matrikel: "..."))` |
 
 ### Je nach Dokumenttyp Pflicht
 
@@ -469,13 +600,15 @@ Die Word-Version dient meist nur der Archivierung — die Formatierung muss nich
 | `appendix` | `()` | Anhang-Einträge: `(title: "...", content: include(...))` |
 | `show-appendix-toc` | `false` | `true` = optionales Anhangsverzeichnis vor den Anhang-Einträgen (HWR §3.10) |
 | `bibliography` | — | `bibliography("refs.bib")` — Titel wird automatisch gesetzt |
-| `citation-style` | `"apa"` | Zitierstil: `"apa"` (DE), `"harvard-anglia-ruskin-university"` (EN, mitgeliefert), oder `read("datei.csl")` |
+| `citation-style` | `"auto"` | Zitierstil: `"auto"` (DE → APA, EN → Harvard), `"apa"`, `"harvard-anglia-ruskin-university"`, oder `read("datei.csl")` |
 | `heading-depth` | `4` | TOC-Tiefe 1–4 (max. 4 laut HWR) |
 | `declaration-lang` | `auto` | Sprache der Ehrenwörtlichen Erklärung — `auto` folgt `lang`, `"de"` immer Deutsch (empfohlen — rechtssicher) |
 | `city` | `"Berlin"` | Ort im Unterschriftsfeld der Ehrenwörtlichen Erklärung |
 | `group-signature` | `auto` | `auto`/`true` = alle Autoren unterschreiben; `false` = nur erster Autor |
+| `draft` | `false` | `true` = Wasserzeichen „ENTWURF"/„DRAFT" auf jeder Seite |
+| `warnings` | `true` | `false` = gelbe Hinweisboxen im PDF unterdrücken (z.B. Pretty-Mode-Hinweis, nach Absprache mit Prüfer) |
 | `style` | `"compliant"` | `"compliant"` (HWR-konform) oder `"pretty"` (dekorativ, mit Betreuer absprechen) |
-| `school-logo` | `none` | Logo links im Seitenkopf, z.B. `image("images/logo.png", height: 1.2cm)` |
+| `school-logo` | `none` | Logo links im Seitenkopf, z.B. `image("images/logo.png")` |
 | `company-logo` | `none` | Logo rechts im Seitenkopf |
 | `pretty-title` | `none` | `true` = dekoratives Deckblatt; überschreibt `style:` für das Deckblatt |
 
@@ -495,6 +628,7 @@ Die Word-Version dient meist nur der Archivierung — die Formatierung muss nich
 |---|---|
 | `doc-type "..." ist ungültig` | Wert muss exakt `"ptb-1"`, `"ptb-2"`, `"ptb-3"`, `"hausarbeit"`, `"studienarbeit"` oder `"bachelorarbeit"` sein |
 | `supervisor ist Pflicht für...` | Für alle Typen außer `"bachelorarbeit"` müssen `supervisor:` und `company:` gesetzt sein |
+| `confidential requires company:` | Sperrvermerk braucht den Firmennamen — `company:` setzen oder `confidential:` entfernen |
 | `authors must be an array of dicts` | `authors:` muss ein Array sein: `authors: ((name: "...", matrikel: "..."),)` — bei einem Autor das Komma nach der Klammer nicht vergessen! |
 | `chapters entries must use include()` | Keine String-Pfade verwenden. Richtig: `chapters: (include("kapitel/01.typ"),)` statt `chapters: ("kapitel/01.typ",)` |
 | Times New Roman fehlt (Linux) | `sudo apt install ttf-mscorefonts-installer` |
@@ -505,6 +639,10 @@ Die Word-Version dient meist nur der Archivierung — die Formatierung muss nich
 | Import-Fehler bei `include()` | Pfade in `chapters:` sind relativ zu `main.typ` — `include("kapitel/01_einleitung.typ")` |
 | `signature muss image-Content sein` | Verwende `signature: image("images/sig.png")` statt `signature: "images/sig.png"` |
 | Alle Seiten doppelt / seltsame Formatierung | Nur ein `#show: hwr.with(...)` Block pro Datei — kein zweites `#show:` und kein Text davor |
+| `#abk()` / `#gls()` in Kapitel-Datei funktioniert nicht | In jeder Kapitel-Datei muss `#import "@preview/easy-wi-hwr:0.1.2": abk` stehen (oder welche Funktionen du nutzt) |
+| Zitierstil-Datei wird nicht gefunden | `citation-style: read("mein-stil.csl")` — Pfad ist relativ zu `main.typ`. Datei muss im selben Ordner liegen |
+| Anhang-Nummerierung zeigt A, B, C statt 1, 2, 3 | Nutze die eingebaute Anhang-Funktion via `appendix:` Parameter — nicht manuell nummerieren |
+| PDF zeigt keine Seitennummern | Prüfe ob nur ein `#show: hwr.with(...)` vorhanden ist und kein `set page(numbering: none)` im Text steht |
 
 ---
 
@@ -517,9 +655,9 @@ Wenn du am Template selbst arbeitest (nicht als Nutzer), musst du die Imports um
 In `template/main.typ`:
 ```typst
 // Diese Zeile auskommentieren:
-// #import "@preview/easy-wi-hwr:0.1.2": hwr, abk, gls, glspl
+// #import "@preview/easy-wi-hwr:0.1.2": hwr, abk, gls, glspl, quelle, blockquote
 // Diese Zeile aktivieren:
-#import "../lib.typ": hwr, abk, gls, glspl
+#import "../lib.typ": hwr, abk, gls, glspl, quelle, blockquote
 ```
 
 In `template/kapitel/01_einleitung.typ` (und allen anderen Kapitel-Dateien die `abk` nutzen):

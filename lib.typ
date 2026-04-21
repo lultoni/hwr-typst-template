@@ -162,7 +162,7 @@
   show-appendix-toc: false,
 
   bibliography: none,
-  citation-style: "apa",
+  citation-style: "auto",
 
   heading-depth: 4,
   declaration-lang: auto,
@@ -185,6 +185,9 @@
 
   // === ENTWURFSMODUS ===
   draft: false,          // true = "ENTWURF"/"DRAFT" Wasserzeichen auf jeder Seite
+
+  // === HINWEISE IM PDF ===
+  warnings: true,        // false = gelbe Hinweisboxen unterdrücken (z.B. nach Absprache mit Prüfer)
 
   // show-rule body (passed automatically by #show: hwr.with(...))
   body,
@@ -366,7 +369,7 @@
     } else {
       confidential
     }
-    render-confidentiality(resolved-conf, company, title, authors, resolved-date, lang, city: city, group-signature: resolved-group-sig)
+    render-confidentiality(resolved-conf, company, title, authors, resolved-date, lang, city: city, group-signature: resolved-group-sig, warnings: warnings)
   }
 
   // 2. Deckblatt: Seitenzähler startet bei I (röm.), aber Nummer nicht sichtbar (STR-02)
@@ -382,7 +385,7 @@
   )
 
   // Pretty-mode warning: show visual notice when non-compliant styling is active
-  if is-pretty or resolved-school-logo != none or resolved-company-logo != none or (pretty-title != none and pretty-title == true) {
+  if warnings and (is-pretty or resolved-school-logo != none or resolved-company-logo != none or (pretty-title != none and pretty-title == true)) {
     block(
       fill: rgb("#fff3cd"),
       stroke: 0.5pt + rgb("#856404"),
@@ -466,14 +469,19 @@
   // Title is forced via l10n (DE: "Literaturverzeichnis", EN: "References") — Bug 8
   if bibliography != none {
     pagebreak(weak: true)
-    // citation-style: built-in name ("apa") → string; "harvard-anglia-ruskin-university" → bundled CSL;
-    // custom CSL via read("file.csl") → string containing XML.
-    let resolved-style = if citation-style == "harvard-anglia-ruskin-university" {
-      bytes(read("styles/harvard-anglia-ruskin-university.csl"))
-    } else if type(citation-style) == str and citation-style.starts-with("<") {
-      bytes(citation-style)
+    // citation-style: "auto" → APA for DE, Harvard (Anglia Ruskin) for EN (HWR §6).
+    // "harvard-anglia-ruskin-university" → bundled CSL; custom CSL via read("file.csl") → XML string.
+    let effective-style = if citation-style == "auto" {
+      if lang == "en" { "harvard-anglia-ruskin-university" } else { "apa" }
     } else {
       citation-style
+    }
+    let resolved-style = if effective-style == "harvard-anglia-ruskin-university" {
+      bytes(read("styles/harvard-anglia-ruskin-university.csl"))
+    } else if type(effective-style) == str and effective-style.starts-with("<") {
+      bytes(effective-style)
+    } else {
+      effective-style
     }
     heading(level: 1, numbering: none, outlined: true)[#linguify("bibliography-title")]
     {
@@ -493,7 +501,7 @@
   }
 
   // 8. Ehrenwörtliche Erklärung (immer zuletzt — STR-10)
-  render-declaration(authors, decl-lang, lang, city: city, group-signature: resolved-group-sig)
+  render-declaration(authors, decl-lang, lang, city: city, group-signature: resolved-group-sig, warnings: warnings)
 }
 
 // ---------------------------------------------------------------------------

@@ -5,7 +5,7 @@
 # Reference templates (private, for analysis only - not part of public template)
 reference-templates/
 
-# HWR internal documents (logo usage restricted, PDF guidelines)
+# HWR internal documents (Markdown, PDF guidelines)
 hwr-richtlinien/*
 
 # Typst build artifacts
@@ -14,6 +14,12 @@ hwr-richtlinien/*
 
 # Claude Code configuration (local tooling, not part of the template)
 .claude/
+CLAUDE.md
+
+# Dev Files
+scripts/publish.sh
+requirements/
+audit-student-perspective.md
 
 # User-created project folders (init.sh output — should not end up in the repo)
 # Add your project name here to prevent accidentally committing it:
