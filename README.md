@@ -1,5 +1,7 @@
 # HWR Berlin — Typst-Template
 
+**English:** → [README-en.md](README-en.md)
+
 **English:** A community-built Typst template for scientific papers at HWR Berlin (Berlin School of Economics and Law), primarily targeting students in the *Wirtschaftsinformatik* (Business Informatics) programme. It automates cover pages, tables of contents, abbreviation lists, the statutory declaration, and more — all conforming to the HWR formatting guidelines as of January 2025.
 
 ---
