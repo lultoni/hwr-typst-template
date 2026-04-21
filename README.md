@@ -421,7 +421,12 @@ Nicht verwendete Abkürzungen tauchen im Verzeichnis nicht auf.
 
 **Abbildungs- und Tabellenverzeichnis** erscheinen erst ab 5 Einträgen (HWR-Anforderung). Das Template prüft das automatisch.
 
-**Abgabe als Word + PDF:** Die HWR verlangt beide Formate. Das Template erzeugt nur PDF. Die Word-Version musst du separat erstellen (z.B. via Pandoc oder Copy-Paste).
+**Abgabe als Word + PDF:** Die HWR verlangt bei Bachelorarbeiten beide Formate. Das Template erzeugt nur PDF. Für die Word-Version gibt es mehrere Wege:
+- **PDF → Word:** Adobe Acrobat (bestes Ergebnis), oder kostenlose Online-Tools (z.B. SmallPDF, iLovePDF) — Formatierung kann abweichen
+- **Pandoc:** `pandoc main.typ -o arbeit.docx` — experimentell, verliert teils Formatierung
+- **Copy-Paste:** PDF in Word öffnen (Word kann PDFs importieren) — oft die pragmatischste Lösung für einfache Dokumente
+
+Die Word-Version dient meist nur der Archivierung — die Formatierung muss nicht perfekt sein.
 
 ---
 

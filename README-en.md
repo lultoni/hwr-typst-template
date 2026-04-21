@@ -421,7 +421,12 @@ Unused abbreviations do not appear in the list.
 
 **List of figures and list of tables** appear only from 5 entries onwards (HWR requirement). The template checks this automatically.
 
-**Submission as Word + PDF:** HWR requires both formats. The template only generates PDF. The Word version must be created separately (e.g. via Pandoc or copy-paste).
+**Submission as Word + PDF:** HWR requires both formats for Bachelorarbeiten. The template only generates PDF. For the Word version, several options exist:
+- **PDF → Word:** Adobe Acrobat (best results), or free online tools (e.g. SmallPDF, iLovePDF) — formatting may differ
+- **Pandoc:** `pandoc main.typ -o paper.docx` — experimental, may lose some formatting
+- **Copy-paste:** Open the PDF in Word (Word can import PDFs) — often the most pragmatic solution for simple documents
+
+The Word version typically serves archival purposes only — perfect formatting is not required.
 
 ---
 

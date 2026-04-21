@@ -70,6 +70,14 @@ pretty-warning =
     Hinweis: Die gewählte Gestaltungsoption (Pretty Mode) ist nicht in den
     HWR-Richtlinien vorgesehen. Bitte klären Sie vorab mit Ihrer betreuenden
     Prüferin / Ihrem betreuenden Prüfer, ob diese Gestaltung akzeptiert wird.
+
+## Draft Mode
+
+draft-watermark = ENTWURF
+
+## Source Attribution
+
+source-own = Quelle: Eigene Darstellung
 declaration-date-label = den
 declaration-place-date = Ort, Datum
 declaration-signature = Unterschrift

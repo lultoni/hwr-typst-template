@@ -3,7 +3,8 @@
 //
 // Public API:
 //   #show: hwr.with(...)
-//
+//   #abk("KI"), #gls("key"), #glspl("key")
+//   #quelle(), #blockquote[...]
 // All parameters: see requirements/api-design.md
 
 #import "@preview/linguify:0.5.0": linguify, linguify-raw, set-database, load-ftl-data
@@ -78,6 +79,39 @@
 // Alias: the parameter `bibliography` shadows the built-in; keep a reference for set rules.
 #let _bibliography = bibliography
 
+/// Source attribution for figures/tables (HWR requirement).
+///
+/// Usage inside a figure caption:
+///   caption: [Vergleich der Systeme. #quelle()]              → "Quelle: Eigene Darstellung"
+///   caption: [Übersicht. #quelle("Mustermann", 2024)]        → "Quelle: Mustermann (2024)"
+///   caption: [Daten. #quelle("Mustermann", 2024, s: "S. 42")] → "Quelle: Mustermann (2024), S. 42"
+#let quelle(author: none, year: none, s: none) = {
+  if author == none {
+    context linguify("source-own")
+  } else {
+    let base = "Quelle: " + str(author) + " (" + str(year) + ")"
+    if s != none { base + ", " + str(s) } else { base }
+  }
+}
+
+/// HWR-compliant blockquote for long verbatim quotes (CIT-35, FMT-07).
+///
+/// Renders the content indented and single-spaced, as required for longer
+/// direct quotations (>40 words / >3 lines).
+///
+/// Usage:
+///   #blockquote[
+///     „Dies ist ein längeres wörtliches Zitat aus einer Quelle,
+///     das über mehrere Zeilen geht und daher eingerückt und
+///     einzeilig formatiert werden muss." @mustermann2024[S. 42]
+///   ]
+#let blockquote(body) = {
+  pad(left: 1cm)[
+    #set par(leading: 0.65em, justify: true)  // single-spaced (leading ≈ 1.0 line spacing for 12pt)
+    #body
+  ]
+}
+
 /// Main entry point for the HWR Berlin Typst template.
 ///
 /// Usage:
@@ -148,6 +182,9 @@
                         // Größe wird automatisch gesetzt (Header: 0.8cm, Deckblatt: 1.5cm)
   company-logo: none,   // Logo rechts im Seitenkopf, z.B. image("images/firma-logo.png")
   pretty-title: none,   // true = dekoratives Deckblatt (Zierlinien, größerer Titel, Logos)
+
+  // === ENTWURFSMODUS ===
+  draft: false,          // true = "ENTWURF"/"DRAFT" Wasserzeichen auf jeder Seite
 
   // show-rule body (passed automatically by #show: hwr.with(...))
   body,
@@ -225,6 +262,14 @@
     margin: (top: 30mm, right: 35mm, bottom: 20mm, left: 21mm),
     numbering: none,
     number-align: top + right,
+    background: if draft {
+      place(center + horizon,
+        rotate(45deg,
+          text(size: 80pt, fill: rgb(200, 200, 200, 80), weight: "bold",
+            tracking: 6pt)[#linguify("draft-watermark")]
+        )
+      )
+    },
   )
 
   // --- Global text & paragraph setup ---
