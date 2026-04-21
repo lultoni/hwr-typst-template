@@ -349,6 +349,11 @@
   // Layout: [Logo links] [Seitennummer mittig] [Logo rechts] + hellgraue Trennlinie
   // Logos werden im Header auf 0.8cm Höhe skaliert (Deckblatt: 1.5cm).
   let _has-logo-header = resolved-school-logo != none or resolved-company-logo != none
+  // Wenn Logo-Header aktiv: custom header mit Logos und Seitennummer mittig;
+  // numbering: none unterdrückt die Standard-Seitennummer (wird im Header-Grid gerendert).
+  // Ohne Logos: header: auto bewahrt die automatische number-align-Seitennummer.
+  // WICHTIG: header: none (oder fehlender else-Zweig → none) würde die automatische
+  // number-align-Seitennummer unterdrücken — daher explizit auto setzen.
   let _page-header = if _has-logo-header {
     context {
       set image(height: 0.8cm)
@@ -362,10 +367,9 @@
       v(2pt)
       line(length: 100%, stroke: 0.5pt + luma(180))
     }
+  } else {
+    auto
   }
-  // Wenn Logo-Header aktiv: numbering: none unterdrückt die Standard-Seitennummer
-  // (sie wird stattdessen im Header-Grid mittig gerendert).
-  // Ohne Logos: numbering: "1" mit number-align: top + right wie gewohnt.
   set page(
     numbering: if _has-logo-header { none } else { "1" },
     header: _page-header,
@@ -409,7 +413,10 @@
     }
     heading(level: 1, numbering: none, outlined: true)[#linguify("bibliography-title")]
     {
-      show heading: none  // Suppress the bibliography's own heading
+      // Suppress the bibliography's auto-generated heading visually.
+      // The heading still registers in the outline — that duplicate is filtered out
+      // by the show outline.entry rule above (see "TOC depth follows heading-depth").
+      show heading: none
       set _bibliography(style: resolved-style)
       bibliography
     }

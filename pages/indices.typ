@@ -19,11 +19,18 @@
   // ── 1. Inhaltsverzeichnis ────────────────────────────────────────────────
   // set outline() depth and indent already configured globally in lib.typ
   heading(level: 1, numbering: none, outlined: false)[#linguify("toc-title")]
-  // Use a custom show rule to suppress the redundant auto-heading from outline()
-  show outline: it => {
-    // Skip the outline's own title (we rendered it above)
-    show heading: none
-    it
+  // Filter out the bibliography's auto-generated heading ("Bibliografie"/"Bibliography")
+  // from the TOC. The bibliography element always creates its own heading which cannot
+  // be suppressed via show rules or set rules on a pre-constructed element.
+  // We render our own l10n heading ("Literaturverzeichnis"/"References") in lib.typ,
+  // so the auto-generated one is a duplicate that must be removed from the outline.
+  show outline.entry: entry => {
+    let r = repr(entry.element.body)
+    if "Bibliografie" in r or "Bibliography" in r {
+      // Consume the duplicate bibliography heading entry
+    } else {
+      entry
+    }
   }
   outline(title: none)
 
