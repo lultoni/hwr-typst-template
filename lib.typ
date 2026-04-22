@@ -235,6 +235,18 @@
     message: "style must be \"compliant\" or \"pretty\", got: \"" + str(style) + "\"",
   )
 
+  // --- Validate lang ---
+  assert(
+    lang in ("de", "en"),
+    message: "lang must be \"de\" or \"en\", got: \"" + str(lang) + "\"",
+  )
+
+  // --- Validate heading-depth ---
+  assert(
+    type(heading-depth) == int and heading-depth >= 1 and heading-depth <= 4,
+    message: "heading-depth must be an integer between 1 and 4, got: " + str(heading-depth),
+  )
+
   // --- Normalize style (same pattern as author normalization) ---
   // style: sets defaults; granular params override when explicitly set (not none).
   let is-pretty = style == "pretty"
