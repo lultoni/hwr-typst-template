@@ -38,14 +38,22 @@
     })
   }
 
+  let d = _abk-dict.get()
+  let full = if long != none { long } else { d.at(key, default: none) }
+
+  // Fail early with a clear message when the key is not defined anywhere.
+  // (A missing key causes a cryptic label-not-found error at link time otherwise.)
+  if full == none {
+    panic("abk(\"" + key + "\"): abbreviation not defined. " +
+          "Either add it to the abbreviations: dict in hwr() or use " +
+          "abk(\"" + key + "\", long: \"...\") on first use.")
+  }
+
   // Check prior uses of this key before the current position
   let past-uses = query(selector(<abk>).before(here())).filter(n => n.value == key)
   let is-first = past-uses.len() == 0
 
-  let d = _abk-dict.get()
-  let full = if long != none { long } else { d.at(key, default: none) }
-
-  let display = if is-first and full != none {
+  let display = if is-first {
     full + " (" + key + ")"
   } else {
     key
