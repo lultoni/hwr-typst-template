@@ -281,7 +281,8 @@ ai-tools: (
     tool:     "ChatGPT 4o",
     usage:    "Text suggestions, marked in the text",
     chapters: "Chapter 1, p. 3",
-    remarks:  "Prompts: see Appendix 1",  // also "bemerkungen:" works
+    remarks:     "Prompts: ",
+    remarks-ref: "Prompt Log",         // → hyperlink to the appendix with this title
   ),
   (
     tool:     "DeepL Translator",

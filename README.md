@@ -281,7 +281,8 @@ ai-tools: (
     tool:     "ChatGPT 4o",
     usage:    "Textvorschläge, im Text gekennzeichnet",
     chapters: "Kapitel 1, S. 3",
-    remarks:  "Prompts: siehe Anhang 1",  // auch "bemerkungen:" funktioniert
+    remarks:     "Prompts: ",
+    remarks-ref: "Prompt-Protokoll",   // → Hyperlink auf den Anhang mit diesem Titel
   ),
   (
     tool:     "DeepL Translator",

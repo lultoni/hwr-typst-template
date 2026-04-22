@@ -111,11 +111,11 @@
   // ai-tools: (),                                  // leer = kein KI-Verzeichnis (default)
   ai-tools: (
     (
-      tool:       "ChatGPT 4o",
-      usage:      "Textvorschläge für Einleitung, im Text gekennzeichnet",
-      chapters:   "Kapitel 1, S. 3",
-      remarks:    "Prompts: siehe Anhang 4",  // auch "bemerkungen:" funktioniert
-                                               // → verweist auf d_prompt_protokoll.typ
+      tool:        "ChatGPT 4o",
+      usage:       "Textvorschläge für Einleitung, im Text gekennzeichnet",
+      chapters:    "Kapitel 1, S. 3",
+      remarks:     "Prompts: ",
+      remarks-ref: "Prompt-Protokoll",   // → Hyperlink auf den Anhang mit diesem Titel
     ),
     (
       tool:     "DeepL Translator",

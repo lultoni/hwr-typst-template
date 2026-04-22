@@ -33,7 +33,8 @@
 /// Render the KI-Verzeichnis (AI Tools Register) table.
 /// CNT-10–13: mandatory when AI tools were used
 /// Columns: KI-Tool | Einsatzform | Betroffene Teile | Bemerkungen
-#let _render-ai-tools(ai-tools, num) = {
+/// appendix-entries: the same appendix array passed to render-appendix — used to resolve remarks-ref titles
+#let _render-ai-tools(ai-tools, num, appendix-entries) = {
   [#metadata(num) #label("anhang-" + num)]
 
   heading(level: 2, numbering: none, outlined: true)[
@@ -43,7 +44,7 @@
   v(0.5em)
 
   table(
-    columns: (1fr, 2fr, 1fr, 1fr),
+    columns: (1fr, 2fr, 1fr, 1.2fr),
     align: left,
     stroke: 0.5pt,
     table.header(
@@ -52,12 +53,43 @@
       strong(linguify("ai-col-chapters")),
       strong(linguify("ai-col-remarks")),
     ),
-    ..ai-tools.map(entry => (
-      entry.at("tool",        default: ""),
-      entry.at("usage",       default: ""),
-      entry.at("chapters",    default: ""),
-      entry.at("remarks", default: entry.at("bemerkungen", default: "—")),
-    )).flatten()
+    ..ai-tools.map(entry => {
+      let remarks-text = entry.at("remarks", default: none)
+      let ref-title = entry.at("remarks-ref", default: none)
+
+      let remarks-cell = if ref-title != none {
+        // Resolve title → appendix number (1-based index in appendix-entries)
+        let resolved-num = none
+        for (i, ae) in appendix-entries.enumerate() {
+          if ae.at("title", default: "") == ref-title {
+            resolved-num = str(i + 1)
+          }
+        }
+        assert(resolved-num != none,
+          message: "remarks-ref: \"" + ref-title + "\" not found in appendix:. " +
+                   "Check that the title matches exactly.")
+
+        // Build hyperlink; box() prevents mid-word line break inside the link text
+        let ref-label = label("anhang-" + resolved-num)
+        let link-content = context {
+          box(linguify("appendix-label") + " " + resolved-num)
+        }
+        if remarks-text != none {
+          [#remarks-text#link(ref-label, link-content)]
+        } else {
+          [siehe #link(ref-label, link-content)]
+        }
+      } else {
+        if remarks-text != none { remarks-text } else { [—] }
+      }
+
+      (
+        entry.at("tool",     default: ""),
+        entry.at("usage",    default: ""),
+        entry.at("chapters", default: ""),
+        remarks-cell,
+      )
+    }).flatten()
   )
 
   pagebreak()
@@ -93,7 +125,7 @@
 /// Render the full appendix section.
 ///
 /// - appendix: array of (title, content) — user-defined entries
-/// - ai-tools: array of (tool, usage, chapters, bemerkungen?) — AI tools register
+/// - ai-tools: array of (tool, usage, chapters, remarks?, remarks-ref?) — AI tools register
 /// - lang: "de" | "en"
 /// - show-toc: bool — render optional Anhangsverzeichnis page (default: false)
 #let render-appendix(appendix, ai-tools, lang, show-toc: false) = {
@@ -133,6 +165,6 @@
 
   // KI-Verzeichnis as last item
   if ai-num != none {
-    _render-ai-tools(ai-tools, ai-num)
+    _render-ai-tools(ai-tools, ai-num, appendix)
   }
 }
