@@ -158,6 +158,7 @@ The script asks you step by step:
 - Type of paper (PTB, Hausarbeit, Bachelorarbeit, …)
 - Your name and student ID
 - Title, supervisor, company, field of study, cohort
+- Language of the paper (German / English)
 - Desired number of chapters
 
 At the end you have a ready-to-use project folder with a pre-filled `main.typ`.

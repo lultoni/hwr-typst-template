@@ -160,6 +160,7 @@ Das Script fragt dich der Reihe nach:
 - Art der Arbeit (PTB, Hausarbeit, Bachelorarbeit, …)
 - Dein Name und Matrikelnummer
 - Titel, Prüfer/in, Betrieb, Fachrichtung, Jahrgang
+- Sprache der Arbeit (Deutsch / Englisch)
 - Gewünschte Anzahl Kapitel
 
 Am Ende hast du einen fertigen Projektordner mit vorausgefüllter `main.typ`.

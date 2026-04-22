@@ -226,6 +226,17 @@ collect_input() {
   SEMESTER=$(ask "Studienhalbjahr (z.B. 3, Enter zum Überspringen)" "")
   echo ""
 
+  # --- Sprache ---------------------------------------------------------------
+  ask_choice \
+    "Sprache der Arbeit?" "1" \
+    "Deutsch (de)" \
+    "Englisch (en)"
+  case "$CHOICE_RESULT" in
+    *"en"*) LANG_CODE="en" ;;
+    *)      LANG_CODE="de" ;;
+  esac
+  echo ""
+
   # --- Anzahl Kapitel --------------------------------------------------------
   NUM_CHAPTERS=$(ask "Wie viele Kapitel soll die Vorlage erstellen?" "5")
   if ! [[ "$NUM_CHAPTERS" =~ ^[0-9]+$ ]] || [ "$NUM_CHAPTERS" -lt 1 ] || [ "$NUM_CHAPTERS" -gt 20 ]; then
@@ -312,31 +323,41 @@ BIBTEX
 
     cat > "$TARGET_DIR/kapitel/$filename" << KAPITEL
 // kapitel/$filename — $name
-#import "@preview/easy-wi-hwr:0.1.2": abk
+#import "@preview/easy-wi-hwr:0.1.2": abk, gls, glspl
 //
 // Schreibe hier deinen Text. Ein paar Tipps:
 //
-//   Überschrift 1. Ebene:   = Überschrift
-//   Überschrift 2. Ebene:  == Unterabschnitt
-//   Überschrift 3. Ebene: === Unterunterabschnitt
+//   Überschrift 1. Ebene:    = Überschrift
+//   Überschrift 2. Ebene:   == Unterabschnitt
+//   Überschrift 3. Ebene:  === Unterunterabschnitt
 //
-//   Fettschrift:   *Wort*
-//   Kursiv:        _Wort_
-//   Fußnote:       Text#footnote[Hier steht die Fußnote.]
-//   Zitat im Text: Laut @mustermann2024 gilt...  oder  @mustermann2024[S. 42]
-//   Abkürzung:     #abk("KI")  → beim 1. Mal "Künstliche Intelligenz (KI)"
+//   Fettschrift:             *wichtig*
+//   Kursivschrift:           _Begriff_
+//   Fußnote:                 Text.#footnote[Fußnotentext hier.]
+//   Zitat im Text:           Laut @mustermann2024 gilt...
+//   Zitat mit Seitenangabe:  @mustermann2024[S. 42]
+//   Abkürzung (1. Mal):      #abk("KI")  → "Künstliche Intelligenz (KI)"
+//   Abkürzung (folgende):    #abk("KI")  → "KI"
+//   (Abkürzung muss in main.typ unter abbreviations: eingetragen sein)
 
 = $name
 
-Schreibe hier deinen Text für Kapitel $i.
+Hier beginnt der Text des Kapitels. Die Formatierung — Schriftart,
+Zeilenabstand, Seitenränder — wird automatisch aus den HWR-Richtlinien
+übernommen.
 
 == Erster Unterabschnitt
 
-Text...
+Text des ersten Unterabschnitts. Quellen werden direkt im Text
+angegeben, z.B.: Laut @mustermann2024 gilt, dass digitale Transformation
+kein einmaliges Projekt ist, sondern ein fortlaufender Prozess.
+
+Für Fußnoten schreibe direkt hinter das Wort:#footnote[Hier steht
+der Fußnotentext. Fußnoten werden automatisch nummeriert.]
 
 == Zweiter Unterabschnitt
 
-Text...
+Text des zweiten Unterabschnitts.
 
 KAPITEL
     ok "kapitel/$filename"
@@ -387,6 +408,13 @@ _generate_main_typ() {
   local semester_line=""
   [ -n "$SEMESTER" ] && semester_line="  semester: \"${SEMESTER}\","$'\n'
 
+  # declaration-lang hint: nur für EN-Arbeiten relevant
+  local decl_lang_hint=""
+  if [ "$LANG_CODE" = "en" ]; then
+    decl_lang_hint="  // declaration-lang: \"de\",  // Ehrenwörtliche Erklärung auf Deutsch halten (rechtssicher)
+"
+  fi
+
   cat > "$TARGET_DIR/main.typ" << MAINTYP
 // ============================================================
 //  main.typ — Deine HWR-Arbeit
@@ -423,7 +451,8 @@ _generate_main_typ() {
 
 ${supervisor_block}${examiner_block}
 
-  // ── Studiengang ────────────────────────────────────────
+  // ── Studiengang & Sprache ──────────────────────────────
+  lang: "${LANG_CODE}",             // "de" | "en"
   field-of-study: "${FIELD}",
 ${cohort_line}${semester_line}
   // ── Datum ──────────────────────────────────────────────
@@ -451,14 +480,15 @@ ${cohort_line}${semester_line}
   // Nicht benutzt? → Diese Zeilen so lassen (ai-tools: ()).
   ai-tools: (
     // (
-    //   tool:     "ChatGPT 4o",
-    //   usage:    "Textvorschläge, im Text gekennzeichnet",
-    //   chapters: "Kapitel 1, S. 3",
+    //   tool:        "ChatGPT 4o",
+    //   usage:       "Textvorschläge, im Text gekennzeichnet",
+    //   chapters:    "Kapitel 1, S. 3",
+    //   remarks:     "Prompts: ",
+    //   remarks-ref: "Prompt-Protokoll",  // → Hyperlink auf Anhang mit diesem Titel
     // ),
   ),
 
   // ── Abstract (optional) ────────────────────────────────
-  // Entferne die // am Anfang um einen Abstract einzufügen.
   // abstract: [
   //   Schreibe hier deinen Abstract (ca. eine halbe Seite).
   // ],
@@ -479,7 +509,6 @@ ${cohort_line}${semester_line}
 ${CHAPTER_INCLUDES}  ),
 
   // ── Anhang (optional) ──────────────────────────────────
-  // Entferne die // um den Anhang zu aktivieren.
   // appendix: (
   //   (title: "Interviewleitfaden", content: include("anhang/beispiel.typ")),
   //   (title: "Screenshot",         content: image("anhang/screenshot.png")),
@@ -487,10 +516,17 @@ ${CHAPTER_INCLUDES}  ),
 
   // ── Literaturverzeichnis ───────────────────────────────
   bibliography: bibliography("refs.bib"),
-  citation-style: "apa",
-  // Englische Arbeit? Dann: citation-style: "harvard-anglia-ruskin-university"
-  // Eigene CSL-Datei?  Dann: citation-style: read("mein-stil.csl")
+  citation-style: "auto",
+  // "auto" = APA für DE, Harvard für EN
+  // Eigene CSL-Datei: citation-style: read("mein-stil.csl")
 
+  // ── Weitere Einstellungen (bei Bedarf einkommentieren) ─
+  // city: "Berlin",               // Ort im Unterschriftsfeld (default: "Berlin")
+  // show-appendix-toc: false,     // true = Anhangsverzeichnis vor den Anhang-Einträgen
+  // group-signature: auto,        // false = nur erster Autor unterschreibt
+  // warnings: true,               // false = gelbe Hinweisboxen unterdrücken
+  // draft: false,                 // true = "ENTWURF"-Wasserzeichen auf jeder Seite
+${decl_lang_hint}
 )
 // ── Fertig mit den Einstellungen! ──────────────────────
 // Deine Kapitel schreibst du in den Dateien unter kapitel/
@@ -509,33 +545,39 @@ print_done() {
   echo ""
   echo -e "${BOLD}  ─── So geht es weiter ───────────────────────────────${RESET}"
   echo ""
-  echo -e "  ${BOLD}Schritt 1:${RESET} Öffne deinen Projektordner in VS Code"
+  echo -e "  ${BOLD}Schritt 1:${RESET} Texteditor einrichten"
+  echo -e "    Empfohlen: ${BOLD}VS Code${RESET} + ${BOLD}Tinymist${RESET}-Extension"
   echo -e "    → VS Code (kostenlos): ${CYAN}https://code.visualstudio.com${RESET}"
-  echo "    → Tinymist-Extension installieren (Syntax-Highlighting für .typ-Dateien)"
-  echo -e "    → Dann ${CYAN}${TARGET_DIR}/main.typ${RESET} öffnen"
-  echo "      → Deine Daten sind schon eingetragen — nur durchscrollen und prüfen"
-  echo "      → Abkürzungen ergänzen im abbreviations:-Block"
-  echo "      → KI-Tools eintragen wenn du welche verwendest"
+  echo "    → Tinymist gibt dir Syntax-Highlighting, Autocomplete und"
+  echo "      eine Live-Vorschau direkt im Editor (kein Terminal nötig)"
   echo ""
-  echo -e "  ${BOLD}Schritt 2:${RESET} Schreibe deine Kapitel"
+  echo -e "  ${BOLD}Schritt 2:${RESET} Schriftart prüfen"
+  echo "    Das Template benötigt Times New Roman."
+  echo "    → Windows/macOS: bereits vorinstalliert, kein Handlungsbedarf"
+  echo "    → Linux: sudo apt install ttf-mscorefonts-installer"
+  echo ""
+  echo -e "  ${BOLD}Schritt 3:${RESET} main.typ öffnen und anpassen"
+  echo -e "    → ${CYAN}${TARGET_DIR}/main.typ${RESET}"
+  echo "    → Deine Daten sind schon eingetragen — durchscrollen und prüfen"
+  echo "    → Abkürzungen ergänzen im abbreviations:-Block"
+  echo "    → KI-Tools eintragen wenn du welche verwendest"
+  echo ""
+  echo -e "  ${BOLD}Schritt 4:${RESET} Kapitel schreiben"
   echo -e "    → z.B. ${CYAN}${TARGET_DIR}/kapitel/01_einleitung.typ${RESET} öffnen"
   echo "    → Formatierung ist automatisch — einfach drauflosschreiben"
-  echo "    → Abkürzungen: #abk(\"KI\")"
-  echo "    → Zitieren: @mustermann2024  (Quellen in refs.bib eintragen)"
+  echo "    → Kommentare in den Dateien erklären die wichtigsten Befehle"
   echo ""
-  echo -e "  ${BOLD}Schritt 3:${RESET} PDF erstellen ${BOLD}(Terminal, im Projektordner):${RESET}"
+  echo -e "  ${BOLD}Schritt 5:${RESET} PDF erstellen ${BOLD}(Terminal, im Projektordner):${RESET}"
   echo ""
-  echo "    Einmalig:"
-  echo -e "      ${CYAN}cd \"${TARGET_DIR}\" && typst compile main.typ${RESET}"
+  echo -e "      ${CYAN}cd \"${TARGET_DIR}\"${RESET}"
+  echo -e "      ${CYAN}typst watch main.typ${RESET}   ${BOLD}← live, aktualisiert bei jedem Speichern${RESET}"
+  echo -e "      ${CYAN}typst compile main.typ${RESET} ← einmalig"
   echo ""
-  echo "    Mit Live-Vorschau (aktualisiert bei jedem Speichern):"
-  echo -e "      ${CYAN}cd \"${TARGET_DIR}\" && typst watch main.typ${RESET}"
-  echo "    → Beenden: Ctrl+C"
+  echo -e "  ${BOLD}Schritt 6:${RESET} Quellen in ${CYAN}refs.bib${RESET} eintragen"
+  echo "    → Zotero oder Citavi können .bib-Dateien exportieren — spart viel Zeit"
+  echo "    → Im Text zitieren: @mustermann2024 oder @mustermann2024[S. 42]"
   echo ""
-  echo -e "  ${BOLD}Schritt 4:${RESET} Quellen in ${CYAN}${TARGET_DIR}/refs.bib${RESET} eintragen"
-  echo "    → Tipp: Zotero oder Citavi können .bib-Dateien exportieren"
-  echo ""
-  echo -e "  ${BOLD}Alle Optionen und Einstellungen:${RESET} ${CYAN}https://github.com/lultoni/easy-wi-hwr${RESET}"
+  echo -e "  ${BOLD}Alle Parameter und Optionen:${RESET} ${CYAN}https://github.com/lultoni/easy-wi-hwr${RESET}"
   echo ""
   echo -e "${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${RESET}"
   echo ""
